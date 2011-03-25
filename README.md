@@ -45,10 +45,10 @@ php_redcarpet is just simple wrapper of <https://github.com/tanoku/redcarpet>.
 
     git clone https://github.com/chobie/php_redcarpet.git && cd php_redcarpet
     git clone https://github.com/tanoku/redcarpet.git
-    mv config.m4  redcarpet/lib
-    mv php_redcarpet.c redcarpet/lib
-    mv php_redcarpet.h redcarpet/lib
-    cd redcarpet/lib && phpize && ./configure
+    mv config.m4  redcarpet/ext
+    mv php_redcarpet.c redcarpet/ext
+    mv php_redcarpet.h redcarpet/ext
+    cd redcarpet/ext && phpize && ./configure
     make
 		sudo make install
     # extension=redcarpet.so
