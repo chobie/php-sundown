@@ -57,7 +57,10 @@ PHP_METHOD(redcarpet, __construct)
 		return;
 	}
 	add_property_stringl_ex(getThis(),"data",sizeof("data"),buffer,buffer_len,1 TSRMLS_CC);
-	add_property_zval_ex(getThis(),"extensions",sizeof("extensions"),extensions TSRMLS_CC);
+
+    if(!extensions){
+	    add_property_zval_ex(getThis(),"extensions",sizeof("extensions"),extensions TSRMLS_CC);
+    }
 }
 
 PHP_METHOD(redcarpet, to_html)
