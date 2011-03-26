@@ -15,36 +15,41 @@ ZEND_END_ARG_INFO()
 static void php_redcarpet__setup_render(zval *php_obj, struct mkd_renderer *rnd)
 {
 	TSRMLS_FETCH();
-	unsigned int flags = RENDER_EXPAND_TABS;
+	unsigned int render_flags = RENDER_EXPAND_TABS;
+	unsigned int parser_flags = 0;
+    
 	/* smart */
 	if (REDCARPET_HAS_EXTENSION("smart"))
-		flags |= RENDER_SMARTYPANTS;
+		render_flags |= RENDER_SMARTYPANTS;
 
 	/* filter_html */
 	if (REDCARPET_HAS_EXTENSION("filter_html"))
-		flags |= RENDER_SKIP_HTML;
+		render_flags |= RENDER_SKIP_HTML;
 
 	/* no_image */
 	if (REDCARPET_HAS_EXTENSION("no_image"))
-		flags |= RENDER_SKIP_IMAGES;
+		render_flags |= RENDER_SKIP_IMAGES;
 
 	/* no_links */
 	if (REDCARPET_HAS_EXTENSION("no_links"))
-		flags |= RENDER_SKIP_LINKS;
+		render_flags |= RENDER_SKIP_LINKS;
 
 	/* filter_style */
 	if (REDCARPET_HAS_EXTENSION("filter_style"))
-		flags |= RENDER_SKIP_STYLE;
+		render_flags |= RENDER_SKIP_STYLE;
 
 	/* autolink */
 	if (REDCARPET_HAS_EXTENSION("auto_link"))
-		flags |= RENDER_AUTOLINK;
+		render_flags |= RENDER_AUTOLINK;
 
 	/* safelink */
 	if (REDCARPET_HAS_EXTENSION("safelink"))
-		flags |= RENDER_SAFELINK;
+		render_flags |= RENDER_SAFELINK;
+    
+    if (REDCARPET_HAS_EXTENSION("strict"))
+        parser_flags |= PARSER_STRICT;
 
-	init_renderer(rnd, flags);
+	init_renderer(rnd, render_flags, NULL, parser_flags, 16);
 }
 
 PHP_METHOD(redcarpet, __construct)
