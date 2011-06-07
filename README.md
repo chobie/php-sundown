@@ -32,5 +32,5 @@ Install
 Example
 -------
 
-    $markdown = new PHPSkirt(string $text[, StdClass $extensions]);
+    $markdown = new Upskirt(string $text[, StdClass $extensions]);
     echo $markdown->to_html();

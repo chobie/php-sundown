@@ -131,7 +131,7 @@ zend_module_entry phpskirt_module_entry = {
 void php_phpskirt_init(TSRMLS_D)
 {
 	zend_class_entry ce;
-	INIT_CLASS_ENTRY(ce, "PHPSkirt", php_phpskirt_methods);
+	INIT_CLASS_ENTRY(ce, "Upskirt", php_phpskirt_methods);
 	phpskirt_class_entry = zend_register_internal_class(&ce TSRMLS_CC);
 }
 
