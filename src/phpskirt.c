@@ -26,6 +26,12 @@
 
 PHPAPI zend_class_entry *phpskirt_class_entry;
 
+typedef enum
+{
+	PHPSKIRT_RENDER_HTML,
+	PHPSKIRT_RENDER_TOC
+} PHPSkirtRendererType;
+
 void php_phpskirt_init(TSRMLS_D);
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_phpskirt__construct, 0, 0, 1)
@@ -42,7 +48,7 @@ static void php_phpskirt__get_flags(zval *php_obj, unsigned int *enabled_extensi
 	unsigned int render_flags = HTML_EXPAND_TABS;
 	unsigned int extensions = 0;
 
-    	/* filter_html */
+	/* filter_html */
 	if (PHPSKIRT_HAS_EXTENSION("filter_html"))
 		render_flags |= HTML_SKIP_HTML;
 
@@ -102,6 +108,43 @@ static void php_phpskirt__get_flags(zval *php_obj, unsigned int *enabled_extensi
 	*render_flags_p = render_flags;
 }
 
+static void phpskirt__render(PHPSkirtRendererType render_type, INTERNAL_FUNCTION_PARAMETERS)
+{
+	struct buf input_buf, *output_buf;
+	struct mkd_renderer phpskirt_render;
+	unsigned int enabled_extensions = 0, render_flags = 0;
+	
+	memset(&input_buf, 0x0, sizeof(struct buf));
+	char *buffer = Z_STRVAL_P(zend_read_property(phpskirt_class_entry,getThis(),"data",sizeof("data")-1,1 TSRMLS_CC));
+	input_buf.data = buffer;
+	input_buf.size = strlen(buffer);
+	
+	output_buf = bufnew(128);
+	bufgrow(output_buf, strlen(buffer) * 1.2f);
+
+	php_phpskirt__get_flags(zend_read_property(phpskirt_class_entry, getThis(),"extensions",sizeof("extensions")-1, 0 TSRMLS_CC), &enabled_extensions, &render_flags);
+
+	switch (render_type) {
+	case PHPSKIRT_RENDER_HTML:
+		upshtml_renderer(&phpskirt_render, render_flags);
+		break;
+
+	case PHPSKIRT_RENDER_TOC:
+		upshtml_toc_renderer(&phpskirt_render);
+		break;
+
+	default:
+		RETURN_FALSE;
+	}
+
+	ups_markdown(output_buf, &input_buf, &phpskirt_render, enabled_extensions);
+
+	RETVAL_STRINGL(output_buf->data, output_buf->size,1);
+
+	bufrelease(output_buf);
+	upshtml_free_renderer(&phpskirt_render);
+}
+
 PHP_METHOD(phpskirt, __construct)
 {
 	char *buffer;
@@ -120,33 +163,18 @@ PHP_METHOD(phpskirt, __construct)
 
 PHP_METHOD(phpskirt, to_html)
 {
-	struct buf input_buf, *output_buf;
-	struct mkd_renderer phpskirt_render;
-	unsigned int enabled_extensions = 0, render_flags = 0;
-	
-	memset(&input_buf, 0x0, sizeof(struct buf));
-	char *buffer = Z_STRVAL_P(zend_read_property(phpskirt_class_entry,getThis(),"data",sizeof("data")-1,1 TSRMLS_CC));
-	input_buf.data = buffer;
-	input_buf.size = strlen(buffer);
-	
-	output_buf = bufnew(128);
-	bufgrow(output_buf, strlen(buffer) * 1.2f);
+    phpskirt__render(PHPSKIRT_RENDER_HTML,INTERNAL_FUNCTION_PARAM_PASSTHRU);
+}
 
-	php_phpskirt__get_flags(zend_read_property(phpskirt_class_entry, getThis(),"extensions",sizeof("extensions")-1, 0 TSRMLS_CC), &enabled_extensions, &render_flags);
-	upshtml_renderer(&phpskirt_render, render_flags);
-
-	ups_markdown(output_buf, &input_buf, &phpskirt_render, enabled_extensions);
-
-	
-	RETVAL_STRINGL(output_buf->data, output_buf->size,1);
-
-	bufrelease(output_buf);
-	upshtml_free_renderer(&phpskirt_render);
+PHP_METHOD(phpskirt, to_toc)
+{
+    phpskirt__render(PHPSKIRT_RENDER_TOC,INTERNAL_FUNCTION_PARAM_PASSTHRU);
 }
 
 PHPAPI function_entry php_phpskirt_methods[] = {
 	PHP_ME(phpskirt, __construct, arginfo_phpskirt__construct, ZEND_ACC_PUBLIC)
 	PHP_ME(phpskirt, to_html, NULL, ZEND_ACC_PUBLIC)
+	PHP_ME(phpskirt, to_toc,  NULL, ZEND_ACC_PUBLIC)
 	{NULL, NULL, NULL}
 };
 

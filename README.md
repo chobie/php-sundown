@@ -32,5 +32,6 @@ Install
 Example
 -------
 
-    $markdown = new Upskirt(string $text[, StdClass $extensions]);
+    $markdown = new Upskirt(string $text[, array $extensions]);
     echo $markdown->to_html();
+    echo $markdown->to_toc();
