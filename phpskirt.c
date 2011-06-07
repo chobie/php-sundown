@@ -1,3 +1,27 @@
+/*
+ * The MIT License
+ *
+ * Copyright (c) 2011 Shuhei Tanuma
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
 #include "php_phpskirt.h"
 
 PHPAPI zend_class_entry *phpskirt_class_entry;
@@ -17,14 +41,8 @@ static void php_phpskirt__get_flags(zval *php_obj, unsigned int *enabled_extensi
 	TSRMLS_FETCH();
 	unsigned int render_flags = HTML_EXPAND_TABS;
 	unsigned int extensions = 0;
-    
-	/* smart */
-/*
-	if (PHPSKIRT_HAS_EXTENSION("smart"))
-		render_flags |= RENDER_SMARTYPANTS;
-*/
 
-	/* filter_html */
+    	/* filter_html */
 	if (PHPSKIRT_HAS_EXTENSION("filter_html"))
 		render_flags |= HTML_SKIP_HTML;
 
@@ -112,6 +130,8 @@ PHP_METHOD(phpskirt, to_html)
 	input_buf.size = strlen(buffer);
 	
 	output_buf = bufnew(128);
+	bufgrow(output_buf, strlen(buffer) * 1.2f);
+
 	php_phpskirt__get_flags(zend_read_property(phpskirt_class_entry, getThis(),"extensions",sizeof("extensions")-1, 0 TSRMLS_CC), &enabled_extensions, &render_flags);
 	upshtml_renderer(&phpskirt_render, render_flags);
 
