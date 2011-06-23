@@ -48,9 +48,9 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_phpskirt_to_toc, 0, 0, 1)
 ZEND_END_ARG_INFO()
 
 
-#define PHPSKIRT_HAS_EXTENSION(name)   (zend_hash_exists( Z_ARRVAL_P(php_obj), name,strlen(name)) == SUCCESS)
+#define PHPSKIRT_HAS_EXTENSION(name)  (table != NULL && zend_hash_exists(table, name,strlen(name)+1) == 1)
 
-static void php_phpskirt__get_flags(zval *php_obj, unsigned int *enabled_extensions_p, unsigned int *render_flags_p)
+static void php_phpskirt__get_flags(HashTable *table, unsigned int *enabled_extensions_p, unsigned int *render_flags_p)
 {
 	TSRMLS_FETCH();
 	unsigned int render_flags = HTML_EXPAND_TABS;
@@ -100,7 +100,7 @@ static void php_phpskirt__get_flags(zval *php_obj, unsigned int *enabled_extensi
 	/**
 	 * Markdown extensions -- all disabled by default 
 	 */
-	if (PHPSKIRT_HAS_EXTENSION("auto_link")) {
+	if (PHPSKIRT_HAS_EXTENSION("autolink")) {
 		extensions |= MKDEXT_AUTOLINK;
 	}
 
@@ -152,7 +152,11 @@ static void phpskirt__render(PHPSkirtRendererType render_type, INTERNAL_FUNCTION
 	output_buf = bufnew(128);
 	bufgrow(output_buf, strlen(buffer) * 1.2f);
 
-	php_phpskirt__get_flags(zend_read_property(phpskirt_class_entry, getThis(),"extensions",sizeof("extensions")-1, 0 TSRMLS_CC), &enabled_extensions, &render_flags);
+	HashTable *table = NULL;
+	if(Z_TYPE_P(zend_read_property(phpskirt_class_entry, getThis(),"extensions",sizeof("extensions")-1, 0 TSRMLS_CC)) != IS_NULL) {
+		table = Z_ARRVAL_P(zend_read_property(phpskirt_class_entry, getThis(),"extensions",sizeof("extensions")-1, 0 TSRMLS_CC));
+	}
+	php_phpskirt__get_flags(table, &enabled_extensions, &render_flags);
 
 	switch (render_type) {
 		case PHPSKIRT_RENDER_HTML:
@@ -167,7 +171,14 @@ static void phpskirt__render(PHPSkirtRendererType render_type, INTERNAL_FUNCTION
 
 	ups_markdown(output_buf, &input_buf, &phpskirt_render, enabled_extensions);
 
-	RETVAL_STRINGL(output_buf->data, output_buf->size,1);
+	if (Z_BVAL_P(zend_read_property(phpskirt_class_entry, getThis(),"enable_pants",sizeof("enable_pants")-1, 0 TSRMLS_CC))) {
+		struct buf *smart_buf = bufnew(128);
+		upshtml_smartypants(smart_buf, output_buf);
+		RETVAL_STRINGL(smart_buf->data, smart_buf->size,1);
+		bufrelease(smart_buf);
+	} else {
+		RETVAL_STRINGL(output_buf->data, output_buf->size,1);
+	}
 
 	bufrelease(output_buf);
 	upshtml_free_renderer(&phpskirt_render);
@@ -175,13 +186,13 @@ static void phpskirt__render(PHPSkirtRendererType render_type, INTERNAL_FUNCTION
 
 PHP_METHOD(phpskirt, __construct)
 {
-	zval *extensions;
+	zval *extensions = NULL;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,"z",&extensions) == FAILURE) {
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,"|z",&extensions) == FAILURE) {
 		return;
 	}
 
-	if (extensions) {
+	if (extensions != NULL) {
 	    add_property_zval_ex(getThis(),"extensions",sizeof("extensions"),extensions TSRMLS_CC);
 	}
 }
@@ -242,7 +253,8 @@ void php_phpskirt_init(TSRMLS_D)
 	zend_class_entry ce;
 	INIT_CLASS_ENTRY(ce, "Upskirt", php_phpskirt_methods);
 	phpskirt_class_entry = zend_register_internal_class(&ce TSRMLS_CC);
-	zend_declare_property_null(phpskirt_class_entry, "extensions", sizeof("extensions"),  ZEND_ACC_PUBLIC TSRMLS_CC);
+	zend_declare_property_null(phpskirt_class_entry, "extensions", sizeof("extensions")-1,  ZEND_ACC_PUBLIC TSRMLS_CC);
+	zend_declare_property_null(phpskirt_class_entry, "enable_pants", sizeof("enable_pants")-1,  ZEND_ACC_PUBLIC TSRMLS_CC);
 }
 
 
