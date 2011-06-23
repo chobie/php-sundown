@@ -35,8 +35,15 @@ typedef enum
 void php_phpskirt_init(TSRMLS_D);
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_phpskirt__construct, 0, 0, 1)
-	ZEND_ARG_INFO(0, string)
 	ZEND_ARG_INFO(0, extensions)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_INFO_EX(arginfo_phpskirt_to_html, 0, 0, 1)
+	ZEND_ARG_INFO(0, data)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_INFO_EX(arginfo_phpskirt_to_toc, 0, 0, 1)
+	ZEND_ARG_INFO(0, data)
 ZEND_END_ARG_INFO()
 
 
@@ -113,9 +120,15 @@ static void phpskirt__render(PHPSkirtRendererType render_type, INTERNAL_FUNCTION
 	struct buf input_buf, *output_buf;
 	struct mkd_renderer phpskirt_render;
 	unsigned int enabled_extensions = 0, render_flags = 0;
+    char *buffer;
+    int buffer_len = 0;
+
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,"s",&buffer,&buffer_len) == FAILURE) {
+		return;
+	}
+
 	
 	memset(&input_buf, 0x0, sizeof(struct buf));
-	char *buffer = Z_STRVAL_P(zend_read_property(phpskirt_class_entry,getThis(),"data",sizeof("data")-1,1 TSRMLS_CC));
 	input_buf.data = buffer;
 	input_buf.size = strlen(buffer);
 	
@@ -125,16 +138,14 @@ static void phpskirt__render(PHPSkirtRendererType render_type, INTERNAL_FUNCTION
 	php_phpskirt__get_flags(zend_read_property(phpskirt_class_entry, getThis(),"extensions",sizeof("extensions")-1, 0 TSRMLS_CC), &enabled_extensions, &render_flags);
 
 	switch (render_type) {
-	case PHPSKIRT_RENDER_HTML:
-		upshtml_renderer(&phpskirt_render, render_flags);
-		break;
-
-	case PHPSKIRT_RENDER_TOC:
-		upshtml_toc_renderer(&phpskirt_render);
-		break;
-
-	default:
-		RETURN_FALSE;
+		case PHPSKIRT_RENDER_HTML:
+			upshtml_renderer(&phpskirt_render, render_flags);
+			break;
+		case PHPSKIRT_RENDER_TOC:
+			upshtml_toc_renderer(&phpskirt_render);
+			break;
+		default:
+			RETURN_FALSE;
 	}
 
 	ups_markdown(output_buf, &input_buf, &phpskirt_render, enabled_extensions);
@@ -147,14 +158,11 @@ static void phpskirt__render(PHPSkirtRendererType render_type, INTERNAL_FUNCTION
 
 PHP_METHOD(phpskirt, __construct)
 {
-	char *buffer;
-	int buffer_len = 0;
 	zval *extensions;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,"s|z",&buffer,&buffer_len,&extensions) == FAILURE) {
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,"z",&extensions) == FAILURE) {
 		return;
 	}
-	add_property_stringl_ex(getThis(),"data",sizeof("data"),buffer,buffer_len,1 TSRMLS_CC);
 
     if(extensions){
 	    add_property_zval_ex(getThis(),"extensions",sizeof("extensions"),extensions TSRMLS_CC);
