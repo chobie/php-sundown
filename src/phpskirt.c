@@ -26,13 +26,14 @@
 
 PHPAPI zend_class_entry *phpskirt_class_entry;
 
+void php_phpskirt_init(TSRMLS_D);
+
 typedef enum
 {
 	PHPSKIRT_RENDER_HTML,
 	PHPSKIRT_RENDER_TOC
 } PHPSkirtRendererType;
 
-void php_phpskirt_init(TSRMLS_D);
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_phpskirt__construct, 0, 0, 1)
 	ZEND_ARG_INFO(0, extensions)
@@ -56,60 +57,76 @@ static void php_phpskirt__get_flags(zval *php_obj, unsigned int *enabled_extensi
 	unsigned int extensions = 0;
 
 	/* filter_html */
-	if (PHPSKIRT_HAS_EXTENSION("filter_html"))
+	if (PHPSKIRT_HAS_EXTENSION("filter_html")) {
 		render_flags |= HTML_SKIP_HTML;
+	}
 
 	/* no_image */
-	if (PHPSKIRT_HAS_EXTENSION("no_image"))
+	if (PHPSKIRT_HAS_EXTENSION("no_image")) {
 		render_flags |= HTML_SKIP_IMAGES;
+	}
 
 	/* no_links */
-	if (PHPSKIRT_HAS_EXTENSION("no_links"))
+	if (PHPSKIRT_HAS_EXTENSION("no_links")) {
 		render_flags |= HTML_SKIP_LINKS;
+	}
 
 	/* filter_style */
-	if (PHPSKIRT_HAS_EXTENSION("filter_styles"))
+	if (PHPSKIRT_HAS_EXTENSION("filter_styles")) {
 		render_flags |= HTML_SKIP_STYLE;
+	}
 
 	/* safelink */
-	if (PHPSKIRT_HAS_EXTENSION("safelink"))
+	if (PHPSKIRT_HAS_EXTENSION("safelink")) {
 		render_flags |= HTML_SAFELINK;
+	}
 
-	if (PHPSKIRT_HAS_EXTENSION("generate_toc"))
+	if (PHPSKIRT_HAS_EXTENSION("generate_toc")) {
 		render_flags |= HTML_TOC;
+	}
 
-	if (PHPSKIRT_HAS_EXTENSION("hard_wrap"))
+	if (PHPSKIRT_HAS_EXTENSION("hard_wrap")) {
 		render_flags |= HTML_HARD_WRAP;
+	}
 
-	if (PHPSKIRT_HAS_EXTENSION("gh_blockcode"))
+	if (PHPSKIRT_HAS_EXTENSION("gh_blockcode")) {
 		render_flags |= HTML_GITHUB_BLOCKCODE;
+	}
 
-	if (PHPSKIRT_HAS_EXTENSION("xhtml"))
+	if (PHPSKIRT_HAS_EXTENSION("xhtml")) {
 		render_flags |= HTML_USE_XHTML;
+	}
 
 	/**
 	 * Markdown extensions -- all disabled by default 
 	 */
-	if (PHPSKIRT_HAS_EXTENSION("auto_link"))
+	if (PHPSKIRT_HAS_EXTENSION("auto_link")) {
 		extensions |= MKDEXT_AUTOLINK;
+	}
 
-	if (PHPSKIRT_HAS_EXTENSION("no_intraemphasis"))
+	if (PHPSKIRT_HAS_EXTENSION("no_intraemphasis")) {
 		extensions |= MKDEXT_NO_INTRA_EMPHASIS;
+	}
 
-	if (PHPSKIRT_HAS_EXTENSION("tables"))
+	if (PHPSKIRT_HAS_EXTENSION("tables")) {
 		extensions |= MKDEXT_TABLES;
+	}
 
-	if (PHPSKIRT_HAS_EXTENSION("fenced_code"))
+	if (PHPSKIRT_HAS_EXTENSION("fenced_code")) {
 		extensions |= MKDEXT_FENCED_CODE;
+	}
 
-	if (PHPSKIRT_HAS_EXTENSION("strikethrough"))
+	if (PHPSKIRT_HAS_EXTENSION("strikethrough")) {
 		extensions |= MKDEXT_STRIKETHROUGH;
+	}
 
-	if (PHPSKIRT_HAS_EXTENSION("lax_htmlblock"))
+	if (PHPSKIRT_HAS_EXTENSION("lax_htmlblock")) {
 		extensions |= MKDEXT_LAX_HTML_BLOCKS;
+	}
 
-	if (PHPSKIRT_HAS_EXTENSION("space_header"))
+	if (PHPSKIRT_HAS_EXTENSION("space_header")) {
 		extensions |= MKDEXT_SPACE_HEADERS;
+	}
 
 	*enabled_extensions_p = extensions;
 	*render_flags_p = render_flags;
@@ -120,8 +137,8 @@ static void phpskirt__render(PHPSkirtRendererType render_type, INTERNAL_FUNCTION
 	struct buf input_buf, *output_buf;
 	struct mkd_renderer phpskirt_render;
 	unsigned int enabled_extensions = 0, render_flags = 0;
-    char *buffer;
-    int buffer_len = 0;
+	char *buffer;
+	int buffer_len = 0;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,"s",&buffer,&buffer_len) == FAILURE) {
 		return;
@@ -164,19 +181,23 @@ PHP_METHOD(phpskirt, __construct)
 		return;
 	}
 
-    if(extensions){
+	if (extensions) {
 	    add_property_zval_ex(getThis(),"extensions",sizeof("extensions"),extensions TSRMLS_CC);
-    }
+	}
 }
-
+/* {{{ proto string to_html(string data)
+	Returns converted HTML string */
 PHP_METHOD(phpskirt, to_html)
 {
-    phpskirt__render(PHPSKIRT_RENDER_HTML,INTERNAL_FUNCTION_PARAM_PASSTHRU);
+	phpskirt__render(PHPSKIRT_RENDER_HTML,INTERNAL_FUNCTION_PARAM_PASSTHRU);
 }
+/* }}} */
 
+/* {{{ proto string to_toc(string data)
+	Returns table of contents*/
 PHP_METHOD(phpskirt, to_toc)
 {
-    phpskirt__render(PHPSKIRT_RENDER_TOC,INTERNAL_FUNCTION_PARAM_PASSTHRU);
+	phpskirt__render(PHPSKIRT_RENDER_TOC,INTERNAL_FUNCTION_PARAM_PASSTHRU);
 }
 
 PHPAPI function_entry php_phpskirt_methods[] = {
@@ -185,12 +206,14 @@ PHPAPI function_entry php_phpskirt_methods[] = {
 	PHP_ME(phpskirt, to_toc,  NULL, ZEND_ACC_PUBLIC)
 	{NULL, NULL, NULL}
 };
+/* }}} */
 
 
 PHP_MINIT_FUNCTION(phpskirt) {
 	php_phpskirt_init(TSRMLS_C);
 	return SUCCESS;
 }
+
 
 PHP_MINFO_FUNCTION(phpskirt)
 {
