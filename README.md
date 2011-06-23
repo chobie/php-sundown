@@ -24,6 +24,8 @@ Install
 -------
 
     git clone https://github.com/chobie/phpskirt.git && cd phpskirt
+    git submodule init
+    cd src
     phpize && ./configure
     make
     sudo make install
