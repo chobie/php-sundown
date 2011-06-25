@@ -19,6 +19,6 @@
 extern zend_module_entry phpskirt_module_entry;
 #define phpext_phpskirt_ptr &phpskirt_module_entry;
 
-extern PHPAPI zend_class_entry *phpskirt_class_entry;
+extern zend_class_entry *phpskirt_class_entry;
 
 #endif /* PHP_PHPSKIRT_H */

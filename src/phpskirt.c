@@ -24,7 +24,7 @@
 
 #include "php_phpskirt.h"
 
-PHPAPI zend_class_entry *phpskirt_class_entry;
+zend_class_entry *phpskirt_class_entry;
 
 void php_phpskirt_init(TSRMLS_D);
 
@@ -139,6 +139,7 @@ static void phpskirt__render(PHPSkirtRendererType render_type, INTERNAL_FUNCTION
 	unsigned int enabled_extensions = 0, render_flags = 0;
 	char *buffer;
 	int buffer_len = 0;
+	HashTable *table;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,"s",&buffer,&buffer_len) == FAILURE) {
 		return;
@@ -152,7 +153,6 @@ static void phpskirt__render(PHPSkirtRendererType render_type, INTERNAL_FUNCTION
 	output_buf = bufnew(128);
 	bufgrow(output_buf, strlen(buffer) * 1.2f);
 
-	HashTable *table = NULL;
 	if(Z_TYPE_P(zend_read_property(phpskirt_class_entry, getThis(),"extensions",sizeof("extensions")-1, 0 TSRMLS_CC)) != IS_NULL) {
 		table = Z_ARRVAL_P(zend_read_property(phpskirt_class_entry, getThis(),"extensions",sizeof("extensions")-1, 0 TSRMLS_CC));
 	}
@@ -211,7 +211,7 @@ PHP_METHOD(phpskirt, to_toc)
 	phpskirt__render(PHPSKIRT_RENDER_TOC,INTERNAL_FUNCTION_PARAM_PASSTHRU);
 }
 
-PHPAPI function_entry php_phpskirt_methods[] = {
+static function_entry php_phpskirt_methods[] = {
 	PHP_ME(phpskirt, __construct, arginfo_phpskirt__construct, ZEND_ACC_PUBLIC)
 	PHP_ME(phpskirt, to_html, NULL, ZEND_ACC_PUBLIC)
 	PHP_ME(phpskirt, to_toc,  NULL, ZEND_ACC_PUBLIC)

@@ -1,0 +1,6 @@
+ARG_WITH('phpskirt', 'phpskirt extension', 'no');
+
+if (PHP_PHPSKIRT != "no") {
+
+  EXTENSION("phpskirt", "phpskirt.c array.c buffer.c markdown.c html.c html_smartypants.c");
+}
