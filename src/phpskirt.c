@@ -141,10 +141,8 @@ static void phpskirt__render(PHPSkirtRendererType render_type, INTERNAL_FUNCTION
 	int buffer_len = 0;
 	HashTable *table;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,"s",&buffer,&buffer_len) == FAILURE) {
-		return;
-	}
-
+	buffer = Z_STRVAL_P(zend_read_property(phpskirt_class_entry, getThis(),"data",sizeof("data")-1, 0 TSRMLS_CC));
+	buffer_len = strlen(buffer);
 	
 	memset(&input_buf, 0x0, sizeof(struct buf));
 	input_buf.data = buffer;
@@ -184,19 +182,26 @@ static void phpskirt__render(PHPSkirtRendererType render_type, INTERNAL_FUNCTION
 	upshtml_free_renderer(&phpskirt_render);
 }
 
+/* {{{ proto string __construct(string $string [, array $extensions])
+	setup Upskirt extension */
 PHP_METHOD(phpskirt, __construct)
 {
 	zval *extensions = NULL;
+	char *buffer;
+	int buffer_len = 0;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,"|z",&extensions) == FAILURE) {
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,"s|z",&buffer, &buffer_len, &extensions) == FAILURE) {
 		return;
 	}
 
+	add_property_string_ex(getThis(),"data",sizeof("data"),buffer,1 TSRMLS_CC);
 	if (extensions != NULL) {
 	    add_property_zval_ex(getThis(),"extensions",sizeof("extensions"),extensions TSRMLS_CC);
 	}
 }
-/* {{{ proto string to_html(string data)
+/* }}} */
+
+/* {{{ proto string to_html()
 	Returns converted HTML string */
 PHP_METHOD(phpskirt, to_html)
 {
@@ -204,7 +209,15 @@ PHP_METHOD(phpskirt, to_html)
 }
 /* }}} */
 
-/* {{{ proto string to_toc(string data)
+/* {{{ proto string __toString()
+	Returns converted HTML string */
+PHP_METHOD(phpskirt, __toString)
+{
+	phpskirt__render(PHPSKIRT_RENDER_HTML,INTERNAL_FUNCTION_PARAM_PASSTHRU);
+}
+/* }}} */
+
+/* {{{ proto string to_toc()
 	Returns table of contents*/
 PHP_METHOD(phpskirt, to_toc)
 {
