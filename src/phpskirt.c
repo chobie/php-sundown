@@ -35,18 +35,10 @@ typedef enum
 } PHPSkirtRendererType;
 
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_phpskirt__construct, 0, 0, 1)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_phpskirt__construct, 0, 0, 2)
+	ZEND_ARG_INFO(0, data)
 	ZEND_ARG_INFO(0, extensions)
 ZEND_END_ARG_INFO()
-
-ZEND_BEGIN_ARG_INFO_EX(arginfo_phpskirt_to_html, 0, 0, 1)
-	ZEND_ARG_INFO(0, data)
-ZEND_END_ARG_INFO()
-
-ZEND_BEGIN_ARG_INFO_EX(arginfo_phpskirt_to_toc, 0, 0, 1)
-	ZEND_ARG_INFO(0, data)
-ZEND_END_ARG_INFO()
-
 
 #define PHPSKIRT_HAS_EXTENSION(name)  (table != NULL && zend_hash_exists(table, name,strlen(name)+1) == 1)
 
@@ -228,6 +220,7 @@ static function_entry php_phpskirt_methods[] = {
 	PHP_ME(phpskirt, __construct, arginfo_phpskirt__construct, ZEND_ACC_PUBLIC)
 	PHP_ME(phpskirt, to_html, NULL, ZEND_ACC_PUBLIC)
 	PHP_ME(phpskirt, to_toc,  NULL, ZEND_ACC_PUBLIC)
+	PHP_ME(phpskirt, __toString,  NULL, ZEND_ACC_PUBLIC)
 	{NULL, NULL, NULL}
 };
 /* }}} */
