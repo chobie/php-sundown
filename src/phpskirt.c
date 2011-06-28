@@ -37,7 +37,7 @@ typedef enum
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_phpskirt__construct, 0, 0, 2)
 	ZEND_ARG_INFO(0, data)
-	ZEND_ARG_INFO(0, extensions)
+	ZEND_ARG_ARRAY_INFO(0, extensions, 0)
 ZEND_END_ARG_INFO()
 
 #define PHPSKIRT_HAS_EXTENSION(name)  (table != NULL && zend_hash_exists(table, name,strlen(name)+1) == 1)
@@ -182,13 +182,29 @@ PHP_METHOD(phpskirt, __construct)
 	char *buffer;
 	int buffer_len = 0;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,"s|z",&buffer, &buffer_len, &extensions) == FAILURE) {
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,"s|a",&buffer, &buffer_len, &extensions) == FAILURE) {
 		return;
 	}
 
 	add_property_string_ex(getThis(),"data",sizeof("data"),buffer,1 TSRMLS_CC);
-	if (extensions != NULL) {
-	    add_property_zval_ex(getThis(),"extensions",sizeof("extensions"),extensions TSRMLS_CC);
+
+	if (extensions == NULL) {
+		MAKE_STD_ZVAL(extensions);
+		array_init(extensions);
+	}
+    add_property_zval_ex(getThis(),"extensions",sizeof("extensions"),extensions TSRMLS_CC);
+}
+/* }}} */
+
+/* {{{ proto void __destruct()
+	cleanup variables */
+PHP_METHOD(phpskirt, __destruct)
+{
+	zval *extensions;
+	
+	extensions = zend_read_property(phpskirt_class_entry, getThis(),"extensions",sizeof("extensions")-1, 0 TSRMLS_CC);
+	if(extensions != NULL && Z_TYPE_P(extensions) != IS_NULL) {
+		zval_ptr_dtor(&extensions);
 	}
 }
 /* }}} */
@@ -218,6 +234,7 @@ PHP_METHOD(phpskirt, to_toc)
 
 static function_entry php_phpskirt_methods[] = {
 	PHP_ME(phpskirt, __construct, arginfo_phpskirt__construct, ZEND_ACC_PUBLIC)
+	PHP_ME(phpskirt, __destruct,  NULL, ZEND_ACC_PUBLIC)
 	PHP_ME(phpskirt, to_html, NULL, ZEND_ACC_PUBLIC)
 	PHP_ME(phpskirt, to_toc,  NULL, ZEND_ACC_PUBLIC)
 	PHP_ME(phpskirt, __toString,  NULL, ZEND_ACC_PUBLIC)
