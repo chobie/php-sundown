@@ -37,3 +37,31 @@ Example
     $markdown = new Upskirt(string $string [, array $extensions]);
     echo $markdown->to_html();
     echo $markdown->to_toc();
+
+Supported Extensions
+--------------------
+
+````
+<?php
+
+// default: disable all.
+// maybe this array will be integer (bit flags).
+new Upskirt('something',array(
+	"filter_html"=>true,
+	"no_image"=>true,
+	"no_links"=>true,
+	"filter_styles"=>true,
+	"safelink" => true,
+	"generate_toc" => true,
+	"hard_wrap" => true,
+	"gh_blockcode" => true,
+	"xhtml" => true,
+	"autolink"=>true,
+	"no_intraemphasis" => true,
+	"tables" => true,
+	"fenced_code" => true,
+	"strikethrough" => true,
+	"lax_htmlblock" => true,
+	"space_header" => true,
+));
+````
