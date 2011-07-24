@@ -1,7 +1,7 @@
-PHP + Upskirt
+PHP + Sundown
 ===========================
 
-phpskirt is just simple wrapper of <https://github.com/tanoku/upskirt>.
+php-sundown is just simple wrapper of <https://github.com/tanoku/sundown>.
 
 License
 -------
@@ -23,20 +23,20 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 Install
 -------
 
-    git clone https://github.com/chobie/phpskirt.git && cd phpskirt
-    git submodule init
+    git clone https://github.com/chobie/php-sundown.git && cd php-sundown
     cd src
     phpize && ./configure
     make
     sudo make install
-    # extension=phpskirt.so
+    # please add following line to your php.ini
+    # extension=sundown.so
 
 Example
 -------
 
-    $markdown = new Upskirt(string $string [, array $extensions]);
-    echo $markdown->to_html();
-    echo $markdown->to_toc();
+    $sundown = new Sundown(string $string [, array $extensions]);
+    echo $sundown->to_html();
+    echo $sundownn->to_toc();
 
 Supported Extensions
 --------------------
@@ -46,7 +46,7 @@ Supported Extensions
 
 // default: disable all.
 // maybe this array will be integer (bit flags).
-new Upskirt('something',array(
+new Sundown('something',array(
 	"filter_html"=>true,
 	"no_image"=>true,
 	"no_links"=>true,

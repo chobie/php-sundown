@@ -1,6 +1,6 @@
-ARG_WITH('phpskirt', 'phpskirt extension', 'no');
+ARG_WITH('sundown', 'sundown extension', 'no');
 
-if (PHP_PHPSKIRT != "no") {
+if (SUNDOWN != "no") {
 
-  EXTENSION("phpskirt", "phpskirt.c array.c buffer.c markdown.c html.c html_smartypants.c");
+  EXTENSION("sundown", "sundown.c array.c buffer.c markdown.c html.c html_smartypants.c autolink.c");
 }

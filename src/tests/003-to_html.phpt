@@ -1,14 +1,14 @@
 --TEST--
-Check for Upskirt::to_html() feature
+Check for Sundown::to_html() feature
 --SKIPIF--
-<?php if (!extension_loaded("phpskirt")) print "skip"; ?>
+<?php if (!extension_loaded("sundown")) print "skip"; ?>
 --FILE--
 <?php
 $data = <<<EOF
 * Hello World
 EOF;
 
-$a = new Upskirt($data);
+$a = new Sundown($data);
 // list
 echo $a->to_html();
 --EXPECT--

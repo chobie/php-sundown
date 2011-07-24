@@ -22,101 +22,100 @@
  * THE SOFTWARE.
  */
 
-#include "php_phpskirt.h"
+#include "php_sundown.h"
 
-zend_class_entry *phpskirt_class_entry;
+zend_class_entry *sundown_class_entry;
 
-void php_phpskirt_init(TSRMLS_D);
+void php_sundown_init(TSRMLS_D);
 
 typedef enum
 {
-	PHPSKIRT_RENDER_HTML,
-	PHPSKIRT_RENDER_TOC
-} PHPSkirtRendererType;
+	SUNDOWN_RENDER_HTML,
+	SUNDOWN_RENDER_TOC
+} SundownRendererType;
 
-
-ZEND_BEGIN_ARG_INFO_EX(arginfo_phpskirt__construct, 0, 0, 2)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown__construct, 0, 0, 2)
 	ZEND_ARG_INFO(0, data)
 	ZEND_ARG_ARRAY_INFO(0, extensions, 0)
 ZEND_END_ARG_INFO()
 
-#define PHPSKIRT_HAS_EXTENSION(name)  (table != NULL && zend_hash_exists(table, name,strlen(name)+1) == 1)
+#define SUNDOWN_HAS_EXTENSION(name)  (table != NULL && zend_hash_exists(table, name,strlen(name)+1) == 1)
 
-static void php_phpskirt__get_flags(HashTable *table, unsigned int *enabled_extensions_p, unsigned int *render_flags_p)
+static void php_sundown__get_flags(HashTable *table, unsigned int *enabled_extensions_p, unsigned int *render_flags_p)
 {
 	TSRMLS_FETCH();
 	unsigned int render_flags = HTML_EXPAND_TABS;
 	unsigned int extensions = 0;
 
 	/* filter_html */
-	if (PHPSKIRT_HAS_EXTENSION("filter_html")) {
+	if (SUNDOWN_HAS_EXTENSION("filter_html")) {
 		render_flags |= HTML_SKIP_HTML;
 	}
 
 	/* no_image */
-	if (PHPSKIRT_HAS_EXTENSION("no_image")) {
+	if (SUNDOWN_HAS_EXTENSION("no_image")) {
 		render_flags |= HTML_SKIP_IMAGES;
 	}
 
 	/* no_links */
-	if (PHPSKIRT_HAS_EXTENSION("no_links")) {
+	if (SUNDOWN_HAS_EXTENSION("no_links")) {
 		render_flags |= HTML_SKIP_LINKS;
 	}
 
 	/* filter_style */
-	if (PHPSKIRT_HAS_EXTENSION("filter_styles")) {
+	if (SUNDOWN_HAS_EXTENSION("filter_styles")) {
 		render_flags |= HTML_SKIP_STYLE;
 	}
 
 	/* safelink */
-	if (PHPSKIRT_HAS_EXTENSION("safelink")) {
+	if (SUNDOWN_HAS_EXTENSION("safelink")) {
 		render_flags |= HTML_SAFELINK;
 	}
 
-	if (PHPSKIRT_HAS_EXTENSION("generate_toc")) {
+	if (SUNDOWN_HAS_EXTENSION("generate_toc")) {
 		render_flags |= HTML_TOC;
 	}
 
-	if (PHPSKIRT_HAS_EXTENSION("hard_wrap")) {
+	if (SUNDOWN_HAS_EXTENSION("hard_wrap")) {
 		render_flags |= HTML_HARD_WRAP;
 	}
 
-	if (PHPSKIRT_HAS_EXTENSION("gh_blockcode")) {
+	if (SUNDOWN_HAS_EXTENSION("gh_blockcode")) {
 		render_flags |= HTML_GITHUB_BLOCKCODE;
 	}
 
-	if (PHPSKIRT_HAS_EXTENSION("xhtml")) {
+	if (SUNDOWN_HAS_EXTENSION("xhtml")) {
 		render_flags |= HTML_USE_XHTML;
 	}
 
 	/**
 	 * Markdown extensions -- all disabled by default 
 	 */
-	if (PHPSKIRT_HAS_EXTENSION("autolink")) {
+	if (SUNDOWN_HAS_EXTENSION("autolink")) {
 		extensions |= MKDEXT_AUTOLINK;
 	}
 
-	if (PHPSKIRT_HAS_EXTENSION("no_intraemphasis")) {
+	if (SUNDOWN_HAS_EXTENSION("no_intraemphasis")) {
 		extensions |= MKDEXT_NO_INTRA_EMPHASIS;
 	}
 
-	if (PHPSKIRT_HAS_EXTENSION("tables")) {
+	if (SUNDOWN_HAS_EXTENSION("tables")) {
 		extensions |= MKDEXT_TABLES;
 	}
 
-	if (PHPSKIRT_HAS_EXTENSION("fenced_code")) {
+	if (SUNDOWN_HAS_EXTENSION("fenced_code")) {
 		extensions |= MKDEXT_FENCED_CODE;
 	}
 
-	if (PHPSKIRT_HAS_EXTENSION("strikethrough")) {
+	if (SUNDOWN_HAS_EXTENSION("strikethrough")) {
 		extensions |= MKDEXT_STRIKETHROUGH;
 	}
 
-	if (PHPSKIRT_HAS_EXTENSION("lax_htmlblock")) {
+	if (SUNDOWN_HAS_EXTENSION("lax_htmlblock")) {
 		extensions |= MKDEXT_LAX_HTML_BLOCKS;
 	}
 
-	if (PHPSKIRT_HAS_EXTENSION("space_header")) {
+	if (SUNDOWN_HAS_EXTENSION("space_header")) {
 		extensions |= MKDEXT_SPACE_HEADERS;
 	}
 
@@ -124,16 +123,16 @@ static void php_phpskirt__get_flags(HashTable *table, unsigned int *enabled_exte
 	*render_flags_p = render_flags;
 }
 
-static void phpskirt__render(PHPSkirtRendererType render_type, INTERNAL_FUNCTION_PARAMETERS)
+static void sundown__render(SundownRendererType render_type, INTERNAL_FUNCTION_PARAMETERS)
 {
 	struct buf input_buf, *output_buf;
-	struct mkd_renderer phpskirt_render;
+	struct mkd_renderer sundown_render;
 	unsigned int enabled_extensions = 0, render_flags = 0;
 	char *buffer;
 	int buffer_len = 0;
 	HashTable *table;
 
-	buffer = Z_STRVAL_P(zend_read_property(phpskirt_class_entry, getThis(),"data",sizeof("data")-1, 0 TSRMLS_CC));
+	buffer = Z_STRVAL_P(zend_read_property(sundown_class_entry, getThis(),"data",sizeof("data")-1, 0 TSRMLS_CC));
 	buffer_len = strlen(buffer);
 	
 	memset(&input_buf, 0x0, sizeof(struct buf));
@@ -143,27 +142,27 @@ static void phpskirt__render(PHPSkirtRendererType render_type, INTERNAL_FUNCTION
 	output_buf = bufnew(128);
 	bufgrow(output_buf, strlen(buffer) * 1.2f);
 
-	if(Z_TYPE_P(zend_read_property(phpskirt_class_entry, getThis(),"extensions",sizeof("extensions")-1, 0 TSRMLS_CC)) != IS_NULL) {
-		table = Z_ARRVAL_P(zend_read_property(phpskirt_class_entry, getThis(),"extensions",sizeof("extensions")-1, 0 TSRMLS_CC));
+	if(Z_TYPE_P(zend_read_property(sundown_class_entry, getThis(),"extensions",sizeof("extensions")-1, 0 TSRMLS_CC)) != IS_NULL) {
+		table = Z_ARRVAL_P(zend_read_property(sundown_class_entry, getThis(),"extensions",sizeof("extensions")-1, 0 TSRMLS_CC));
 	}
-	php_phpskirt__get_flags(table, &enabled_extensions, &render_flags);
+	php_sundown__get_flags(table, &enabled_extensions, &render_flags);
 
 	switch (render_type) {
-		case PHPSKIRT_RENDER_HTML:
-			upshtml_renderer(&phpskirt_render, render_flags);
+		case SUNDOWN_RENDER_HTML:
+			sdhtml_renderer(&sundown_render, render_flags,NULL);
 			break;
-		case PHPSKIRT_RENDER_TOC:
-			upshtml_toc_renderer(&phpskirt_render);
+		case SUNDOWN_RENDER_TOC:
+			sdhtml_toc_renderer(&sundown_render,NULL);
 			break;
 		default:
 			RETURN_FALSE;
 	}
 
-	ups_markdown(output_buf, &input_buf, &phpskirt_render, enabled_extensions);
+	sd_markdown(output_buf, &input_buf, &sundown_render, enabled_extensions);
 
-	if (Z_BVAL_P(zend_read_property(phpskirt_class_entry, getThis(),"enable_pants",sizeof("enable_pants")-1, 0 TSRMLS_CC))) {
+	if (Z_BVAL_P(zend_read_property(sundown_class_entry, getThis(),"enable_pants",sizeof("enable_pants")-1, 0 TSRMLS_CC))) {
 		struct buf *smart_buf = bufnew(128);
-		upshtml_smartypants(smart_buf, output_buf);
+		sdhtml_smartypants(smart_buf, output_buf);
 		RETVAL_STRINGL(smart_buf->data, smart_buf->size,1);
 		bufrelease(smart_buf);
 	} else {
@@ -171,12 +170,12 @@ static void phpskirt__render(PHPSkirtRendererType render_type, INTERNAL_FUNCTION
 	}
 
 	bufrelease(output_buf);
-	upshtml_free_renderer(&phpskirt_render);
+	sdhtml_free_renderer(&sundown_render);
 }
 
 /* {{{ proto string __construct(string $string [, array $extensions])
-	setup Upskirt extension */
-PHP_METHOD(phpskirt, __construct)
+	setup Sundown extension */
+PHP_METHOD(sundown, __construct)
 {
 	zval *extensions = NULL;
 	char *buffer;
@@ -198,11 +197,11 @@ PHP_METHOD(phpskirt, __construct)
 
 /* {{{ proto void __destruct()
 	cleanup variables */
-PHP_METHOD(phpskirt, __destruct)
+PHP_METHOD(sundown, __destruct)
 {
 	zval *extensions;
 	
-	extensions = zend_read_property(phpskirt_class_entry, getThis(),"extensions",sizeof("extensions")-1, 0 TSRMLS_CC);
+	extensions = zend_read_property(sundown_class_entry, getThis(),"extensions",sizeof("extensions")-1, 0 TSRMLS_CC);
 	if(extensions != NULL && Z_TYPE_P(extensions) != IS_NULL) {
 		zval_ptr_dtor(&extensions);
 	}
@@ -211,76 +210,75 @@ PHP_METHOD(phpskirt, __destruct)
 
 /* {{{ proto string to_html()
 	Returns converted HTML string */
-PHP_METHOD(phpskirt, to_html)
+PHP_METHOD(sundown, to_html)
 {
-	phpskirt__render(PHPSKIRT_RENDER_HTML,INTERNAL_FUNCTION_PARAM_PASSTHRU);
+	sundown__render(SUNDOWN_RENDER_HTML,INTERNAL_FUNCTION_PARAM_PASSTHRU);
 }
 /* }}} */
 
 /* {{{ proto string __toString()
 	Returns converted HTML string */
-PHP_METHOD(phpskirt, __toString)
+PHP_METHOD(sundown, __toString)
 {
-	phpskirt__render(PHPSKIRT_RENDER_HTML,INTERNAL_FUNCTION_PARAM_PASSTHRU);
+	sundown__render(SUNDOWN_RENDER_HTML,INTERNAL_FUNCTION_PARAM_PASSTHRU);
 }
 /* }}} */
 
 /* {{{ proto string to_toc()
 	Returns table of contents*/
-PHP_METHOD(phpskirt, to_toc)
+PHP_METHOD(sundown, to_toc)
 {
-	phpskirt__render(PHPSKIRT_RENDER_TOC,INTERNAL_FUNCTION_PARAM_PASSTHRU);
+	sundown__render(SUNDOWN_RENDER_TOC,INTERNAL_FUNCTION_PARAM_PASSTHRU);
 }
 
-static function_entry php_phpskirt_methods[] = {
-	PHP_ME(phpskirt, __construct, arginfo_phpskirt__construct, ZEND_ACC_PUBLIC)
-	PHP_ME(phpskirt, __destruct,  NULL, ZEND_ACC_PUBLIC)
-	PHP_ME(phpskirt, to_html, NULL, ZEND_ACC_PUBLIC)
-	PHP_ME(phpskirt, to_toc,  NULL, ZEND_ACC_PUBLIC)
-	PHP_ME(phpskirt, __toString,  NULL, ZEND_ACC_PUBLIC)
+static function_entry php_sundown_methods[] = {
+	PHP_ME(sundown, __construct, arginfo_sundown__construct, ZEND_ACC_PUBLIC)
+	PHP_ME(sundown, __destruct,  NULL, ZEND_ACC_PUBLIC)
+	PHP_ME(sundown, to_html, NULL, ZEND_ACC_PUBLIC)
+	PHP_ME(sundown, to_toc,  NULL, ZEND_ACC_PUBLIC)
+	PHP_ME(sundown, __toString,  NULL, ZEND_ACC_PUBLIC)
 	{NULL, NULL, NULL}
 };
 /* }}} */
 
 
-PHP_MINIT_FUNCTION(phpskirt) {
-	php_phpskirt_init(TSRMLS_C);
+PHP_MINIT_FUNCTION(sundown) {
+	php_sundown_init(TSRMLS_C);
 	return SUCCESS;
 }
 
 
-PHP_MINFO_FUNCTION(phpskirt)
+PHP_MINFO_FUNCTION(sundown)
 {
-	return SUCCESS;
 }
 
-zend_module_entry phpskirt_module_entry = {
+zend_module_entry sundown_module_entry = {
 #if ZEND_MODULE_API_NO >= 20010901
 	STANDARD_MODULE_HEADER,
 #endif
-	"phpskirt",
+	"sundown",
 	NULL,				    /* Functions */
-	PHP_MINIT(phpskirt),	/* MINIT */
+	PHP_MINIT(sundown),	/* MINIT */
 	NULL,					/* MSHUTDOWN */
 	NULL,					/* RINIT */
 	NULL,					/* RSHUTDOWN */
-	PHP_MINFO(phpskirt),	/* MINFO */
+	PHP_MINFO(sundown),	/* MINFO */
 #if ZEND_MODULE_API_NO >= 20010901
-	PHP_PHPSKIRT_EXTVER,
+	PHP_SUNDOWN_EXTVER,
 #endif
 	STANDARD_MODULE_PROPERTIES
 };
 
-void php_phpskirt_init(TSRMLS_D)
+void php_sundown_init(TSRMLS_D)
 {
 	zend_class_entry ce;
-	INIT_CLASS_ENTRY(ce, "Upskirt", php_phpskirt_methods);
-	phpskirt_class_entry = zend_register_internal_class(&ce TSRMLS_CC);
-	zend_declare_property_null(phpskirt_class_entry, "extensions", sizeof("extensions")-1,  ZEND_ACC_PUBLIC TSRMLS_CC);
-	zend_declare_property_null(phpskirt_class_entry, "enable_pants", sizeof("enable_pants")-1,  ZEND_ACC_PUBLIC TSRMLS_CC);
+	INIT_CLASS_ENTRY(ce, "Sundown", php_sundown_methods);
+	sundown_class_entry = zend_register_internal_class(&ce TSRMLS_CC);
+	zend_declare_property_null(sundown_class_entry, "extensions", sizeof("extensions")-1,  ZEND_ACC_PUBLIC TSRMLS_CC);
+	zend_declare_property_null(sundown_class_entry, "enable_pants", sizeof("enable_pants")-1,  ZEND_ACC_PUBLIC TSRMLS_CC);
 }
 
 
-#ifdef COMPILE_DL_PHPSKIRT
-ZEND_GET_MODULE(phpskirt)
+#ifdef COMPILE_DL_SUNDOWN
+ZEND_GET_MODULE(sundown)
 #endif

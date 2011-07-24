@@ -1,9 +1,9 @@
 --TEST--
-Check for phpskirt presence
+Check for sundown presence
 --SKIPIF--
-<?php if (!extension_loaded("phpskirt")) print "skip"; ?>
+<?php if (!extension_loaded("sundown")) print "skip"; ?>
 --FILE--
 <?php
-echo "phpskirt extension is available";
+echo "sundown extension is available";
 --EXPECT--
-phpskirt extension is available
+sundown extension is available
