@@ -53,12 +53,83 @@ static inline zval* buf2str(struct buf *text)
 	return str;
 }
 
-#define SPAN_CALLBACK(method_name, ...) {\
+static int call_user_function_v(HashTable *function_table, zval **object_pp, zval *function_name, zval *retval_ptr, zend_uint param_count, ...)
+{
+	va_list ap;
+	size_t i;
+	int ret;
+	zval **params;
+	TSRMLS_FETCH();
+
+	if (param_count > 0) {
+		params = emalloc(sizeof(zval**) * param_count);
+		va_start(ap, param_count);
+		for (i=0; i<param_count;i++) {
+			params[i] = va_arg(ap, zval*);
+		}
+		va_end(ap);
+	} else {
+		params = NULL;
+	}
+	ret = call_user_function(function_table, object_pp, function_name, retval_ptr, param_count,params TSRMLS_CC);
+
+	if (param_count > 0) {
+		for (i=0; i<param_count;i++) {
+			if (params[i] != NULL) {
+				zval_ptr_dtor(&params[i]);
+			}
+		}
+		efree(params);
+	}
+	return ret;
 }
 
-//__VA_ARGS__
+#define SPAN_CALLBACK(method_name, ...) {\
+	TSRMLS_FETCH();\
+	struct php_sundown_renderopt *opt = (struct php_sundown_renderopt*)opaque;\
+	zval func, *ret;\
+	int param_num = 1;\
+\
+	MAKE_STD_ZVAL(ret);\
+	ZVAL_STRING(&func,method_name,1);\
+	\
+	if(call_user_function_v(NULL,&opt->self,&func,ret,__VA_ARGS__) == FAILURE){\
+		fprintf(stderr,"Can't cal method");\
+	}\
+	if(!Z_BVAL_P(ret)) {\
+		zval_ptr_dtor(&ret);\
+		zval_dtor(&func);\
+		return 0;\
+	}\
+	bufput(ob, Z_STRVAL_P(ret), strlen(Z_STRVAL_P(ret)));\
+	\
+	zval_ptr_dtor(&ret);\
+	zval_dtor(&func);\
+	return 1;\
+}
+
 
 #define BLOCK_CALLBACK(method_name, ...) {\
+	TSRMLS_FETCH();\
+	struct php_sundown_renderopt *opt = (struct php_sundown_renderopt*)opaque;\
+	zval func, *ret;\
+	int param_num = 1;\
+\
+	MAKE_STD_ZVAL(ret);\
+	ZVAL_STRING(&func,method_name,1);\
+	\
+	if(call_user_function_v(NULL,&opt->self,&func,ret,__VA_ARGS__) == FAILURE){\
+		fprintf(stderr,"Can't cal method");\
+	}\
+	if(!Z_BVAL_P(ret)) {\
+		zval_ptr_dtor(&ret);\
+		zval_dtor(&func);\
+		return;\
+	}\
+	bufput(ob, Z_STRVAL_P(ret), strlen(Z_STRVAL_P(ret)));\
+	\
+	zval_ptr_dtor(&ret);\
+	zval_dtor(&func);\
 }
 
 static void rndr_blockcode(struct buf *ob, struct buf *text, struct buf *lang, void *opaque)
@@ -89,13 +160,13 @@ static void rndr_hrule(struct buf *ob, void *opaque)
 static void rndr_list(struct buf *ob, struct buf *text, int flags, void *opaque)
 {
 	BLOCK_CALLBACK("list", 2, buf2str(text),
-	(flags & MKD_LIST_ORDERED) ? CSTR2SYM("ordered") : CSTR2SYM("unordered"));
+	(flags & MKD_LIST_ORDERED) ? buf2str("ordered") : buf2str("unordered"));
 }
 
 static void rndr_listitem(struct buf *ob, struct buf *text, int flags, void *opaque)
 {
 	BLOCK_CALLBACK("list_item", 2, buf2str(text),
-	(flags & MKD_LIST_ORDERED) ? CSTR2SYM("ordered") : CSTR2SYM("unordered"));
+	(flags & MKD_LIST_ORDERED) ? buf2str("ordered") : buf2str("unordered"));
 }
 
 static void rndr_paragraph(struct buf *ob, struct buf *text, void *opaque)
@@ -135,7 +206,7 @@ static void rndr_tablecell(struct buf *ob, struct buf *text, int align, void *op
 			break;
 	}
 
-	BLOCK_CALLBACK("table_cell", 2, buf2str(text), php_align);
+	BLOCK_CALLBACK("table_cell", 2, buf2str(text), &php_align);
 }
 
 /***
@@ -143,8 +214,13 @@ static void rndr_tablecell(struct buf *ob, struct buf *text, int align, void *op
 */
 static int rndr_autolink(struct buf *ob, struct buf *link, enum mkd_autolink type, void *opaque)
 {
+	zval url,email;
+	ZVAL_STRING(&url,"url",1);
+	ZVAL_STRING(&email,"email",1);
 	SPAN_CALLBACK("autolink", 2, buf2str(link),
-	type == MKDA_NORMAL ? "url" : "email");
+	type == MKDA_NORMAL ? url : email);
+	zval_ptr_dtor(&url);
+	zval_ptr_dtor(&email);
 }
 
 static int rndr_codespan(struct buf *ob, struct buf *text, void *opaque)
@@ -259,7 +335,7 @@ static const char *php_sundown_method_names[] = {
 	"block_html",
 	"header",
 	"hrule",
-	"list",
+	"list_box",
 	"list_item",
 	"paragraph",
 	"table",
@@ -373,14 +449,17 @@ static void php_sundown__get_flags(HashTable *table, unsigned int *enabled_exten
 
 static void sundown__render(SundownRendererType render_type, INTERNAL_FUNCTION_PARAMETERS)
 {
+	zval *object;
 	struct buf input_buf, *output_buf;
 	struct sd_callbacks sundown_render;
-	struct html_renderopt opt;
+	struct php_sundown_renderopt opt;
 	unsigned int enabled_extensions = 0, render_flags = 0;
 	char *buffer;
 	int buffer_len = 0;
+	zend_class_entry *ce;
 	HashTable *table;
-
+	
+	object = getThis();
 	buffer = Z_STRVAL_P(zend_read_property(sundown_class_entry, getThis(),"data",sizeof("data")-1, 0 TSRMLS_CC));
 	buffer_len = strlen(buffer);
 	
@@ -399,22 +478,27 @@ static void sundown__render(SundownRendererType render_type, INTERNAL_FUNCTION_P
 	// setup render
 	switch (render_type) {
 		case SUNDOWN_RENDER_HTML:
-			sdhtml_renderer(&sundown_render, &opt, render_flags);
+			sdhtml_renderer(&sundown_render, &opt.html, render_flags);
 			break;
 		case SUNDOWN_RENDER_TOC:
-			sdhtml_toc_renderer(&sundown_render,&opt);
+			sdhtml_toc_renderer(&sundown_render,&opt.html);
 			break;
 		default:
 			RETURN_FALSE;
 	}
 
+	ce = Z_OBJCE_P(object);
+	opt.self = object;
 	//overrides
 	void **source = (void **)&php_sundown_callbacks;
 	void **dest = (void **)&sundown_render;
 	size_t i;
 	for (i = 0; i < php_sundown_method_count; ++i) {
-		dest[i] = source[i];
+		if (zend_hash_exists(&ce->function_table, php_sundown_method_names[i], strlen(php_sundown_method_names[i])+1)) {
+			dest[i] = source[i];
+		}
 	}
+
 
 	sd_markdown(output_buf, &input_buf, enabled_extensions, &sundown_render, &opt);
 
