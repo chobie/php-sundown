@@ -39,6 +39,254 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown__construct, 0, 0, 2)
 	ZEND_ARG_ARRAY_INFO(0, extensions, 0)
 ZEND_END_ARG_INFO()
 
+struct php_sundown_renderopt {
+	struct html_renderopt html;
+	zval *self;
+};
+
+static inline zval* buf2str(struct buf *text)
+{
+	zval *str;
+	MAKE_STD_ZVAL(str);
+	if (!text || !text->size) return NULL;
+	ZVAL_STRINGL(str, text->data, text->size,1);
+	return str;
+}
+
+#define SPAN_CALLBACK(method_name, ...) {\
+}
+
+//__VA_ARGS__
+
+#define BLOCK_CALLBACK(method_name, ...) {\
+}
+
+static void rndr_blockcode(struct buf *ob, struct buf *text, struct buf *lang, void *opaque)
+{
+	BLOCK_CALLBACK("block_code", 2, buf2str(text), buf2str(lang));
+}
+
+static void rndr_blockquote(struct buf *ob, struct buf *text, void *opaque)
+{
+	BLOCK_CALLBACK("block_quote", 1, buf2str(text));
+}
+
+static void rndr_raw_block(struct buf *ob, struct buf *text, void *opaque)
+{
+	BLOCK_CALLBACK("block_html", 1, buf2str(text));
+}
+
+static void rndr_header(struct buf *ob, struct buf *text, int level, void *opaque)
+{
+	BLOCK_CALLBACK("header", 2, buf2str(text), level);
+}
+
+static void rndr_hrule(struct buf *ob, void *opaque)
+{
+	BLOCK_CALLBACK("hrule", 0);
+}
+
+static void rndr_list(struct buf *ob, struct buf *text, int flags, void *opaque)
+{
+	BLOCK_CALLBACK("list", 2, buf2str(text),
+	(flags & MKD_LIST_ORDERED) ? CSTR2SYM("ordered") : CSTR2SYM("unordered"));
+}
+
+static void rndr_listitem(struct buf *ob, struct buf *text, int flags, void *opaque)
+{
+	BLOCK_CALLBACK("list_item", 2, buf2str(text),
+	(flags & MKD_LIST_ORDERED) ? CSTR2SYM("ordered") : CSTR2SYM("unordered"));
+}
+
+static void rndr_paragraph(struct buf *ob, struct buf *text, void *opaque)
+{
+	BLOCK_CALLBACK("paragraph", 1, buf2str(text));
+}
+
+static void rndr_table(struct buf *ob, struct buf *header, struct buf *body, void *opaque)
+{
+	BLOCK_CALLBACK("table", 2, buf2str(header), buf2str(body));
+}
+
+static void rndr_tablerow(struct buf *ob, struct buf *text, void *opaque)
+{
+	BLOCK_CALLBACK("table_row", 1, buf2str(text));
+}
+
+static void rndr_tablecell(struct buf *ob, struct buf *text, int align, void *opaque)
+{
+	zval php_align;
+
+	switch (align) {
+		case MKD_TABLE_ALIGN_L:
+			ZVAL_STRING(&php_align, "left", 1);
+			break;
+
+		case MKD_TABLE_ALIGN_R:
+			ZVAL_STRING(&php_align, "right", 1);
+			break;
+
+		case MKD_TABLE_ALIGN_CENTER:
+			ZVAL_STRING(&php_align, "center", 1);
+			break;
+
+		default:
+			ZVAL_NULL(&php_align);
+			break;
+	}
+
+	BLOCK_CALLBACK("table_cell", 2, buf2str(text), php_align);
+}
+
+/***
+* SPAN LEVEL
+*/
+static int rndr_autolink(struct buf *ob, struct buf *link, enum mkd_autolink type, void *opaque)
+{
+	SPAN_CALLBACK("autolink", 2, buf2str(link),
+	type == MKDA_NORMAL ? "url" : "email");
+}
+
+static int rndr_codespan(struct buf *ob, struct buf *text, void *opaque)
+{
+	SPAN_CALLBACK("codespan", 1, buf2str(text));
+}
+
+static int rndr_double_emphasis(struct buf *ob, struct buf *text, void *opaque)
+{
+	SPAN_CALLBACK("double_emphasis", 1, buf2str(text));
+}
+
+static int rndr_emphasis(struct buf *ob, struct buf *text, void *opaque)
+{
+	SPAN_CALLBACK("emphasis", 1, buf2str(text));
+}
+
+static int rndr_image(struct buf *ob, struct buf *link, struct buf *title, struct buf *alt, void *opaque)
+{
+	SPAN_CALLBACK("image", 3, buf2str(link), buf2str(title), buf2str(alt));
+}
+
+static int rndr_linebreak(struct buf *ob, void *opaque)
+{
+	SPAN_CALLBACK("linebreak", 0);
+}
+
+static int rndr_link(struct buf *ob, struct buf *link, struct buf *title, struct buf *content, void *opaque)
+{
+	SPAN_CALLBACK("link", 3, buf2str(link), buf2str(title), buf2str(content));
+}
+
+static int rndr_raw_html(struct buf *ob, struct buf *text, void *opaque)
+{
+	SPAN_CALLBACK("raw_html", 1, buf2str(text));
+}
+
+static int rndr_triple_emphasis(struct buf *ob, struct buf *text, void *opaque)
+{
+	SPAN_CALLBACK("triple_emphasis", 1, buf2str(text));
+}
+
+static int rndr_strikethrough(struct buf *ob, struct buf *text, void *opaque)
+{
+	SPAN_CALLBACK("strikethrough", 1, buf2str(text));
+}
+
+static int rndr_superscript(struct buf *ob, struct buf *text, void *opaque)
+{
+	SPAN_CALLBACK("superscript", 1, buf2str(text));
+}
+
+/**
+* direct writes
+*/
+static void rndr_entity(struct buf *ob, struct buf *text, void *opaque)
+{
+	BLOCK_CALLBACK("entity", 1, buf2str(text));
+}
+
+static void rndr_normal_text(struct buf *ob, struct buf *text, void *opaque)
+{
+	BLOCK_CALLBACK("normal_text", 1, buf2str(text));
+}
+
+static void rndr_doc_header(struct buf *ob, void *opaque)
+{
+	BLOCK_CALLBACK("doc_header", 0);
+}
+
+static void rndr_doc_footer(struct buf *ob, void *opaque)
+{
+	BLOCK_CALLBACK("doc_footer", 0);
+}
+
+
+static struct sd_callbacks php_sundown_callbacks = {
+	rndr_blockcode,
+	rndr_blockquote,
+	rndr_raw_block,
+	rndr_header,
+	rndr_hrule,
+	rndr_list,
+	rndr_listitem,
+	rndr_paragraph,
+	rndr_table,
+	rndr_tablerow,
+	rndr_tablecell,
+
+	rndr_autolink,
+	rndr_codespan,
+	rndr_double_emphasis,
+	rndr_emphasis,
+	rndr_image,
+	rndr_linebreak,
+	rndr_link,
+	rndr_raw_html,
+	rndr_triple_emphasis,
+	rndr_strikethrough,
+	rndr_superscript,
+
+	rndr_entity,
+	rndr_normal_text,
+
+	rndr_doc_header,
+	rndr_doc_footer,
+};
+
+static const char *php_sundown_method_names[] = {
+	"block_code",
+	"block_quote",
+	"block_html",
+	"header",
+	"hrule",
+	"list",
+	"list_item",
+	"paragraph",
+	"table",
+	"table_row",
+	"table_cell",
+
+	"autolink",
+	"codespan",
+	"double_emphasis",
+	"emphasis",
+	"image",
+	"linebreak",
+	"link",
+	"raw_html",
+	"triple_emphasis",
+	"strikethrough",
+	"superscript",
+
+	"entity",
+	"normal_text",
+
+	"doc_header",
+	"doc_footer"
+};
+
+static const size_t php_sundown_method_count = sizeof(php_sundown_method_names)/sizeof(char *);
+
 #define SUNDOWN_HAS_EXTENSION(name)  (table != NULL && zend_hash_exists(table, name,strlen(name)+1) == 1)
 
 static void php_sundown__get_flags(HashTable *table, unsigned int *enabled_extensions_p, unsigned int *render_flags_p)
@@ -126,7 +374,8 @@ static void php_sundown__get_flags(HashTable *table, unsigned int *enabled_exten
 static void sundown__render(SundownRendererType render_type, INTERNAL_FUNCTION_PARAMETERS)
 {
 	struct buf input_buf, *output_buf;
-	struct mkd_renderer sundown_render;
+	struct sd_callbacks sundown_render;
+	struct html_renderopt opt;
 	unsigned int enabled_extensions = 0, render_flags = 0;
 	char *buffer;
 	int buffer_len = 0;
@@ -147,18 +396,27 @@ static void sundown__render(SundownRendererType render_type, INTERNAL_FUNCTION_P
 	}
 	php_sundown__get_flags(table, &enabled_extensions, &render_flags);
 
+	// setup render
 	switch (render_type) {
 		case SUNDOWN_RENDER_HTML:
-			sdhtml_renderer(&sundown_render, render_flags,NULL);
+			sdhtml_renderer(&sundown_render, &opt, render_flags);
 			break;
 		case SUNDOWN_RENDER_TOC:
-			sdhtml_toc_renderer(&sundown_render,NULL);
+			sdhtml_toc_renderer(&sundown_render,&opt);
 			break;
 		default:
 			RETURN_FALSE;
 	}
 
-	sd_markdown(output_buf, &input_buf, &sundown_render, enabled_extensions);
+	//overrides
+	void **source = (void **)&php_sundown_callbacks;
+	void **dest = (void **)&sundown_render;
+	size_t i;
+	for (i = 0; i < php_sundown_method_count; ++i) {
+		dest[i] = source[i];
+	}
+
+	sd_markdown(output_buf, &input_buf, enabled_extensions, &sundown_render, &opt);
 
 	if (Z_BVAL_P(zend_read_property(sundown_class_entry, getThis(),"enable_pants",sizeof("enable_pants")-1, 0 TSRMLS_CC))) {
 		struct buf *smart_buf = bufnew(128);
@@ -170,7 +428,7 @@ static void sundown__render(SundownRendererType render_type, INTERNAL_FUNCTION_P
 	}
 
 	bufrelease(output_buf);
-	sdhtml_free_renderer(&sundown_render);
+	bufrelease(&input_buf);
 }
 
 /* {{{ proto string __construct(string $string [, array $extensions])
@@ -191,7 +449,7 @@ PHP_METHOD(sundown, __construct)
 		MAKE_STD_ZVAL(extensions);
 		array_init(extensions);
 	}
-    add_property_zval_ex(getThis(),"extensions",sizeof("extensions"),extensions TSRMLS_CC);
+	add_property_zval_ex(getThis(),"extensions",sizeof("extensions"),extensions TSRMLS_CC);
 }
 /* }}} */
 
@@ -257,7 +515,7 @@ zend_module_entry sundown_module_entry = {
 	STANDARD_MODULE_HEADER,
 #endif
 	"sundown",
-	NULL,				    /* Functions */
+	NULL,					/* Functions */
 	PHP_MINIT(sundown),	/* MINIT */
 	NULL,					/* MSHUTDOWN */
 	NULL,					/* RINIT */
