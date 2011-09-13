@@ -939,6 +939,7 @@ PHP_METHOD(sundown_render_html, double_emphasis)
 	char *text;
 	int text_len;
 	zval *buffer;
+	struct buf *input;
 	php_sundown_buffer_t *object;
 	
 	if(zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
@@ -947,7 +948,10 @@ PHP_METHOD(sundown_render_html, double_emphasis)
 	}
 
 	object = (php_sundown_buffer_t *) zend_object_store_get_object(buffer TSRMLS_CC);
-	bufput(object->buffer, text, text_len);
+	php_sundown_render_base_t *base = (php_sundown_render_base_t *) zend_object_store_get_object(getThis() TSRMLS_CC);\
+	input = str2buf(text, text_len);
+	rndr_double_emphasis(object->buffer,input, &base->html);
+	bufrelease(input);
 }
 /* }}} */
 
@@ -958,6 +962,7 @@ PHP_METHOD(sundown_render_html, emphasis)
 	char *text;
 	int text_len;
 	zval *buffer;
+	struct buf *input;
 	php_sundown_buffer_t *object;
 	
 	if(zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
@@ -966,7 +971,10 @@ PHP_METHOD(sundown_render_html, emphasis)
 	}
 
 	object = (php_sundown_buffer_t *) zend_object_store_get_object(buffer TSRMLS_CC);
-	bufput(object->buffer, text, text_len);
+	php_sundown_render_base_t *base = (php_sundown_render_base_t *) zend_object_store_get_object(getThis() TSRMLS_CC);\
+	input = str2buf(text, text_len);
+	rndr_emphasis(object->buffer,input, &base->html);
+	bufrelease(input);
 }
 /* }}} */
 
