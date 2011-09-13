@@ -71,6 +71,16 @@ inline zval* buf2obj(struct buf *text)
 	return str;
 }
 
+struct buf* str2buf(const char *text, size_t length)
+{
+	struct buf* buffer;
+	buffer = bufnew(length);
+	bufput(buffer, text, length);
+	
+	return buffer;
+}
+
+
 
 int call_user_function_v(HashTable *function_table, zval **object_pp, zval *function_name, zval *retval_ptr, zend_uint param_count, ...)
 {

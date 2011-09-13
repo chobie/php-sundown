@@ -23,7 +23,7 @@ extern int call_user_function_v(HashTable *function_table, zval **object_pp, zva
 extern inline zval* buf2str(struct buf *text);
 extern inline zval* buf2obj(struct buf *text);
 extern inline zval* buf2long(long value);
-
+extern struct buf* str2buf(const char *text, size_t length);
 
 extern zend_class_entry *sundown_class_entry, *sundown_buffer_class_entry, *php_sundown_buffer_class_entry;
 
@@ -45,13 +45,24 @@ struct php_sundown_renderopt_ex {
 
 
 typedef struct{
-    zend_object zo;
-    zval *render;
+	zend_object zo;
+	zval *render;
 } php_sundown_markdown_t;
 
 typedef struct{
-    zend_object zo;
-    struct buf *buffer;
+	zend_object zo;
+	struct buf *buffer;
 } php_sundown_buffer_t;
+
+typedef struct{
+	zend_object zo;
+	struct html_renderopt html;
+} php_sundown_render_html_t;
+
+typedef struct{
+	zend_object zo;
+	struct html_renderopt html;
+} php_sundown_render_base_t;
+
 
 #endif /* PHP_SUNDOWN_H */
