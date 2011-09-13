@@ -26,6 +26,30 @@
 
 zend_class_entry *sundown_render_base_class_entry;
 
+static void php_sundown_render_base_free_storage(php_sundown_render_base_t *obj TSRMLS_DC)
+{
+	zend_object_std_dtor(&obj->zo TSRMLS_CC);
+	efree(obj);
+}
+
+zend_object_value php_sundown_render_base_new(zend_class_entry *ce TSRMLS_DC)
+{
+	zend_object_value retval;
+	php_sundown_render_base_t *obj;
+	zval *tmp;
+
+	obj = ecalloc(1, sizeof(*obj));
+	zend_object_std_init( &obj->zo, ce TSRMLS_CC);
+	zend_hash_copy(obj->zo.properties, &ce->default_properties, (copy_ctor_func_t) zval_add_ref, (void *) &tmp, sizeof(zval *));
+
+	retval.handle = zend_objects_store_put(obj, 
+		(zend_objects_store_dtor_t)zend_objects_destroy_object,
+		(zend_objects_free_object_storage_t)php_sundown_render_base_free_storage,
+		NULL TSRMLS_CC);
+	retval.handlers = zend_get_std_object_handlers();
+	return retval;
+}
+
 ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render_base_enable_pants, 0, 0, 0)
 ZEND_END_ARG_INFO()
 
@@ -700,4 +724,6 @@ void php_sundown_render_base_init(TSRMLS_D)
 	zend_class_entry ce;
 	INIT_NS_CLASS_ENTRY(ce, ZEND_NS_NAME("Sundown","Render"),"Base", php_sundown_render_base_methods);
 	sundown_render_base_class_entry = zend_register_internal_class(&ce TSRMLS_CC);
+	sundown_render_base_class_entry->create_object = php_sundown_render_base_new;
+
 }
