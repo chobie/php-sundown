@@ -1,5 +1,20 @@
 *.o
 
+# ignore sundown sources.
+src/autolink.c
+src/autolink.h
+src/buffer.c
+src/buffer.h
+src/houdini.h
+src/houdini_href_e.c
+src/houdini_html_e.c
+src/html.c
+src/html.h
+src/html_blocks.h
+src/html_smartypants.c
+src/markdown.c
+src/markdown.h
+
 # ignore phpized files
 src/Makefile.global
 src/acinclude.m4
