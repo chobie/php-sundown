@@ -336,24 +336,23 @@ PHP_METHOD(sundown_render_html, hrule)
 */
 PHP_METHOD(sundown_render_html, list_box)
 {
-	char *contents, *list_type;
-	int contents_len, list_type_len;
+	char *contents;
+	int contents_len, list_type;
 	zval *buffer;
 	struct buf *input;
 	php_sundown_buffer_t *object;
 	php_sundown_render_html_t *html;
 	
 	if(zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
-		"zss", &buffer, &contents, &contents_len, &list_type, &list_type_len) == FAILURE){
+		"zsl", &buffer, &contents, &contents_len, &list_type) == FAILURE){
 		return;
 	}
 
 	html = (php_sundown_render_html_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
 	object = (php_sundown_buffer_t *) zend_object_store_get_object(buffer TSRMLS_CC);
 	php_sundown_render_base_t *base = (php_sundown_render_base_t *) zend_object_store_get_object(getThis() TSRMLS_CC);\
-	input = str2buf(contents, contents_len);
-	// Todo
-	html->cb.list(object->buffer,input,0, &base->html);
+	input = str2buf(contents, strlen(contents));
+	html->cb.list(object->buffer,input,list_type, &base->html);
 	bufrelease(input);
 }
 /* }}} */
@@ -362,24 +361,25 @@ PHP_METHOD(sundown_render_html, list_box)
 */
 PHP_METHOD(sundown_render_html, list_item)
 {
-	char *text, *list_type;
-	int text_len, list_type_len;
+	char *text;
+	int text_len, list_type;
 	zval *buffer;
 	struct buf *input;
 	php_sundown_buffer_t *object;
 	php_sundown_render_html_t *html;
 	
 	if(zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
-		"zss", &buffer,&text, &text_len, &list_type, &list_type_len) == FAILURE){
+		"zsl", &buffer,&text, &text_len, &list_type) == FAILURE){
 		return;
 	}
 
 	html = (php_sundown_render_html_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
 	object = (php_sundown_buffer_t *) zend_object_store_get_object(buffer TSRMLS_CC);
-	php_sundown_render_base_t *base = (php_sundown_render_base_t *) zend_object_store_get_object(getThis() TSRMLS_CC);\
-	input = str2buf(text, text_len);
+	php_sundown_render_base_t *base = (php_sundown_render_base_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
+	//why text_len does not work properly?
+	input = str2buf(text, strlen(text));
 	// Todo
-	html->cb.listitem(object->buffer,input,0, &base->html);
+	html->cb.listitem(object->buffer,input,list_type, &base->html);
 	bufrelease(input);
 }
 /* }}} */
@@ -743,12 +743,16 @@ PHP_METHOD(sundown_render_html, entity)
 		"zs", &buffer, &text, &text_len) == FAILURE){
 		return;
 	}
-
+	
 	html = (php_sundown_render_html_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
 	object = (php_sundown_buffer_t *) zend_object_store_get_object(buffer TSRMLS_CC);
-	input = str2buf(text, text_len);
-	html->cb.entity(object->buffer,input, &html->html);
-	bufrelease(input);
+	if (html->cb.entity) {
+		input = str2buf(text, text_len);
+		html->cb.entity(object->buffer,input, &html->html);
+		bufrelease(input);
+	} else {
+		bufput(object->buffer, text, text_len);
+	}
 }
 /* }}} */
 

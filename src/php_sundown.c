@@ -79,7 +79,7 @@ inline zval* buf2obj(const struct buf *text)
 	return obj;
 }
 
-struct buf* str2buf(const char *text, size_t length)
+inline struct buf* str2buf(const char *text, size_t length)
 {
 	struct buf* buffer;
 	buffer = bufnew(length);
@@ -580,6 +580,8 @@ PHP_MINIT_FUNCTION(sundown) {
 	php_sundown_render_base_init(TSRMLS_C);
 	php_sundown_render_html_init(TSRMLS_C);
 	php_sundown_markdown_init(TSRMLS_C);
+
+	REGISTER_NS_STRING_CONSTANT(ZEND_NS_NAME("Sundown","Render"), "HTML", "Sundown\\Render\\HTML", CONST_CS | CONST_PERSISTENT);
 	return SUCCESS;
 }
 

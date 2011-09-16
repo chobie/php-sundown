@@ -55,15 +55,19 @@ static void rndr_hrule(struct buf *ob, void *opaque)
 
 static void rndr_list(struct buf *ob, const struct buf *text, int flags, void *opaque)
 {
-	BLOCK_CALLBACK_EX("list_box", 3,buf2obj(ob), buf2str(text),
-	(flags & MKD_LIST_ORDERED) ? char2str("ordered") : char2str("unordered"));
+	zval *flag;
+	MAKE_STD_ZVAL(flag);
+	ZVAL_LONG(flag, flags);
+	BLOCK_CALLBACK_EX("list_box", 3,buf2obj(ob), buf2str(text),flag);
 	
 }
 
 static void rndr_listitem(struct buf *ob, const struct buf *text, int flags, void *opaque)
 {
-	BLOCK_CALLBACK_EX("list_item", 3,buf2obj(ob), buf2str(text),
-	(flags & MKD_LIST_ORDERED) ? char2str("ordered") : char2str("unordered"));
+	zval *flag;
+	MAKE_STD_ZVAL(flag);
+	ZVAL_LONG(flag, flags);
+	BLOCK_CALLBACK_EX("list_item", 3,buf2obj(ob), buf2str(text),flag);
 }
 
 static void rndr_paragraph(struct buf *ob, const struct buf *text, void *opaque)
@@ -304,6 +308,7 @@ PHP_METHOD(sundown_markdown, __construct)
 {
 	zval *render;
 	zval *options;
+	zend_class_entry **ce;
 	php_sundown_markdown_t *object = (php_sundown_markdown_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
 	
 	if(zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
@@ -312,7 +317,21 @@ PHP_METHOD(sundown_markdown, __construct)
 	}
 
 	if (Z_TYPE_P(render) == IS_STRING) {
-		
+		if(zend_lookup_class(Z_STRVAL_P(render), strlen(Z_STRVAL_P(render)), &ce TSRMLS_CC) == FAILURE) {
+		    return;
+		} else {
+			zval *func,*ret, *obj;
+			
+			MAKE_STD_ZVAL(func);
+			MAKE_STD_ZVAL(ret);
+			MAKE_STD_ZVAL(obj);
+			ZVAL_STRING(func,"__construct",1);
+			object_init_ex(obj, *ce);
+			call_user_function(NULL, &obj,func,ret,0,NULL TSRMLS_CC);
+			zval_ptr_dtor(&func);
+			zval_ptr_dtor(&ret);
+			render = obj;
+		}
 	}
 
 	if (instanceof_function_ex(Z_OBJCE_P(render), sundown_render_base_class_entry, 0 TSRMLS_CC) == FAILURE) {
@@ -321,7 +340,7 @@ PHP_METHOD(sundown_markdown, __construct)
 	}
 	
 	object->render = render;
-	zval_add_ref(&object->render);
+	//zval_add_ref(&object->render);
 
 	if (options == NULL) {
 		MAKE_STD_ZVAL(options);
