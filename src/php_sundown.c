@@ -561,10 +561,10 @@ PHP_METHOD(sundown, to_toc)
 
 static zend_function_entry php_sundown_methods[] = {
 	PHP_ME(sundown, __construct, arginfo_sundown__construct, ZEND_ACC_PUBLIC)
-	PHP_ME(sundown, __destruct,  NULL, ZEND_ACC_PUBLIC)
-	PHP_ME(sundown, to_html, NULL, ZEND_ACC_PUBLIC)
-	PHP_ME(sundown, to_toc,  NULL, ZEND_ACC_PUBLIC)
-	PHP_ME(sundown, __toString,  NULL, ZEND_ACC_PUBLIC)
+	PHP_ME(sundown, __destruct,  NULL,                       ZEND_ACC_PUBLIC)
+	PHP_ME(sundown, to_html,     NULL,                       ZEND_ACC_PUBLIC)
+	PHP_ME(sundown, to_toc,      NULL,                       ZEND_ACC_PUBLIC)
+	PHP_ME(sundown, __toString,  NULL,                       ZEND_ACC_PUBLIC)
 	{NULL, NULL, NULL}
 };
 /* }}} */
