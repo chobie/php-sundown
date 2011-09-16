@@ -42,11 +42,19 @@ inline zval* buf2str(struct buf *text)
 {
 	zval *str;
 	MAKE_STD_ZVAL(str);
-	if (text->size == 0) {
+	if (text == NULL || text->size == 0) {
 		ZVAL_NULL(str);
 	} else {
 		ZVAL_STRINGL(str, text->data, text->size,1);
 	}
+	return str;
+}
+
+inline zval* char2str(char *text)
+{
+	zval *str;
+	MAKE_STD_ZVAL(str);
+	ZVAL_STRING(str, text ,1);
 	return str;
 }
 
@@ -61,14 +69,14 @@ inline zval* buf2long(long value)
 inline zval* buf2obj(struct buf *text)
 {
 	TSRMLS_FETCH();
-	zval *str;
-	MAKE_STD_ZVAL(str);
+	zval *obj;
+	MAKE_STD_ZVAL(obj);
 
-	object_init_ex(str, sundown_buffer_class_entry);
-	php_sundown_buffer_t *object = (php_sundown_buffer_t *) zend_object_store_get_object(str TSRMLS_CC);
+	object_init_ex(obj, sundown_buffer_class_entry);
+	php_sundown_buffer_t *object = (php_sundown_buffer_t *) zend_object_store_get_object(obj TSRMLS_CC);
 	object->buffer = text;
 	
-	return str;
+	return obj;
 }
 
 struct buf* str2buf(const char *text, size_t length)
@@ -79,8 +87,6 @@ struct buf* str2buf(const char *text, size_t length)
 	
 	return buffer;
 }
-
-
 
 int call_user_function_v(HashTable *function_table, zval **object_pp, zval *function_name, zval *retval_ptr, zend_uint param_count, ...)
 {
@@ -115,104 +121,57 @@ int call_user_function_v(HashTable *function_table, zval **object_pp, zval *func
 	return ret;
 }
 
-#define SPAN_CALLBACK(method_name, ...) {\
-	TSRMLS_FETCH();\
-	struct php_sundown_renderopt *opt = (struct php_sundown_renderopt*)opaque;\
-	zval func, *ret;\
-	int param_num = 1;\
-\
-	MAKE_STD_ZVAL(ret);\
-	ZVAL_STRING(&func,method_name,1);\
-	\
-	if(call_user_function_v(NULL,&opt->self,&func,ret,__VA_ARGS__) == FAILURE){\
-		fprintf(stderr,"Can't cal method %s\n", method_name);\
-	}\
-	if(!Z_BVAL_P(ret)) {\
-		zval_ptr_dtor(&ret);\
-		zval_dtor(&func);\
-		return 0;\
-	}\
-	bufput(ob, Z_STRVAL_P(ret), strlen(Z_STRVAL_P(ret)));\
-	\
-	zval_ptr_dtor(&ret);\
-	zval_dtor(&func);\
-	return 1;\
-}
-
-
-#define BLOCK_CALLBACK(method_name, ...) {\
-	TSRMLS_FETCH();\
-	struct php_sundown_renderopt *opt = (struct php_sundown_renderopt*)opaque;\
-	zval func, *ret;\
-	int param_num = 1;\
-\
-	MAKE_STD_ZVAL(ret);\
-	ZVAL_STRING(&func,method_name,1);\
-	\
-	if(call_user_function_v(NULL,&opt->self,&func,ret,__VA_ARGS__) == FAILURE){\
-		fprintf(stderr,"Can't cal method %s\n", method_name);\
-	}\
-	if(!Z_BVAL_P(ret)) {\
-		zval_ptr_dtor(&ret);\
-		zval_dtor(&func);\
-		return;\
-	}\
-	bufput(ob, Z_STRVAL_P(ret), strlen(Z_STRVAL_P(ret)));\
-	\
-	zval_ptr_dtor(&ret);\
-	zval_dtor(&func);\
-}
-
 static void rndr_blockcode(struct buf *ob, struct buf *text, struct buf *lang, void *opaque)
 {
-	BLOCK_CALLBACK("block_code", 2, buf2str(text), buf2str(lang));
+	BLOCK_CALLBACK_EX("block_code", 3,buf2obj(ob), buf2str(text), buf2str(lang));
 }
 
 static void rndr_blockquote(struct buf *ob, struct buf *text, void *opaque)
 {
-	BLOCK_CALLBACK("block_quote", 1, buf2str(text));
+	BLOCK_CALLBACK_EX("block_quote", 2,buf2obj(ob), buf2str(text));
 }
 
 static void rndr_raw_block(struct buf *ob, struct buf *text, void *opaque)
 {
-	BLOCK_CALLBACK("block_html", 1, buf2str(text));
+	BLOCK_CALLBACK_EX("block_html", 2,buf2obj(ob), buf2str(text));
 }
 
 static void rndr_header(struct buf *ob, struct buf *text, int level, void *opaque)
 {
-	BLOCK_CALLBACK("header", 2, buf2str(text), level);
+	BLOCK_CALLBACK_EX("header", 3, buf2obj(ob), buf2str(text), buf2long(level));
 }
 
 static void rndr_hrule(struct buf *ob, void *opaque)
 {
-	BLOCK_CALLBACK("hrule", 0);
+	BLOCK_CALLBACK_EX("hrule", 1,buf2obj(ob));
 }
 
 static void rndr_list(struct buf *ob, struct buf *text, int flags, void *opaque)
 {
-	BLOCK_CALLBACK("list", 2, buf2str(text),
-	(flags & MKD_LIST_ORDERED) ? buf2str("ordered") : buf2str("unordered"));
+	BLOCK_CALLBACK_EX("list_box", 3,buf2obj(ob), buf2str(text),
+	(flags & MKD_LIST_ORDERED) ? char2str("ordered") : char2str("unordered"));
+	
 }
 
 static void rndr_listitem(struct buf *ob, struct buf *text, int flags, void *opaque)
 {
-	BLOCK_CALLBACK("list_item", 2, buf2str(text),
-	(flags & MKD_LIST_ORDERED) ? buf2str("ordered") : buf2str("unordered"));
+	BLOCK_CALLBACK_EX("list_item", 3,buf2obj(ob), buf2str(text),
+	(flags & MKD_LIST_ORDERED) ? char2str("ordered") : char2str("unordered"));
 }
 
 static void rndr_paragraph(struct buf *ob, struct buf *text, void *opaque)
 {
-	BLOCK_CALLBACK("paragraph", 1, buf2str(text));
+	BLOCK_CALLBACK_EX("paragraph", 2,buf2obj(ob), buf2str(text));
 }
 
 static void rndr_table(struct buf *ob, struct buf *header, struct buf *body, void *opaque)
 {
-	BLOCK_CALLBACK("table", 2, buf2str(header), buf2str(body));
+	BLOCK_CALLBACK_EX("table", 3,buf2obj(ob), buf2str(header), buf2str(body));
 }
 
 static void rndr_tablerow(struct buf *ob, struct buf *text, void *opaque)
 {
-	BLOCK_CALLBACK("table_row", 1, buf2str(text));
+	BLOCK_CALLBACK_EX("table_row", 2,buf2obj(ob), buf2str(text));
 }
 
 static void rndr_tablecell(struct buf *ob, struct buf *text, int align, void *opaque)
@@ -237,7 +196,7 @@ static void rndr_tablecell(struct buf *ob, struct buf *text, int align, void *op
 			break;
 	}
 
-	BLOCK_CALLBACK("table_cell", 2, buf2str(text), &php_align);
+	BLOCK_CALLBACK_EX("table_cell", 3,buf2obj(ob), buf2str(text), &php_align);
 }
 
 /***
@@ -248,7 +207,7 @@ static int rndr_autolink(struct buf *ob, struct buf *link, enum mkd_autolink typ
 	zval url,email;
 	ZVAL_STRING(&url,"url",1);
 	ZVAL_STRING(&email,"email",1);
-	SPAN_CALLBACK("autolink", 2, buf2str(link),
+	SPAN_CALLBACK_EX("autolink", 3, buf2obj(ob),buf2str(link),
 	type == MKDA_NORMAL ? url : email);
 	zval_ptr_dtor(&url);
 	zval_ptr_dtor(&email);
@@ -256,52 +215,52 @@ static int rndr_autolink(struct buf *ob, struct buf *link, enum mkd_autolink typ
 
 static int rndr_codespan(struct buf *ob, struct buf *text, void *opaque)
 {
-	SPAN_CALLBACK("codespan", 1, buf2str(text));
+	SPAN_CALLBACK_EX("codespan", 2,buf2obj(ob), buf2str(text));
 }
 
 static int rndr_double_emphasis(struct buf *ob, struct buf *text, void *opaque)
 {
-	SPAN_CALLBACK("double_emphasis", 1, buf2str(text));
+	SPAN_CALLBACK_EX("double_emphasis", 2,buf2obj(ob), buf2str(text));
 }
 
 static int rndr_emphasis(struct buf *ob, struct buf *text, void *opaque)
 {
-	SPAN_CALLBACK("emphasis", 1, buf2str(text));
+	SPAN_CALLBACK_EX("emphasis", 2,buf2obj(ob), buf2str(text));
 }
 
 static int rndr_image(struct buf *ob, struct buf *link, struct buf *title, struct buf *alt, void *opaque)
 {
-	SPAN_CALLBACK("image", 3, buf2str(link), buf2str(title), buf2str(alt));
+	SPAN_CALLBACK_EX("image", 4, buf2obj(ob), buf2str(link), buf2str(title), buf2str(alt));
 }
 
 static int rndr_linebreak(struct buf *ob, void *opaque)
 {
-	SPAN_CALLBACK("linebreak", 0);
+	SPAN_CALLBACK_EX("linebreak", 1,buf2obj(ob));
 }
 
 static int rndr_link(struct buf *ob, struct buf *link, struct buf *title, struct buf *content, void *opaque)
 {
-	SPAN_CALLBACK("link", 3, buf2str(link), buf2str(title), buf2str(content));
+	SPAN_CALLBACK_EX("link", 4,buf2obj(ob), buf2str(link), buf2str(title), buf2str(content));
 }
 
 static int rndr_raw_html(struct buf *ob, struct buf *text, void *opaque)
 {
-	SPAN_CALLBACK("raw_html", 1, buf2str(text));
+	SPAN_CALLBACK_EX("raw_html", 2,buf2obj(ob), buf2str(text));
 }
 
 static int rndr_triple_emphasis(struct buf *ob, struct buf *text, void *opaque)
 {
-	SPAN_CALLBACK("triple_emphasis", 1, buf2str(text));
+	SPAN_CALLBACK_EX("triple_emphasis", 2,buf2obj(ob), buf2str(text));
 }
 
 static int rndr_strikethrough(struct buf *ob, struct buf *text, void *opaque)
 {
-	SPAN_CALLBACK("strikethrough", 1, buf2str(text));
+	SPAN_CALLBACK_EX("strikethrough", 2, buf2obj(ob), buf2str(text));
 }
 
 static int rndr_superscript(struct buf *ob, struct buf *text, void *opaque)
 {
-	SPAN_CALLBACK("superscript", 1, buf2str(text));
+	SPAN_CALLBACK_EX("superscript", 2,buf2obj(ob), buf2str(text));
 }
 
 /**
@@ -309,22 +268,22 @@ static int rndr_superscript(struct buf *ob, struct buf *text, void *opaque)
 */
 static void rndr_entity(struct buf *ob, struct buf *text, void *opaque)
 {
-	BLOCK_CALLBACK("entity", 1, buf2str(text));
+	BLOCK_CALLBACK_EX("entity", 2, buf2obj(ob), buf2str(text));
 }
 
 static void rndr_normal_text(struct buf *ob, struct buf *text, void *opaque)
 {
-	BLOCK_CALLBACK("normal_text", 1, buf2str(text));
+	BLOCK_CALLBACK_EX("normal_text", 2, buf2obj(ob), buf2str(text));
 }
 
 static void rndr_doc_header(struct buf *ob, void *opaque)
 {
-	BLOCK_CALLBACK("doc_header", 0);
+	BLOCK_CALLBACK_EX("doc_header", 1, buf2obj(ob));
 }
 
 static void rndr_doc_footer(struct buf *ob, void *opaque)
 {
-	BLOCK_CALLBACK("doc_footer", 0);
+	BLOCK_CALLBACK_EX("doc_footer", 1, buf2obj(ob));
 }
 
 
@@ -435,10 +394,6 @@ void php_sundown__get_flags(HashTable *table, unsigned int *enabled_extensions_p
 		render_flags |= HTML_HARD_WRAP;
 	}
 
-	if (SUNDOWN_HAS_EXTENSION("gh_blockcode")) {
-		render_flags |= HTML_GITHUB_BLOCKCODE;
-	}
-
 	if (SUNDOWN_HAS_EXTENSION("xhtml")) {
 		render_flags |= HTML_USE_XHTML;
 	}
@@ -484,6 +439,7 @@ static void sundown__render(SundownRendererType render_type, INTERNAL_FUNCTION_P
 	struct buf input_buf, *output_buf;
 	struct sd_callbacks sundown_render;
 	struct php_sundown_renderopt opt;
+	struct sd_markdown *markdown;
 	unsigned int enabled_extensions = 0, render_flags = 0;
 	char *buffer;
 	int buffer_len = 0;
@@ -530,20 +486,18 @@ static void sundown__render(SundownRendererType render_type, INTERNAL_FUNCTION_P
 		}
 	}
 
-
-	sd_markdown(output_buf, &input_buf, enabled_extensions, &sundown_render, &opt);
+	markdown = sd_markdown_new(0, 16, &sundown_render, &opt);
+	sd_markdown_render(output_buf, input_buf.data, input_buf.size, markdown);
+	sd_markdown_free(markdown);
 
 	if (Z_BVAL_P(zend_read_property(sundown_class_entry, getThis(),"enable_pants",sizeof("enable_pants")-1, 0 TSRMLS_CC))) {
 		struct buf *smart_buf = bufnew(128);
-		sdhtml_smartypants(smart_buf, output_buf);
+		sdhtml_smartypants(smart_buf, output_buf->data,output_buf->size);
 		RETVAL_STRINGL(smart_buf->data, smart_buf->size,1);
 		bufrelease(smart_buf);
 	} else {
 		RETVAL_STRINGL(output_buf->data, output_buf->size,1);
 	}
-
-	bufrelease(output_buf);
-	bufrelease(&input_buf);
 }
 
 /* {{{ proto string __construct(string $string [, array $extensions])

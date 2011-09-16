@@ -824,6 +824,8 @@ PHP_METHOD(sundown_render_html, postprocess)
 }
 /* }}} */
 
+/* {{{ proto void __construct($options)
+*/
 PHP_METHOD(sundown_render_html, __construct)
 {
 	php_sundown_render_html_t *object;
@@ -833,7 +835,7 @@ PHP_METHOD(sundown_render_html, __construct)
 	sdhtml_renderer(&object->cb, &opt.html, 0);
 	opt.self = getThis();
 }
-	
+/* }}} */
 
 static zend_function_entry php_sundown_render_html_methods[] = {
 	PHP_ME(sundown_render_html, __construct,     arginfo_sundown_render_html___construct,     ZEND_ACC_PUBLIC)

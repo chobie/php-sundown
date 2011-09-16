@@ -28,39 +28,6 @@ extern zend_class_entry *sundown_render_base_class_entry;
 
 zend_class_entry *sundown_markdown_class_entry;
 
-#define SPAN_CALLBACK_EX(method_name, ...) {\
-	TSRMLS_FETCH();\
-	struct php_sundown_renderopt_ex *opt = (struct php_sundown_renderopt_ex*)opaque;\
-	zval func, *ret;\
-\
-	MAKE_STD_ZVAL(ret);\
-	ZVAL_STRING(&func,method_name,1);\
-	\
-	if(call_user_function_v(NULL,&opt->self,&func,ret,__VA_ARGS__) == FAILURE){\
-		fprintf(stderr,"Can't call method %s\n", method_name);\
-		return 0;\
-	}\
-	zval_ptr_dtor(&ret);\
-	zval_dtor(&func);\
-	return Z_LVAL_P(ret);\
-}
-
-
-#define BLOCK_CALLBACK_EX(method_name, ...) {\
-	TSRMLS_FETCH();\
-	struct php_sundown_renderopt_ex *opt = (struct php_sundown_renderopt_ex*)opaque;\
-	zval func, *ret;\
-\
-	MAKE_STD_ZVAL(ret);\
-	ZVAL_STRING(&func,method_name,1);\
-	\
-	if(call_user_function_v(NULL,&opt->self,&func,ret,__VA_ARGS__) == FAILURE){\
-		fprintf(stderr,"Can't call method %s\n", method_name);\
-	}\
-	zval_ptr_dtor(&ret);\
-	zval_dtor(&func);\
-}
-
 static void rndr_blockcode(struct buf *ob, struct buf *text, struct buf *lang, void *opaque)
 {
 	BLOCK_CALLBACK_EX("block_code", 3,buf2obj(ob), buf2str(text), buf2str(lang));
@@ -88,14 +55,15 @@ static void rndr_hrule(struct buf *ob, void *opaque)
 
 static void rndr_list(struct buf *ob, struct buf *text, int flags, void *opaque)
 {
-	BLOCK_CALLBACK_EX("list", 3,buf2obj(ob), buf2str(text),
-	(flags & MKD_LIST_ORDERED) ? buf2str("ordered") : buf2str("unordered"));
+	BLOCK_CALLBACK_EX("list_box", 3,buf2obj(ob), buf2str(text),
+	(flags & MKD_LIST_ORDERED) ? char2str("ordered") : char2str("unordered"));
+	
 }
 
 static void rndr_listitem(struct buf *ob, struct buf *text, int flags, void *opaque)
 {
 	BLOCK_CALLBACK_EX("list_item", 3,buf2obj(ob), buf2str(text),
-	(flags & MKD_LIST_ORDERED) ? buf2str("ordered") : buf2str("unordered"));
+	(flags & MKD_LIST_ORDERED) ? char2str("ordered") : char2str("unordered"));
 }
 
 static void rndr_paragraph(struct buf *ob, struct buf *text, void *opaque)
@@ -388,6 +356,7 @@ PHP_METHOD(sundown_markdown, render)
 	struct buf input_buf, *output_buf;
 	struct sd_callbacks sundown_render;
 	struct php_sundown_renderopt_ex opt;
+	struct sd_markdown *markdown;
 	unsigned int enabled_extensions = 0, render_flags = 0;
 	char *buffer;
 	int buffer_len = 0;
@@ -440,8 +409,11 @@ PHP_METHOD(sundown_markdown, render)
 		}
 	}
 
-	sd_markdown(output_buf, &input_buf, enabled_extensions, &sundown_render, &opt);
-/*
+	markdown = sd_markdown_new(0, 16, &sundown_render, &opt);
+	sd_markdown_render(output_buf, input_buf.data, input_buf.size, markdown);
+	sd_markdown_free(markdown);
+
+	/*
 	if (Z_BVAL_P(zend_read_property(ce, object->render,"enable_pants",sizeof("enable_pants")-1, 0 TSRMLS_CC))) {
 		struct buf *smart_buf = bufnew(128);
 		sdhtml_smartypants(smart_buf, output_buf);
@@ -452,8 +424,6 @@ PHP_METHOD(sundown_markdown, render)
 		RETVAL_STRINGL(output_buf->data, output_buf->size,1);
 //	}
 	zval_ptr_dtor(&buffer_object);
-	bufrelease(&output_buf);
-	bufrelease(&input_buf);
 }
 
 
