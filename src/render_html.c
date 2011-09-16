@@ -211,7 +211,7 @@ PHP_METHOD(sundown_render_html, enable_pants)
 }
 /* }}} */
 
-/* {{{ proto void block_code($code, $language)
+/* {{{ proto void block_code($buffer, $language, $code)
 */
 PHP_METHOD(sundown_render_html, block_code)
 {
@@ -232,7 +232,7 @@ PHP_METHOD(sundown_render_html, block_code)
 	php_sundown_render_base_t *base = (php_sundown_render_base_t *) zend_object_store_get_object(getThis() TSRMLS_CC);\
 	input = str2buf(block_code, block_code_len);
 	lang = str2buf(code, code_len);
-	html->cb.blockcode(object->buffer,input,lang, &base->html);
+	html->cb.blockcode(object->buffer,lang,input, &base->html);
 	bufrelease(input);
 	bufrelease(lang);
 }
