@@ -1,5 +1,6 @@
 
-task :compile do
+desc "compile php-sundown"
+task :compile => ['sundown/src/markdown.h'] do
 	Dir.chdir("src") do
 		sh "phpize"
 		sh "./configure"
@@ -7,6 +8,7 @@ task :compile do
 	end
 end
 
+desc "install php-sundown to your php"
 task :install => [:compile] do
 	Dir.chdir("src") do
 		sh "make install"
@@ -47,3 +49,10 @@ file 'sundown/src/markdown.h' do |t|
   abort "The Sundown submodule is required."
 end
 
+
+
+task :submodule do
+  sh "git submodule init"
+  sh "git submodule update"
+  Rake::Task['gather'].invoke
+end
