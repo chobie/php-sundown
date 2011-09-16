@@ -20,8 +20,8 @@ extern zend_module_entry sundown_module_entry;
 #define phpext_sundown_ptr &sundown_module_entry;
 
 extern int call_user_function_v(HashTable *function_table, zval **object_pp, zval *function_name, zval *retval_ptr, zend_uint param_count, ...);
-extern inline zval* buf2str(struct buf *text);
-extern inline zval* buf2obj(struct buf *text);
+extern inline zval* buf2str(const struct buf *text);
+extern inline zval* buf2obj(const struct buf *text);
 extern inline zval* buf2long(long value);
 extern inline zval* char2str(char *text);
 extern struct buf* str2buf(const char *text, size_t length);
