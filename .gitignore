@@ -12,6 +12,8 @@ src/html.c
 src/html.h
 src/html_blocks.h
 src/html_smartypants.c
+src/stack.c
+src/stack.h
 src/markdown.c
 src/markdown.h
 
