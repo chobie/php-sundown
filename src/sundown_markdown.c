@@ -307,7 +307,7 @@ zend_object_value php_sundown_markdown_new(zend_class_entry *ce TSRMLS_DC)
 PHP_METHOD(sundown_markdown, __construct)
 {
 	zval *render;
-	zval *options;
+	zval *options = NULL;
 	zend_class_entry **ce;
 	php_sundown_markdown_t *object = (php_sundown_markdown_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
 	
@@ -318,6 +318,7 @@ PHP_METHOD(sundown_markdown, __construct)
 
 	if (Z_TYPE_P(render) == IS_STRING) {
 		if(zend_lookup_class(Z_STRVAL_P(render), strlen(Z_STRVAL_P(render)), &ce TSRMLS_CC) == FAILURE) {
+			zend_throw_exception_ex(spl_ce_InvalidArgumentException, 0 TSRMLS_CC,"class %s does not find.", Z_STRVAL_P(render));
 		    return;
 		} else {
 			zval *func,*ret, *obj;
@@ -335,12 +336,11 @@ PHP_METHOD(sundown_markdown, __construct)
 	}
 
 	if (instanceof_function_ex(Z_OBJCE_P(render), sundown_render_base_class_entry, 0 TSRMLS_CC) == FAILURE) {
-		//Todo: throws exception.
+		zend_throw_exception_ex(spl_ce_InvalidArgumentException, 0 TSRMLS_CC,"Render class must extend Sundown\\Render\\Base");
 		return;
 	}
 	
 	object->render = render;
-	//zval_add_ref(&object->render);
 
 	if (options == NULL) {
 		MAKE_STD_ZVAL(options);
