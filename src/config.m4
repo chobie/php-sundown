@@ -8,7 +8,6 @@ if test $PHP_SUNDOWN != "no"; then
 	sundown_buffer.c \
 	render_base.c \
 	render_html.c \
-	array.c \
 	buffer.c \
 	markdown.c \
 	html.c \
