@@ -20,48 +20,22 @@ WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
 ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
+Requirements
+------------
+
+PHP5.3 higher
+
 Install
 -------
 
-    git clone https://github.com/chobie/php-sundown.git && cd php-sundown
-    cd src
-    phpize && ./configure
-    make
-    sudo make install
+    git clone https://github.com/chobie/php-sundown.git php-sundown -b development
+    cd php-sundown
+    rake submodule compile
+    sudo rake install
     # please add following line to your php.ini
     # extension=sundown.so
 
-Example
+Docs
 -------
 
-    $sundown = new Sundown(string $string [, array $extensions]);
-    echo $sundown->to_html();
-    echo $sundownn->to_toc();
-
-Supported Extensions
---------------------
-
-````
-<?php
-
-// default: disable all.
-// maybe this array will be integer (bit flags).
-new Sundown('something',array(
-	"filter_html"=>true,
-	"no_image"=>true,
-	"no_links"=>true,
-	"filter_styles"=>true,
-	"safelink" => true,
-	"generate_toc" => true,
-	"hard_wrap" => true,
-	"gh_blockcode" => true,
-	"xhtml" => true,
-	"autolink"=>true,
-	"no_intraemphasis" => true,
-	"tables" => true,
-	"fenced_code" => true,
-	"strikethrough" => true,
-	"lax_htmlblock" => true,
-	"space_header" => true,
-));
-````
+http://chobie.co/display/sundown/Introduction+of+PHP-Sundown
