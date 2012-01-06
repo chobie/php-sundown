@@ -82,8 +82,12 @@ inline zval* buf2obj(const struct buf *text)
 inline struct buf* str2buf(const char *text, size_t length)
 {
 	struct buf* buffer;
-	buffer = bufnew(length);
-	bufput(buffer, text, length);
+	if (length > 0) {
+		buffer = bufnew(length);
+		bufput(buffer, text, length);
+	} else {
+		buffer = NULL;
+	}
 	
 	return buffer;
 }

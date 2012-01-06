@@ -113,7 +113,7 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render_base_table_cell, 0, 0, 3)
 	ZEND_ARG_INFO(0, alignment)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render_base_autolink, 0, 0, 3)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render_base_autolink, 0, 0, 4)
 	ZEND_ARG_INFO(0, buffer)
 	ZEND_ARG_INFO(0, link)
 	ZEND_ARG_INFO(0, link_type)
