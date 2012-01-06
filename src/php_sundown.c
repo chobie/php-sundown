@@ -282,6 +282,8 @@ PHP_METHOD(sundown, __construct)
 	if (extensions == NULL) {
 		MAKE_STD_ZVAL(extensions);
 		array_init(extensions);
+	} else {
+		Z_ADDREF_P(extensions);
 	}
 	add_property_zval_ex(getThis(),"extensions",sizeof("extensions"),extensions TSRMLS_CC);
 }
