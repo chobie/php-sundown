@@ -6,7 +6,7 @@ php-sundown is just simple wrapper of <https://github.com/tanoku/sundown>.
 License
 -------
 
-Copyright (c) 2011, Shuhei Tanuma
+Copyright (c) 2012, Shuhei Tanuma
 
 Permission to use, copy, modify, and distribute this software for any
 purpose with or without fee is hereby granted, provided that the above
@@ -35,7 +35,12 @@ Install
     # please add following line to your php.ini
     # extension=sundown.so
 
+Conformance Testing
+-------------------
+
+    rake test:conformance
+
 Docs
 -------
 
-http://chobie.co/display/sundown/Introduction+of+PHP-Sundown
+will be add soon on gh-pages.
