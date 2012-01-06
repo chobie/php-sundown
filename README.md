@@ -3,6 +3,8 @@ PHP + Sundown
 
 php-sundown is just simple wrapper of <https://github.com/tanoku/sundown>.
 
+[![Build Status](https://secure.travis-ci.org/chobie/php-sundown.png)](http://travis-ci.org/chobie/php-sundown)
+
 License
 -------
 
