@@ -42,7 +42,124 @@ Conformance Testing
 
     rake test:conformance
 
-Docs
+Overview
 -------
 
-will be add soon on gh-pages.
+php-sudown has two styles: basic and advance.
+
+*basic*: less exntensiblity, fast rendering.
+*advance*: custmize your own markdown render, little bit slower than basic.
+
+
+### \Sundown::__construct(string $str [, array $config])
+
+##### *Description*
+
+make a basic Sundown instance with specified string and config.
+
+##### *Parameters*
+
+*str*: you want parse and render as markdown html.
+*config*: sundown parser options
+
+##### *Return Value*
+
+*\Sundown*: sundown instance
+
+##### *Example*
+
+````php
+<?php
+$sd = new Sundown("Hello World");
+$sd->to_html();
+````
+
+### \Sundown::to_html()
+
+##### *Description*
+
+parse text as markdown and returns rendered html.
+
+##### *Parameters*
+
+##### *Return Value*
+
+*string*: rendered html
+
+##### *Example*
+
+````php
+<?php
+$sd = new Sundown("Hello World");
+echo $sd->to_html();
+````
+
+### \Sundown::to_toc()
+
+##### *Description*
+
+parse text as markdown and only returns toc parts.
+
+##### *Parameters*
+
+##### *Return Value*
+
+*string*: rendered html
+
+##### *Example*
+
+````php
+<?php
+$sd = new Sundown("Hello World");
+echo $sd->to_toc();
+````
+
+### \Sundown\Markdown::__construct(\Sundown\Render\Base $render[, array $config])
+
+##### *Description*
+
+make a advance Sundown instance with specified render and config.
+
+##### *Parameters*
+
+*$render*: it inherits Sundown\Render\Base class. also class name accepts.
+*$config*: sundown parser option.
+
+##### *Return Value*
+
+*\Sundown\Markdown*: 
+
+##### *Example*
+
+````php
+<?php
+$md = new \Sundown\Markdown(\Sundown\Render\HTML);
+echo $md->render("Hello World");
+````
+
+### \Sundown\Markdown::render(string $str)
+
+##### *Description*
+
+parse and render specified string.
+
+##### *Parameters*
+
+*$str*: parse and render as markdown text.
+
+##### *Return Value*
+
+*mixed*: renderd something. (this depends render) 
+
+##### *Example*
+
+````php
+<?php
+$render = new \Sundown\Render\HTML();
+$md = new \Sundown\Markdown($render);
+echo $md->render("Hello World");
+````
+
+### \Sundown\Render\Base::__construct()
+
+to be continued...
