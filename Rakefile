@@ -24,7 +24,7 @@ end
 desc "Run conformance tests"
 task "test:conformance" do
 	Dir.chdir("test") do
-		script = "#{pwd}/Markdown.php"
+		script = "#{pwd}/Markdown.sh"
 		Dir.chdir("MarkdownTest_1.0.3") do 
 			sh "./MarkdownTest.pl --script='#{script}' --tidy"
 		end

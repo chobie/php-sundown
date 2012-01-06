@@ -345,7 +345,9 @@ PHP_METHOD(sundown_markdown, __construct)
 	if (options == NULL) {
 		MAKE_STD_ZVAL(options);
 		array_init(options);
-	}
+	} else {
+		Z_ADDREF_P(options);
+        }
 	add_property_zval_ex(getThis(),"extensions",sizeof("extensions"),options TSRMLS_CC);
 }
 /* }}} */
