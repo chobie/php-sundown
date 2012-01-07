@@ -295,7 +295,7 @@ PHP_METHOD(sundown_render_base, hrule)
 PHP_METHOD(sundown_render_base, list_box)
 {
 	char *contents;
-	int contents_len, list_type;
+	long contents_len, list_type;
 	zval *buffer;
 	php_sundown_buffer_t *object;
 	
@@ -314,7 +314,7 @@ PHP_METHOD(sundown_render_base, list_box)
 PHP_METHOD(sundown_render_base, list_item)
 {
 	char *text;
-	int text_len, list_type;
+	long text_len, list_type;
 	zval *buffer;
 	php_sundown_buffer_t *object;
 	

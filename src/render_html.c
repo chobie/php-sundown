@@ -353,7 +353,7 @@ PHP_METHOD(sundown_render_html, list_box)
 	php_sundown_render_base_t *base = (php_sundown_render_base_t *) zend_object_store_get_object(getThis() TSRMLS_CC);\
 	input = str2buf(contents, contents_len);
 	html->cb.list(object->buffer,input,list_type, &base->html);
-        if (input != NULL)
+	if (input != NULL)
 		bufrelease(input);
 }
 /* }}} */
