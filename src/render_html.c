@@ -338,12 +338,11 @@ PHP_METHOD(sundown_render_html, hrule)
 PHP_METHOD(sundown_render_html, list_box)
 {
 	char *contents;
-	int contents_len, list_type;
+	long contents_len, list_type;
 	zval *buffer;
 	struct buf *input;
 	php_sundown_buffer_t *object;
 	php_sundown_render_html_t *html;
-	
 	if(zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
 		"zsl", &buffer, &contents, &contents_len, &list_type) == FAILURE){
 		return;
@@ -352,9 +351,10 @@ PHP_METHOD(sundown_render_html, list_box)
 	html = (php_sundown_render_html_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
 	object = (php_sundown_buffer_t *) zend_object_store_get_object(buffer TSRMLS_CC);
 	php_sundown_render_base_t *base = (php_sundown_render_base_t *) zend_object_store_get_object(getThis() TSRMLS_CC);\
-	input = str2buf(contents, strlen(contents));
+	input = str2buf(contents, contents_len);
 	html->cb.list(object->buffer,input,list_type, &base->html);
-	bufrelease(input);
+	if (input != NULL)
+		bufrelease(input);
 }
 /* }}} */
 
@@ -363,7 +363,7 @@ PHP_METHOD(sundown_render_html, list_box)
 PHP_METHOD(sundown_render_html, list_item)
 {
 	char *text;
-	int text_len, list_type;
+	long text_len, list_type;
 	zval *buffer;
 	struct buf *input;
 	php_sundown_buffer_t *object;
@@ -377,11 +377,10 @@ PHP_METHOD(sundown_render_html, list_item)
 	html = (php_sundown_render_html_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
 	object = (php_sundown_buffer_t *) zend_object_store_get_object(buffer TSRMLS_CC);
 	php_sundown_render_base_t *base = (php_sundown_render_base_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
-	//why text_len does not work properly?
-	input = str2buf(text, strlen(text));
-	// Todo
+	input = str2buf(text, text_len);
 	html->cb.listitem(object->buffer,input,list_type, &base->html);
-	bufrelease(input);
+	if (input != NULL)
+		bufrelease(input);
 }
 /* }}} */
 
