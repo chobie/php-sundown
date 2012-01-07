@@ -67,7 +67,7 @@ typedef struct{
 	struct html_renderopt html;
 } php_sundown_render_base_t;
 
-#define SPAN_CALLBACK_EX(method_name, ...) {\
+#define SPAN_CALLBACK_EX(buffer,method_name, ...) {\
 	TSRMLS_FETCH();\
 	struct php_sundown_renderopt_ex *opt = (struct php_sundown_renderopt_ex*)opaque;\
 	zval func, *ret;\
@@ -79,13 +79,16 @@ typedef struct{
 		fprintf(stderr,"Can't call method %s\n", method_name);\
 		return 0;\
 	}\
+	if (ret != NULL) {\
+		bufput(buffer, Z_STRVAL_P(ret), Z_STRLEN_P(ret));\
+	}\
 	zval_ptr_dtor(&ret);\
 	zval_dtor(&func);\
 	return Z_LVAL_P(ret);\
 }
 
 
-#define BLOCK_CALLBACK_EX(method_name, ...) {\
+#define BLOCK_CALLBACK_EX(buffer,method_name, ...) {\
 	TSRMLS_FETCH();\
 	struct php_sundown_renderopt_ex *opt = (struct php_sundown_renderopt_ex*)opaque;\
 	zval func, *ret;\
@@ -95,6 +98,9 @@ typedef struct{
 	\
 	if(call_user_function_v(NULL,&opt->self,&func,ret,__VA_ARGS__) == FAILURE){\
 		fprintf(stderr,"Can't call method %s\n", method_name);\
+	}\
+	if (ret != NULL) {\
+		bufput(buffer, Z_STRVAL_P(ret), Z_STRLEN_P(ret));\
 	}\
 	zval_ptr_dtor(&ret);\
 	zval_dtor(&func);\

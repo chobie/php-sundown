@@ -57,150 +57,122 @@ zend_object_value php_sundown_render_base_new(zend_class_entry *ce TSRMLS_DC)
 ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render_base_enable_pants, 0, 0, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render_base_block_code, 0, 0, 3)
-	ZEND_ARG_INFO(0, buffer)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render_base_block_code, 0, 0, 2)
 	ZEND_ARG_INFO(0, code)
 	ZEND_ARG_INFO(0, language)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render_base_block_quote, 0, 0, 2)
-	ZEND_ARG_INFO(0, buffer)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render_base_block_quote, 0, 0, 1)
 	ZEND_ARG_INFO(0, quote)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render_base_block_html, 0, 0, 2)
-	ZEND_ARG_INFO(0, buffer)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render_base_block_html, 0, 0, 1)
 	ZEND_ARG_INFO(0, raw_html)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render_base_header, 0, 0, 3)
-	ZEND_ARG_INFO(0, buffer)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render_base_header, 0, 0, 2)
 	ZEND_ARG_INFO(0, htext)
 	ZEND_ARG_INFO(0, header_level)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render_base_hrule, 0, 0, 1)
-	ZEND_ARG_INFO(0, buffer)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render_base_hrule, 0, 0, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render_base_list_box, 0, 0, 3)
-	ZEND_ARG_INFO(0, buffer)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render_base_list_box, 0, 0, 2)
 	ZEND_ARG_INFO(0, contents)
 	ZEND_ARG_INFO(0, list_type)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render_base_list_item, 0, 0, 3)
-	ZEND_ARG_INFO(0, buffer)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render_base_list_item, 0, 0, 2)
 	ZEND_ARG_INFO(0, text)
 	ZEND_ARG_INFO(0, list_type)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render_base_paragraph, 0, 0, 2)
-	ZEND_ARG_INFO(0, buffer)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render_base_paragraph, 0, 0, 1)
 	ZEND_ARG_INFO(0, text)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render_base_table, 0, 0, 3)
-	ZEND_ARG_INFO(0, buffer)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render_base_table, 0, 0, 2)
 	ZEND_ARG_INFO(0, header)
 	ZEND_ARG_INFO(0, body)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render_base_table_row, 0, 0, 2)
-	ZEND_ARG_INFO(0, buffer)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render_base_table_row, 0, 0, 1)
 	ZEND_ARG_INFO(0, content)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render_base_table_cell, 0, 0, 3)
-	ZEND_ARG_INFO(0, buffer)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render_base_table_cell, 0, 0, 2)
 	ZEND_ARG_INFO(0, content)
 	ZEND_ARG_INFO(0, alignment)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render_base_autolink, 0, 0, 4)
-	ZEND_ARG_INFO(0, buffer)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render_base_autolink, 0, 0, 3)
 	ZEND_ARG_INFO(0, link)
 	ZEND_ARG_INFO(0, link_type)
 	ZEND_ARG_INFO(0, link)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render_base_codespan, 0, 0, 2)
-	ZEND_ARG_INFO(0, buffer)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render_base_codespan, 0, 0, 1)
 	ZEND_ARG_INFO(0, code)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render_base_double_emphasis, 0, 0, 2)
-	ZEND_ARG_INFO(0, buffer)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render_base_double_emphasis, 0, 0, 1)
 	ZEND_ARG_INFO(0, text)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render_base_emphasis, 0, 0, 2)
-	ZEND_ARG_INFO(0, buffer)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render_base_emphasis, 0, 0, 1)
 	ZEND_ARG_INFO(0, text)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render_base_image, 0, 0, 4)
-	ZEND_ARG_INFO(0, buffer)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render_base_image, 0, 0, 3)
 	ZEND_ARG_INFO(0, link)
 	ZEND_ARG_INFO(0, title)
 	ZEND_ARG_INFO(0, alt_text)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render_base_linebreak, 0, 0, 1)
-	ZEND_ARG_INFO(0, buffer)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render_base_linebreak, 0, 0, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render_base_link, 0, 0, 4)
-	ZEND_ARG_INFO(0, buffer)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render_base_link, 0, 0, 3)
 	ZEND_ARG_INFO(0, link)
 	ZEND_ARG_INFO(0, title)
 	ZEND_ARG_INFO(0, content)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render_base_raw_html, 0, 0, 2)
-	ZEND_ARG_INFO(0, buffer)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render_base_raw_html, 0, 0, 1)
 	ZEND_ARG_INFO(0, raw_html)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render_base_triple_emphasis, 0, 0, 2)
-	ZEND_ARG_INFO(0, buffer)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render_base_triple_emphasis, 0, 0, 1)
 	ZEND_ARG_INFO(0, text)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render_base_strikethrough, 0, 0, 2)
-	ZEND_ARG_INFO(0, buffer)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render_base_strikethrough, 0, 0, 1)
 	ZEND_ARG_INFO(0, text)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render_base_superscript, 0, 0, 2)
-	ZEND_ARG_INFO(0, buffer)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render_base_superscript, 0, 0, 1)
 	ZEND_ARG_INFO(0, text)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render_base_entity, 0, 0, 2)
-	ZEND_ARG_INFO(0, buffer)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render_base_entity, 0, 0, 1)
 	ZEND_ARG_INFO(0, text)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render_base_normal_text, 0, 0, 2)
-	ZEND_ARG_INFO(0, buffer)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render_base_normal_text, 0, 0, 1)
 	ZEND_ARG_INFO(0, text)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render_base_doc_header, 0, 0, 1)
-	ZEND_ARG_INFO(0, buffer)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render_base_doc_header, 0, 0, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render_base_doc_footer, 0, 0, 1)
-	ZEND_ARG_INFO(0, buffer)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render_base_doc_footer, 0, 0, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render_base_preprocess, 0, 0, 1)
-	ZEND_ARG_INFO(0, full_document)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render_base_preprocess, 0, 0, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render_base_postprocess, 0, 0, 1)
-	ZEND_ARG_INFO(0, full_document)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render_base_postprocess, 0, 0, 0)
 ZEND_END_ARG_INFO()
 
 /* {{{ proto void enable_pants()
@@ -216,17 +188,14 @@ PHP_METHOD(sundown_render_base, enable_pants)
 PHP_METHOD(sundown_render_base, block_code)
 {
 	char *code, *block_code;
-	int code_len, block_code_len;
-	zval *buffer;
+	long code_len, block_code_len;
 	php_sundown_buffer_t *object;
 
 	if(zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
-		"zss", &buffer,&code, &code_len, &block_code, &block_code_len) == FAILURE){
+		"ss", &code, &code_len, &block_code, &block_code_len) == FAILURE){
 		return;
 	}
-
-	object = (php_sundown_buffer_t *) zend_object_store_get_object(buffer TSRMLS_CC);
-	bufput(object->buffer, code, code_len);
+	RETVAL_STRINGL(code,code_len,1);
 }
 /* }}} */
 
@@ -235,17 +204,14 @@ PHP_METHOD(sundown_render_base, block_code)
 PHP_METHOD(sundown_render_base, block_quote)
 {
 	char *quote;
-	int quote_len;
-	zval *buffer;
+	long quote_len;
 	php_sundown_buffer_t *object;
 	
 	if(zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
-		"zs", &buffer,&quote, &quote_len) == FAILURE){
+		"s", &quote, &quote_len) == FAILURE){
 		return;
 	}
-
-	object = (php_sundown_buffer_t *) zend_object_store_get_object(buffer TSRMLS_CC);
-	bufput(object->buffer, quote, quote_len);
+	RETVAL_STRINGL(quote,quote_len,1);
 }
 /* }}} */
 
@@ -254,17 +220,14 @@ PHP_METHOD(sundown_render_base, block_quote)
 PHP_METHOD(sundown_render_base, block_html)
 {
 	char *raw;
-	int raw_len;
-	zval *buffer;
+	long raw_len;
 	php_sundown_buffer_t *object;
 	
 	if(zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
-		"zs", &buffer,&raw, &raw_len) == FAILURE){
+		"s", &raw, &raw_len) == FAILURE){
 		return;
 	}
-
-	object = (php_sundown_buffer_t *) zend_object_store_get_object(buffer TSRMLS_CC);
-	bufput(object->buffer, raw, raw_len);
+	RETVAL_STRINGL(raw,raw_len,1);
 }
 /* }}} */
 
@@ -274,16 +237,13 @@ PHP_METHOD(sundown_render_base, header)
 {
 	char *htext;
 	long htext_len, header_level;
-	zval *buffer;
 	php_sundown_buffer_t *object;
 	
 	if(zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
-		"zsl", &buffer,&htext, &htext_len, &header_level) == FAILURE){
+		"sl",&htext, &htext_len, &header_level) == FAILURE){
 		return;
 	}
-
-	object = (php_sundown_buffer_t *) zend_object_store_get_object(buffer TSRMLS_CC);
-	bufput(object->buffer, htext, htext_len);
+	RETVAL_STRINGL(htext,htext_len,1);
 }
 /* }}} */
 
@@ -300,16 +260,13 @@ PHP_METHOD(sundown_render_base, list_box)
 {
 	char *contents;
 	long contents_len, list_type;
-	zval *buffer;
 	php_sundown_buffer_t *object;
 	
 	if(zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
-		"zsl", &buffer, &contents, &contents_len, &list_type) == FAILURE){
+		"sl", &contents, &contents_len, &list_type) == FAILURE){
 		return;
 	}
-
-	object = (php_sundown_buffer_t *) zend_object_store_get_object(buffer TSRMLS_CC);
-	bufput(object->buffer, contents, contents_len);
+	RETVAL_STRINGL(contents,contents_len,1);
 }
 /* }}} */
 
@@ -319,16 +276,13 @@ PHP_METHOD(sundown_render_base, list_item)
 {
 	char *text;
 	long text_len, list_type;
-	zval *buffer;
 	php_sundown_buffer_t *object;
 	
 	if(zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
-		"zsl", &buffer,&text, &text_len, &list_type) == FAILURE){
+		"sl",&text, &text_len, &list_type) == FAILURE){
 		return;
 	}
-
-	object = (php_sundown_buffer_t *) zend_object_store_get_object(buffer TSRMLS_CC);
-	bufput(object->buffer, text, text_len);
+	RETVAL_STRINGL(text,text_len,1);
 }
 /* }}} */
 
@@ -337,17 +291,15 @@ PHP_METHOD(sundown_render_base, list_item)
 PHP_METHOD(sundown_render_base, paragraph)
 {
 	char *text;
-	int text_len;
+	long text_len;
 	zval *buffer;
 	php_sundown_buffer_t *object;
 	
 	if(zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
-		"zs", &buffer,&text, &text_len) == FAILURE){
+		"s", &text, &text_len) == FAILURE){
 		return;
 	}
-
-	object = (php_sundown_buffer_t *) zend_object_store_get_object(buffer TSRMLS_CC);
-	bufput(object->buffer, text, text_len);
+	RETVAL_STRINGL(text,text_len,1);
 }
 /* }}} */
 
@@ -356,17 +308,14 @@ PHP_METHOD(sundown_render_base, paragraph)
 PHP_METHOD(sundown_render_base, table)
 {
 	char *header, *body;
-	int header_len, body_len;
-	zval *buffer;
+	long header_len, body_len;
 	php_sundown_buffer_t *object;
 	
 	if(zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
-		"zss", &buffer, &header, &header_len, &body, &body_len) == FAILURE){
+		"ss", &header, &header_len, &body, &body_len) == FAILURE){
 		return;
 	}
-	
-	object = (php_sundown_buffer_t *) zend_object_store_get_object(buffer TSRMLS_CC);
-	bufput(object->buffer, body, body_len);
+	RETVAL_STRINGL(body,body_len,1);	
 }
 /* }}} */
 
@@ -375,17 +324,14 @@ PHP_METHOD(sundown_render_base, table)
 PHP_METHOD(sundown_render_base, table_row)
 {
 	char *contents;
-	int contents_len;
-	zval *buffer;
+	long contents_len;
 	php_sundown_buffer_t *object;
 	
 	if(zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
-		"zs", &buffer,&contents, &contents_len) == FAILURE){
+		"s", &contents, &contents_len) == FAILURE){
 		return;
 	}
-	
-	object = (php_sundown_buffer_t *) zend_object_store_get_object(buffer TSRMLS_CC);
-	bufput(object->buffer, contents, contents_len);
+	RETVAL_STRINGL(contents,contents_len,1);	
 }
 /* }}} */
 
@@ -394,17 +340,14 @@ PHP_METHOD(sundown_render_base, table_row)
 PHP_METHOD(sundown_render_base, table_cell)
 {
 	char *content, *alignment;
-	int content_len, alignment_len;
-	zval *buffer;
+	long content_len, alignment_len;
 	php_sundown_buffer_t *object;
 	
 	if(zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
-		"zss", &buffer,&content, &content_len, &alignment, &alignment_len) == FAILURE){
+		"ss", &content, &content_len, &alignment, &alignment_len) == FAILURE){
 		return;
 	}
-
-	object = (php_sundown_buffer_t *) zend_object_store_get_object(buffer TSRMLS_CC);
-	bufput(object->buffer, content, content_len);
+	RETVAL_STRINGL(content,content_len,1);
 }
 /* }}} */
 
@@ -413,17 +356,14 @@ PHP_METHOD(sundown_render_base, table_cell)
 PHP_METHOD(sundown_render_base, autolink)
 {
 	char *link, *link_type;
-	int link_len, link_type_len;
-	zval *buffer;
+	long link_len, link_type_len;
 	php_sundown_buffer_t *object;
 	
 	if(zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
-		"zss", &buffer,&link, &link_len, &link_type, &link_type_len) == FAILURE){
+		"ss",&link, &link_len, &link_type, &link_type_len) == FAILURE){
 		return;
 	}
-
-	object = (php_sundown_buffer_t *) zend_object_store_get_object(buffer TSRMLS_CC);
-	bufput(object->buffer, link, link_len);
+	RETVAL_STRINGL(link,link_len,1);
 }
 /* }}} */
 
@@ -432,17 +372,14 @@ PHP_METHOD(sundown_render_base, autolink)
 PHP_METHOD(sundown_render_base, codespan)
 {
 	char *code;
-	int code_len;
-	zval *buffer;
+	long code_len;
 	php_sundown_buffer_t *object;
 	
 	if(zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
-		"zs", &buffer,&code, &code_len) == FAILURE){
+		"s", &code, &code_len) == FAILURE){
 		return;
 	}
-
-	object = (php_sundown_buffer_t *) zend_object_store_get_object(buffer TSRMLS_CC);
-	bufput(object->buffer, code, code_len);
+	RETVAL_STRINGL(code,code_len,1);
 }
 /* }}} */
 
@@ -451,17 +388,14 @@ PHP_METHOD(sundown_render_base, codespan)
 PHP_METHOD(sundown_render_base, double_emphasis)
 {
 	char *text;
-	int text_len;
-	zval *buffer;
+	long text_len;
 	php_sundown_buffer_t *object;
 	
 	if(zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
-		"zs", &buffer,&text, &text_len) == FAILURE){
+		"s", &text, &text_len) == FAILURE){
 		return;
 	}
-
-	object = (php_sundown_buffer_t *) zend_object_store_get_object(buffer TSRMLS_CC);
-	bufput(object->buffer, text, text_len);
+	RETVAL_STRINGL(text,text_len,1);
 }
 /* }}} */
 
@@ -470,17 +404,15 @@ PHP_METHOD(sundown_render_base, double_emphasis)
 PHP_METHOD(sundown_render_base, emphasis)
 {
 	char *text;
-	int text_len;
+	long text_len;
 	zval *buffer;
 	php_sundown_buffer_t *object;
 	
 	if(zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
-		"zs", &buffer,&text, &text_len) == FAILURE){
+		"s", &text, &text_len) == FAILURE){
 		return;
 	}
-
-	object = (php_sundown_buffer_t *) zend_object_store_get_object(buffer TSRMLS_CC);
-	bufput(object->buffer, text, text_len);
+	RETVAL_STRINGL(text,text_len,1);
 }
 /* }}} */
 
@@ -489,17 +421,14 @@ PHP_METHOD(sundown_render_base, emphasis)
 PHP_METHOD(sundown_render_base, image)
 {
 	char *link, *title, *alt_text;
-	int link_len, title_len, alt_text_len;
-	zval *buffer;
+	long link_len, title_len, alt_text_len;
 	php_sundown_buffer_t *object;
 	
 	if(zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
-		"zsss", &buffer,&link, &link_len, &title, &title_len, &alt_text, &alt_text_len) == FAILURE){
+		"sss",&link, &link_len, &title, &title_len, &alt_text, &alt_text_len) == FAILURE){
 		return;
 	}
-
-	object = (php_sundown_buffer_t *) zend_object_store_get_object(buffer TSRMLS_CC);
-	bufput(object->buffer, link, link_len);
+	RETVAL_STRINGL(link,link_len,1);
 }
 /* }}} */
 
@@ -515,17 +444,14 @@ PHP_METHOD(sundown_render_base, linebreak)
 PHP_METHOD(sundown_render_base, link)
 {
 	char *link, *title, *content;
-	int link_len, title_len, content_len;
-	zval *buffer;
+	long link_len, title_len, content_len;
 	php_sundown_buffer_t *object;
 	
 	if(zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
-		"zsss", &buffer,&link, &link_len, &title, &title_len, &content, &content_len) == FAILURE){
+		"sss",&link, &link_len, &title, &title_len, &content, &content_len) == FAILURE){
 		return;
 	}
-
-	object = (php_sundown_buffer_t *) zend_object_store_get_object(buffer TSRMLS_CC);
-	bufput(object->buffer, link, link_len);
+	RETVAL_STRINGL(link,link_len,1);
 }
 /* }}} */
 
@@ -534,17 +460,14 @@ PHP_METHOD(sundown_render_base, link)
 PHP_METHOD(sundown_render_base, raw_html)
 {
 	char *raw;
-	int raw_len;
-	zval *buffer;
+	long raw_len;
 	php_sundown_buffer_t *object;
 	
 	if(zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
-		"zs", &buffer,&raw, &raw_len) == FAILURE){
+		"s", &raw, &raw_len) == FAILURE){
 		return;
 	}
-
-	object = (php_sundown_buffer_t *) zend_object_store_get_object(buffer TSRMLS_CC);
-	bufput(object->buffer, raw, raw_len);
+	RETVAL_STRINGL(raw,raw_len,1);
 }
 /* }}} */
 
@@ -553,17 +476,14 @@ PHP_METHOD(sundown_render_base, raw_html)
 PHP_METHOD(sundown_render_base, triple_emphasis)
 {
 	char *text;
-	int text_len;
-	zval *buffer;
+	long text_len;
 	php_sundown_buffer_t *object;
 	
 	if(zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
-		"zs", &buffer,&text, &text_len) == FAILURE){
+		"s", &text, &text_len) == FAILURE){
 		return;
 	}
-	
-	object = (php_sundown_buffer_t *) zend_object_store_get_object(buffer TSRMLS_CC);
-	bufput(object->buffer, text, text_len);
+	RETVAL_STRINGL(text,text_len,1);	
 }
 /* }}} */
 
@@ -572,17 +492,14 @@ PHP_METHOD(sundown_render_base, triple_emphasis)
 PHP_METHOD(sundown_render_base, strikethrough)
 {
 	char *text;
-	int text_len;
-	zval *buffer;
+	long text_len;
 	php_sundown_buffer_t *object;
 	
 	if(zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
-		"zs", &buffer,&text, &text_len) == FAILURE){
+		"s", &text, &text_len) == FAILURE){
 		return;
 	}
-
-	object = (php_sundown_buffer_t *) zend_object_store_get_object(buffer TSRMLS_CC);
-	bufput(object->buffer, text, text_len);
+	RETVAL_STRINGL(text,text_len,1);
 }
 /* }}} */
 
@@ -591,17 +508,14 @@ PHP_METHOD(sundown_render_base, strikethrough)
 PHP_METHOD(sundown_render_base, superscript)
 {
 	char *text;
-	int text_len;
-	zval *buffer;
+	long text_len;
 	php_sundown_buffer_t *object;
 	
 	if(zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
-		"zs", &buffer,&text, &text_len) == FAILURE){
+		"s", &text, &text_len) == FAILURE){
 		return;
 	}
-
-	object = (php_sundown_buffer_t *) zend_object_store_get_object(buffer TSRMLS_CC);
-	bufput(object->buffer, text, text_len);
+	RETVAL_STRINGL(text,text_len,1);
 }
 /* }}} */
 
@@ -610,17 +524,14 @@ PHP_METHOD(sundown_render_base, superscript)
 PHP_METHOD(sundown_render_base, entity)
 {
 	char *text;
-	int text_len;
-	zval *buffer;
+	long text_len;
 	php_sundown_buffer_t *object;
 	
 	if(zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
-		"zs", &buffer, &text, &text_len) == FAILURE){
+		"s", &text, &text_len) == FAILURE){
 		return;
 	}
-
-	object = (php_sundown_buffer_t *) zend_object_store_get_object(buffer TSRMLS_CC);
-	bufput(object->buffer, text, text_len);
+	RETVAL_STRINGL(text,text_len,1);
 }
 /* }}} */
 
@@ -629,17 +540,14 @@ PHP_METHOD(sundown_render_base, entity)
 PHP_METHOD(sundown_render_base, normal_text)
 {
 	char *text;
-	int text_len;
-	zval *buffer;
+	long text_len;
 	php_sundown_buffer_t *object;
 
 	if(zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
-		"zs", &buffer, &text, &text_len) == FAILURE){
+		"s",&text, &text_len) == FAILURE){
 		return;
 	}
-
-	object = (php_sundown_buffer_t *) zend_object_store_get_object(buffer TSRMLS_CC);
-	bufput(object->buffer, text, text_len);
+	RETVAL_STRINGL(text,text_len,1);
 }
 /* }}} */
 
@@ -664,14 +572,14 @@ PHP_METHOD(sundown_render_base, doc_footer)
 PHP_METHOD(sundown_render_base, preprocess)
 {
 	char *text;
-	int text_len;
+	long text_len;
 	
 	if(zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
 		"s", &text, &text_len) == FAILURE){
 		return;
 	}
 	
-	RETURN_STRINGL(text,text_len, 1);
+	RETVAL_STRINGL(text,text_len, 1);
 }
 /* }}} */
 
@@ -680,14 +588,14 @@ PHP_METHOD(sundown_render_base, preprocess)
 PHP_METHOD(sundown_render_base, postprocess)
 {
 	char *text;
-	int text_len;
+	long text_len;
 	
 	if(zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
 		"s", &text, &text_len) == FAILURE){
 		return;
 	}
 	
-	RETURN_STRINGL(text,text_len, 1);
+	RETVAL_STRINGL(text,text_len, 1);
 }
 /* }}} */
 

@@ -30,27 +30,27 @@ zend_class_entry *sundown_markdown_class_entry;
 
 static void rndr_blockcode(struct buf *ob, const struct buf *text, const struct buf *lang, void *opaque)
 {
-	BLOCK_CALLBACK_EX("block_code", 3,buf2obj(ob), buf2str(text), buf2str(lang));
+	BLOCK_CALLBACK_EX(ob,"block_code", 2, buf2str(text), buf2str(lang));
 }
 
 static void rndr_blockquote(struct buf *ob, const struct buf *text, void *opaque)
 {
-	BLOCK_CALLBACK_EX("block_quote", 2,buf2obj(ob), buf2str(text));
+	BLOCK_CALLBACK_EX(ob,"block_quote", 1, buf2str(text));
 }
 
 static void rndr_raw_block(struct buf *ob, const struct buf *text, void *opaque)
 {
-	BLOCK_CALLBACK_EX("block_html", 2,buf2obj(ob), buf2str(text));
+	BLOCK_CALLBACK_EX(ob,"block_html", 1, buf2str(text));
 }
 
 static void rndr_header(struct buf *ob, const struct buf *text, int level, void *opaque)
 {
-	BLOCK_CALLBACK_EX("header", 3, buf2obj(ob), buf2str(text), buf2long(level));
+	BLOCK_CALLBACK_EX(ob,"header", 2, buf2str(text), buf2long(level));
 }
 
 static void rndr_hrule(struct buf *ob, void *opaque)
 {
-	BLOCK_CALLBACK_EX("hrule", 1,buf2obj(ob));
+	BLOCK_CALLBACK_EX(ob,"hrule", 0);
 }
 
 static void rndr_list(struct buf *ob, const struct buf *text, int flags, void *opaque)
@@ -58,7 +58,7 @@ static void rndr_list(struct buf *ob, const struct buf *text, int flags, void *o
 	zval *flag;
 	MAKE_STD_ZVAL(flag);
 	ZVAL_LONG(flag, flags);
-	BLOCK_CALLBACK_EX("list_box", 3,buf2obj(ob), buf2str(text),flag);
+	BLOCK_CALLBACK_EX(ob,"list_box", 2,buf2str(text),flag);
 	
 }
 
@@ -67,22 +67,22 @@ static void rndr_listitem(struct buf *ob, const struct buf *text, int flags, voi
 	zval *flag;
 	MAKE_STD_ZVAL(flag);
 	ZVAL_LONG(flag, flags);
-	BLOCK_CALLBACK_EX("list_item", 3,buf2obj(ob), buf2str(text),flag);
+	BLOCK_CALLBACK_EX(ob,"list_item", 2, buf2str(text),flag);
 }
 
 static void rndr_paragraph(struct buf *ob, const struct buf *text, void *opaque)
 {
-	BLOCK_CALLBACK_EX("paragraph", 2,buf2obj(ob), buf2str(text));
+	BLOCK_CALLBACK_EX(ob,"paragraph", 1,buf2str(text));
 }
 
 static void rndr_table(struct buf *ob, const struct buf *header, const struct buf *body, void *opaque)
 {
-	BLOCK_CALLBACK_EX("table", 3,buf2obj(ob), buf2str(header), buf2str(body));
+	BLOCK_CALLBACK_EX(ob,"table", 2, buf2str(header), buf2str(body));
 }
 
 static void rndr_tablerow(struct buf *ob, const struct buf *text, void *opaque)
 {
-	BLOCK_CALLBACK_EX("table_row", 2,buf2obj(ob), buf2str(text));
+	BLOCK_CALLBACK_EX(ob,"table_row", 1, buf2str(text));
 }
 
 static void rndr_tablecell(struct buf *ob, const struct buf *text, int align, void *opaque)
@@ -107,7 +107,7 @@ static void rndr_tablecell(struct buf *ob, const struct buf *text, int align, vo
 			break;
 	}
 
-	BLOCK_CALLBACK_EX("table_cell", 3,buf2obj(ob), buf2str(text), &php_align);
+	BLOCK_CALLBACK_EX(ob,"table_cell", 3,buf2obj(ob), buf2str(text), &php_align);
 }
 
 /***
@@ -122,57 +122,57 @@ static int rndr_autolink(struct buf *ob, const struct buf *link, enum mkd_autoli
 	} else {
 		ZVAL_STRING(m_type, "email",1);
 	}
-	SPAN_CALLBACK_EX("autolink", 3, buf2obj(ob),buf2str(link),m_type);
+	SPAN_CALLBACK_EX(ob,"autolink", 2,buf2str(link),m_type);
 }
 
 static int rndr_codespan(struct buf *ob, const struct buf *text, void *opaque)
 {
-	SPAN_CALLBACK_EX("codespan", 2,buf2obj(ob), buf2str(text));
+	SPAN_CALLBACK_EX(ob,"codespan", 1, buf2str(text));
 }
 
 static int rndr_double_emphasis(struct buf *ob, const struct buf *text, void *opaque)
 {
-	SPAN_CALLBACK_EX("double_emphasis", 2,buf2obj(ob), buf2str(text));
+	SPAN_CALLBACK_EX(ob,"double_emphasis", 1, buf2str(text));
 }
 
 static int rndr_emphasis(struct buf *ob, const struct buf *text, void *opaque)
 {
-	SPAN_CALLBACK_EX("emphasis", 2,buf2obj(ob), buf2str(text));
+	SPAN_CALLBACK_EX(ob,"emphasis", 1, buf2str(text));
 }
 
 static int rndr_image(struct buf *ob, const struct buf *link, const struct buf *title, const struct buf *alt, void *opaque)
 {
-	SPAN_CALLBACK_EX("image", 4, buf2obj(ob), buf2str(link), buf2str(title), buf2str(alt));
+	SPAN_CALLBACK_EX(ob,"image", 3, buf2str(link), buf2str(title), buf2str(alt));
 }
 
 static int rndr_linebreak(struct buf *ob, void *opaque)
 {
-	SPAN_CALLBACK_EX("linebreak", 1,buf2obj(ob));
+	SPAN_CALLBACK_EX(ob,"linebreak", 0);
 }
 
 static int rndr_link(struct buf *ob, const struct buf *link, const struct buf *title, const struct buf *content, void *opaque)
 {
-	SPAN_CALLBACK_EX("link", 4,buf2obj(ob), buf2str(link), buf2str(title), buf2str(content));
+	SPAN_CALLBACK_EX(ob,"link", 3, buf2str(link), buf2str(title), buf2str(content));
 }
 
 static int rndr_raw_html(struct buf *ob, const struct buf *text, void *opaque)
 {
-	SPAN_CALLBACK_EX("raw_html", 2,buf2obj(ob), buf2str(text));
+	SPAN_CALLBACK_EX(ob, "raw_html", 1, buf2str(text));
 }
 
 static int rndr_triple_emphasis(struct buf *ob, const struct buf *text, void *opaque)
 {
-	SPAN_CALLBACK_EX("triple_emphasis", 2,buf2obj(ob), buf2str(text));
+	SPAN_CALLBACK_EX(ob, "triple_emphasis", 1, buf2str(text));
 }
 
 static int rndr_strikethrough(struct buf *ob, const struct buf *text, void *opaque)
 {
-	SPAN_CALLBACK_EX("strikethrough", 2, buf2obj(ob), buf2str(text));
+	SPAN_CALLBACK_EX(ob, "strikethrough", 1, buf2str(text));
 }
 
 static int rndr_superscript(struct buf *ob, const struct buf *text, void *opaque)
 {
-	SPAN_CALLBACK_EX("superscript", 2,buf2obj(ob), buf2str(text));
+	SPAN_CALLBACK_EX(ob, "superscript", 1, buf2str(text));
 }
 
 /**
@@ -180,22 +180,22 @@ static int rndr_superscript(struct buf *ob, const struct buf *text, void *opaque
 */
 static void rndr_entity(struct buf *ob, const struct buf *text, void *opaque)
 {
-	BLOCK_CALLBACK_EX("entity", 2, buf2obj(ob), buf2str(text));
+	BLOCK_CALLBACK_EX(ob, "entity", 1, buf2str(text));
 }
 
 static void rndr_normal_text(struct buf *ob, const struct buf *text, void *opaque)
 {
-	BLOCK_CALLBACK_EX("normal_text", 2, buf2obj(ob), buf2str(text));
+	BLOCK_CALLBACK_EX(ob, "normal_text", 1, buf2str(text));
 }
 
 static void rndr_doc_header(struct buf *ob, void *opaque)
 {
-	BLOCK_CALLBACK_EX("doc_header", 1, buf2obj(ob));
+	BLOCK_CALLBACK_EX(ob, "doc_header", 0);
 }
 
 static void rndr_doc_footer(struct buf *ob, void *opaque)
 {
-	BLOCK_CALLBACK_EX("doc_footer", 1, buf2obj(ob));
+	BLOCK_CALLBACK_EX(ob, "doc_footer", 0);
 }
 
 
