@@ -40,7 +40,11 @@ zend_object_value php_sundown_render_base_new(zend_class_entry *ce TSRMLS_DC)
 
 	obj = ecalloc(1, sizeof(*obj));
 	zend_object_std_init( &obj->zo, ce TSRMLS_CC);
+#if ZEND_MODULE_API_NO >= 20100525
+	object_properties_init(&(obj->zo), ce);
+#else
 	zend_hash_copy(obj->zo.properties, &ce->default_properties, (copy_ctor_func_t) zval_add_ref, (void *) &tmp, sizeof(zval *));
+#endif
 
 	retval.handle = zend_objects_store_put(obj, 
 		(zend_objects_store_dtor_t)zend_objects_destroy_object,
