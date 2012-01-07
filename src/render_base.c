@@ -294,13 +294,13 @@ PHP_METHOD(sundown_render_base, hrule)
 */
 PHP_METHOD(sundown_render_base, list_box)
 {
-	char *contents, *list_type;
-	int contents_len, list_type_len;
+	char *contents;
+	int contents_len, list_type;
 	zval *buffer;
 	php_sundown_buffer_t *object;
 	
 	if(zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
-		"zss", &buffer, &contents, &contents_len, &list_type, &list_type_len) == FAILURE){
+		"zsl", &buffer, &contents, &contents_len, &list_type) == FAILURE){
 		return;
 	}
 
@@ -313,13 +313,13 @@ PHP_METHOD(sundown_render_base, list_box)
 */
 PHP_METHOD(sundown_render_base, list_item)
 {
-	char *text, *list_type;
-	int text_len, list_type_len;
+	char *text;
+	int text_len, list_type;
 	zval *buffer;
 	php_sundown_buffer_t *object;
 	
 	if(zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
-		"zss", &buffer,&text, &text_len, &list_type, &list_type_len) == FAILURE){
+		"zsl", &buffer,&text, &text_len, &list_type) == FAILURE){
 		return;
 	}
 
