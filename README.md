@@ -162,4 +162,4 @@ echo $md->render("Hello World");n
 
 ### \Sundown\Render\Base
 
-documented at [Render.md](../Render.md)
+documented at [Render.md](https://github.com/chobie/php-sundown/blob/development/Render.md)
