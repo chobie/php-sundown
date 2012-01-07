@@ -157,9 +157,9 @@ parse and render specified string.
 <?php
 $render = new \Sundown\Render\HTML();
 $md = new \Sundown\Markdown($render);
-echo $md->render("Hello World");
+echo $md->render("Hello World");n
 ````
 
-### \Sundown\Render\Base::__construct()
+### \Sundown\Render\Base
 
-to be continued...
+documented at [Render.md](https://github.com/chobie/php-sundown/blob/development/Render.md)
