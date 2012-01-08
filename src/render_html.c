@@ -59,9 +59,6 @@ extern zend_class_entry *sundown_render_base_class_entry;
 ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render_html___construct, 0, 0, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render_html_enable_pants, 0, 0, 0)
-ZEND_END_ARG_INFO()
-
 ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render_html_block_code, 0, 0, 2)
 	ZEND_ARG_INFO(0, code)
 	ZEND_ARG_INFO(0, language)
@@ -173,22 +170,6 @@ ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render_html_doc_footer, 0, 0, 0)
 ZEND_END_ARG_INFO()
-
-ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render_html_preprocess, 0, 0, 1)
-	ZEND_ARG_INFO(0, full_document)
-ZEND_END_ARG_INFO()
-
-ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render_html_postprocess, 0, 0, 1)
-	ZEND_ARG_INFO(0, full_document)
-ZEND_END_ARG_INFO()
-
-/* {{{ proto void enable_pants()
-*/
-PHP_METHOD(sundown_render_html, enable_pants)
-{
-	RETURN_FALSE;
-}
-/* }}} */
 
 /* {{{ proto void block_code($buffer, $language, $code)
 */
@@ -827,38 +808,6 @@ PHP_METHOD(sundown_render_html, doc_footer)
 }
 /* }}} */
 
-/* {{{ proto void preprocess($full_document)
-*/
-PHP_METHOD(sundown_render_html, preprocess)
-{
-	char *text;
-	int text_len;
-	
-	if(zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
-		"s", &text, &text_len) == FAILURE){
-		return;
-	}
-	
-	RETURN_STRINGL(text,text_len, 1);
-}
-/* }}} */
-
-/* {{{ proto void postprocess($full_document)
-*/
-PHP_METHOD(sundown_render_html, postprocess)
-{
-	char *text;
-	int text_len;
-	
-	if(zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
-		"s", &text, &text_len) == FAILURE){
-		return;
-	}
-	
-	RETURN_STRINGL(text,text_len, 1);
-}
-/* }}} */
-
 /* {{{ proto void __construct($render_flags)
 */
 PHP_METHOD(sundown_render_html, __construct)
@@ -898,7 +847,6 @@ PHP_METHOD(sundown_render_html, __destruct)
 
 static zend_function_entry php_sundown_render_html_methods[] = {
 	PHP_ME(sundown_render_html, __construct,     arginfo_sundown_render_html___construct,     ZEND_ACC_PUBLIC)
-	PHP_ME(sundown_render_html, enable_pants,    arginfo_sundown_render_html_enable_pants,    ZEND_ACC_PUBLIC)
 	PHP_ME(sundown_render_html, block_code,      arginfo_sundown_render_html_block_code,      ZEND_ACC_PUBLIC)
 	PHP_ME(sundown_render_html, block_quote,     arginfo_sundown_render_html_block_quote,     ZEND_ACC_PUBLIC)
 	PHP_ME(sundown_render_html, block_html,      arginfo_sundown_render_html_block_html,      ZEND_ACC_PUBLIC)
@@ -925,8 +873,6 @@ static zend_function_entry php_sundown_render_html_methods[] = {
 	PHP_ME(sundown_render_html, normal_text,     arginfo_sundown_render_html_normal_text,     ZEND_ACC_PUBLIC)
 	PHP_ME(sundown_render_html, doc_header,      arginfo_sundown_render_html_doc_header,      ZEND_ACC_PUBLIC)
 	PHP_ME(sundown_render_html, doc_footer,      arginfo_sundown_render_html_doc_footer,      ZEND_ACC_PUBLIC)
-	PHP_ME(sundown_render_html, preprocess,      arginfo_sundown_render_html_preprocess,      ZEND_ACC_PUBLIC)
-	PHP_ME(sundown_render_html, postprocess,     arginfo_sundown_render_html_postprocess,     ZEND_ACC_PUBLIC)
 	PHP_ME(sundown_render_html, __destruct,      NULL,                                        ZEND_ACC_PUBLIC)
 	{NULL,NULL,NULL}
 };
