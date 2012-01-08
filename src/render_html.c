@@ -859,18 +859,42 @@ PHP_METHOD(sundown_render_html, postprocess)
 }
 /* }}} */
 
-/* {{{ proto void __construct($options)
+/* {{{ proto void __construct($render_flags)
 */
 PHP_METHOD(sundown_render_html, __construct)
 {
 	php_sundown_render_html_t *object;
 	struct php_sundown_renderopt_ex opt;
+	zval *render_flags, *c_flags;
+	
+	if(zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
+		"z", &render_flags) == FAILURE){
+		return;
+	}
+
+	if (Z_TYPE_P(render_flags) == IS_ARRAY) {
+		ALLOC_INIT_ZVAL(c_flags);
+		ZVAL_ZVAL(c_flags, render_flags, 1, 1);
+		add_property_zval_ex(getThis(),"render_flags",sizeof("render_flags"),c_flags TSRMLS_CC);
+	}
 
 	object = (php_sundown_render_html_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
 	sdhtml_renderer(&object->cb, &opt.html, 0);
 	opt.self = getThis();
 }
 /* }}} */
+
+/* {{{ proto __destruct()
+*/
+PHP_METHOD(sundown_render_html, __destruct)
+{
+	zval *render_flags;
+	render_flags = zend_read_property(sundown_render_base_class_entry, getThis(),"render_flags",sizeof("render_flags")-1, 0 TSRMLS_CC);
+	if(Z_TYPE_P(render_flags) == IS_ARRAY) {
+		zval_ptr_dtor(&render_flags);
+	}
+}
+
 
 static zend_function_entry php_sundown_render_html_methods[] = {
 	PHP_ME(sundown_render_html, __construct,     arginfo_sundown_render_html___construct,     ZEND_ACC_PUBLIC)
@@ -903,6 +927,7 @@ static zend_function_entry php_sundown_render_html_methods[] = {
 	PHP_ME(sundown_render_html, doc_footer,      arginfo_sundown_render_html_doc_footer,      ZEND_ACC_PUBLIC)
 	PHP_ME(sundown_render_html, preprocess,      arginfo_sundown_render_html_preprocess,      ZEND_ACC_PUBLIC)
 	PHP_ME(sundown_render_html, postprocess,     arginfo_sundown_render_html_postprocess,     ZEND_ACC_PUBLIC)
+	PHP_ME(sundown_render_html, __destruct,      NULL,                                        ZEND_ACC_PUBLIC)
 	{NULL,NULL,NULL}
 };
 

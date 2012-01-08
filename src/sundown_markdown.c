@@ -314,8 +314,9 @@ PHP_METHOD(sundown_markdown, __construct)
 	zend_class_entry **ce;
 	php_sundown_markdown_t *object = (php_sundown_markdown_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
 	
-	if(zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
+	if(zend_parse_parameters_ex(ZEND_PARSE_PARAMS_QUIET, ZEND_NUM_ARGS() TSRMLS_CC,
 		"z|a", &render, &extensions) == FAILURE){
+		zend_throw_exception_ex(spl_ce_InvalidArgumentException, 0 TSRMLS_CC," Sundown\Markdown::__construct() expects parameter 2 to be array");
 		return;
 	}
 
@@ -377,7 +378,7 @@ PHP_METHOD(sundown_markdown, render)
 {
 	php_sundown_markdown_t *object = (php_sundown_markdown_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
 	php_sundown_buffer_t *buffer_object_t;
-	zval *buffer_object;
+	zval *buffer_object, preprocess, postprocess, *params[1], *ret;
 	struct buf input_buf, *output_buf;
 	struct sd_callbacks sundown_render;
 	struct php_sundown_renderopt_ex opt;
@@ -392,11 +393,7 @@ PHP_METHOD(sundown_markdown, render)
 		"s", &buffer, &buffer_len) == FAILURE){
 		return;
 	}
-	
-	memset(&input_buf, 0x0, sizeof(struct buf));
-	input_buf.data = buffer;
-	input_buf.size = strlen(buffer);
-	
+		
 	output_buf = bufnew(128);
 	bufgrow(output_buf, strlen(buffer) * 1.2f);
 
@@ -437,19 +434,49 @@ PHP_METHOD(sundown_markdown, render)
 		}
 	}
 
+	// preprocess
+	MAKE_STD_ZVAL(ret);
+	MAKE_STD_ZVAL(params[0]);
+	ZVAL_STRINGL(params[0], buffer,strlen(buffer), 1);
+	ZVAL_STRING(&preprocess,"preprocess",1);
+	if (call_user_function(NULL, &object->render, &preprocess, ret, 1, params TSRMLS_CC) == FAILURE) {
+	}
+	
+	memset(&input_buf, 0x0, sizeof(struct buf));
+	if (ret != NULL && Z_TYPE_P(ret) == IS_STRING) {
+		input_buf.data = Z_STRVAL_P(ret);
+		input_buf.size = Z_STRLEN_P(ret);
+	} else {
+		input_buf.data = buffer;
+		input_buf.size = strlen(buffer);
+	}
+	zval_ptr_dtor(&params[0]);
+
+	// proceess markdown
 	markdown = sd_markdown_new(enabled_extensions, 16, &sundown_render, &opt);
 	sd_markdown_render(output_buf, input_buf.data, input_buf.size, markdown);
 	sd_markdown_free(markdown);
-
-	if (Z_BVAL_P(zend_read_property(ce, object->render,"enable_pants",sizeof("enable_pants")-1, 1 TSRMLS_CC))) {
-		struct buf *smart_buf = bufnew(128);
-		sdhtml_smartypants(smart_buf, output_buf->data,output_buf->size);
-		RETVAL_STRINGL(smart_buf->data, smart_buf->size,1);
-		bufrelease(smart_buf);
-	} else {
-		RETVAL_STRINGL(output_buf->data, output_buf->size,1);
+	
+	zval_ptr_dtor(&ret);
+	// postprocess
+	MAKE_STD_ZVAL(ret);
+	MAKE_STD_ZVAL(params[0]);
+	ZVAL_STRINGL(params[0], output_buf->data,output_buf->size, 1);
+	ZVAL_STRING(&postprocess,"postprocess",1);
+	if (call_user_function(NULL, &object->render, &postprocess, ret, 1, params TSRMLS_CC) == FAILURE) {
 	}
+	
+	if (ret != NULL && Z_TYPE_P(ret) == IS_STRING) {
+		RETVAL_STRINGL(Z_STRVAL_P(ret), Z_STRLEN_P(ret),1);
+	} else {
+		RETVAL_STRINGL(output_buf->data,output_buf->size,1);
+	}
+	zval_ptr_dtor(&ret);
+	zval_ptr_dtor(&params[0]);
+	zval_dtor(&postprocess);
+	zval_dtor(&preprocess);
 }
+
 
 
 static zend_function_entry php_sundown_markdown_methods[] = {
