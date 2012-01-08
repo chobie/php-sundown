@@ -3,4 +3,4 @@ php:
   - 5.3
   - 5.4
 
-script: rake submodule compile test:conformance 
+script: rake submodule compile test

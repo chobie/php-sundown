@@ -21,6 +21,14 @@ task :clean do
 	end
 end
 
+desc "run php test cases"
+task :test do
+	Dir.chdir("src") do
+		ENV["TESTS"] = "-q"
+		sh "make test"
+	end
+end
+
 desc "Run conformance tests"
 task "test:conformance" do
 	Dir.chdir("test") do
