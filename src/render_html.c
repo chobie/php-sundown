@@ -912,4 +912,5 @@ void php_sundown_render_html_init(TSRMLS_D)
 	INIT_NS_CLASS_ENTRY(ce, ZEND_NS_NAME("Sundown","Render"),"HTML", php_sundown_render_html_methods);
 	sundown_render_html_class_entry = zend_register_internal_class_ex(&ce, sundown_render_base_class_entry, NULL TSRMLS_CC);
 	sundown_render_html_class_entry->create_object = php_sundown_render_html_new;
+	zend_declare_property_null(sundown_render_html_class_entry, "render_flags", sizeof("render_flags")-1,  ZEND_ACC_PUBLIC TSRMLS_CC);
 }

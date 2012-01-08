@@ -441,7 +441,7 @@ PHP_METHOD(sundown_markdown, render)
 	sd_markdown_render(output_buf, input_buf.data, input_buf.size, markdown);
 	sd_markdown_free(markdown);
 
-	if (Z_BVAL_P(zend_read_property(ce, object->render,"enable_pants",sizeof("enable_pants")-1, 0 TSRMLS_CC))) {
+	if (Z_BVAL_P(zend_read_property(ce, object->render,"enable_pants",sizeof("enable_pants")-1, 1 TSRMLS_CC))) {
 		struct buf *smart_buf = bufnew(128);
 		sdhtml_smartypants(smart_buf, output_buf->data,output_buf->size);
 		RETVAL_STRINGL(smart_buf->data, smart_buf->size,1);
