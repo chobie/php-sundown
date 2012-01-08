@@ -163,3 +163,7 @@ echo $md->render("Hello World");n
 ### \Sundown\Render\Base
 
 documented at [Render.md](https://github.com/chobie/php-sundown/blob/development/Render.md)
+
+### Extensions and Render flags
+
+documented at [ExtensionsAndRenderFlags.md](https://github.com/chobie/php-sundown/blob/development/ExtensionsAndRenderFlags.md)
