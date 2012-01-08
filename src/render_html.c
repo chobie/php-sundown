@@ -386,7 +386,7 @@ PHP_METHOD(sundown_render_html, paragraph)
 	}
 
 	html = (php_sundown_render_html_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
-	php_sundown_render_base_t *base = (php_sundown_render_base_t *) zend_object_store_get_object(getThis() TSRMLS_CC);\
+	php_sundown_render_base_t *base = (php_sundown_render_base_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
 	input = str2buf(text, text_len);
 	output = bufnew(128);
 	html->cb.paragraph(output,input, &base->html);
@@ -402,16 +402,25 @@ PHP_METHOD(sundown_render_html, table)
 {
 	char *header, *body;
 	int header_len, body_len;
-	struct buf *output;
+	struct buf *b_header,*b_body,*output;
 	php_sundown_buffer_t *object;
+	php_sundown_render_html_t *html;
 	
 	if(zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
 		"ss", &header, &header_len, &body, &body_len) == FAILURE){
 		return;
 	}
 	
-	// @todo: implement table
-	RETVAL_STRINGL(body, body_len,1);
+	html = (php_sundown_render_html_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
+	php_sundown_render_base_t *base = (php_sundown_render_base_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
+	b_header = str2buf(header, header_len);
+	b_body = str2buf(body,body_len);
+	output = bufnew(128);
+	html->cb.table(output,b_header,b_body,&base->html);
+	RETVAL_STRINGL(output->data, output->size,1);
+	bufrelease(b_header);
+	bufrelease(b_body);
+	bufrelease(output);
 }
 /* }}} */
 
@@ -421,14 +430,22 @@ PHP_METHOD(sundown_render_html, table_row)
 {
 	char *contents;
 	int contents_len;
+	struct buf *output,*input;
 	php_sundown_buffer_t *object;
+	php_sundown_render_html_t *html;
 	
 	if(zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
 		"s", &contents, &contents_len) == FAILURE){
 		return;
 	}
-	// @todo: implement
-	RETVAL_STRINGL(contents, contents_len, 1);
+	html = (php_sundown_render_html_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
+	php_sundown_render_base_t *base = (php_sundown_render_base_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
+	input = str2buf(contents, contents_len);
+	output = bufnew(128);
+	html->cb.table_row(output,input,&base->html);
+	RETVAL_STRINGL(output->data, output->size,1);
+	bufrelease(input);
+	bufrelease(output);
 }
 /* }}} */
 
@@ -436,18 +453,26 @@ PHP_METHOD(sundown_render_html, table_row)
 */
 PHP_METHOD(sundown_render_html, table_cell)
 {
-	char *content, *alignment;
-	int content_len, alignment_len;
+	char *content;
+	int content_len;
+	long alignment;
 	php_sundown_buffer_t *object;
+	struct buf *input, *output,*al;
+	php_sundown_render_html_t *html;
 	
 	if(zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
-		"ss", &content, &content_len, &alignment, &alignment_len) == FAILURE){
+		"sl", &content, &content_len, &alignment) == FAILURE){
 		return;
 	}
 
-	//@todo implement
-	//bufput(object->buffer, content, content_len);
-	RETVAL_STRINGL(content, content_len,1);
+	html = (php_sundown_render_html_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
+	php_sundown_render_base_t *base = (php_sundown_render_base_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
+	input = str2buf(content, content_len);
+	output = bufnew(128);
+	html->cb.table_cell(output,input,alignment,&base->html);
+	RETVAL_STRINGL(output->data, output->size,1);
+	bufrelease(input);
+	bufrelease(output);
 }
 /* }}} */
 
@@ -546,7 +571,7 @@ PHP_METHOD(sundown_render_html, emphasis)
 	}
 
 	html = (php_sundown_render_html_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
-	php_sundown_render_base_t *base = (php_sundown_render_base_t *) zend_object_store_get_object(getThis() TSRMLS_CC);\
+	php_sundown_render_base_t *base = (php_sundown_render_base_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
 	input = str2buf(text, text_len);
 	output = bufnew(128);
 	html->cb.emphasis(output,input, &base->html);
@@ -562,16 +587,27 @@ PHP_METHOD(sundown_render_html, image)
 {
 	char *link, *title, *alt_text;
 	int link_len, title_len, alt_text_len;
+	struct buf *b_link,*b_title, *b_alt_text, *output;
 	php_sundown_buffer_t *object;
+	php_sundown_render_html_t *html;
 	
 	if(zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
 		"sss", &link, &link_len, &title, &title_len, &alt_text, &alt_text_len) == FAILURE){
 		return;
 	}
 
-	//@todo: implement here
-	//bufput(object->buffer, link, link_len);
-	RETVAL_STRINGL(link, link_len, 1);
+	html = (php_sundown_render_html_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
+	php_sundown_render_base_t *base = (php_sundown_render_base_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
+	b_link = str2buf(link, link_len);
+	b_title = str2buf(title, title_len);
+	b_alt_text = str2buf(alt_text, alt_text_len);
+	output = bufnew(128);
+	html->cb.image(output,b_link,b_title,b_alt_text, &base->html);
+	bufrelease(b_link);
+	bufrelease(b_title);
+	bufrelease(b_alt_text);
+	RETVAL_STRINGL(output->data, output->size,1);
+	bufrelease(output);
 }
 /* }}} */
 
