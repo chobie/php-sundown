@@ -344,6 +344,7 @@ PHP_MINIT_FUNCTION(sundown) {
 	php_sundown_markdown_init(TSRMLS_C);
 
 	REGISTER_NS_STRING_CONSTANT(ZEND_NS_NAME("Sundown","Render"), "HTML", "Sundown\\Render\\HTML", CONST_CS | CONST_PERSISTENT);
+	REGISTER_NS_LONG_CONSTANT(ZEND_NS_NAME("Sundown","Render"), "LIST_ORDERED",    1, CONST_CS | CONST_PERSISTENT);
 	return SUCCESS;
 }
 
