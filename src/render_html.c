@@ -56,11 +56,11 @@ zend_object_value php_sundown_render_html_new(zend_class_entry *ce TSRMLS_DC)
 zend_class_entry *sundown_render_html_class_entry;
 extern zend_class_entry *sundown_render_base_class_entry;
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render_html___construct, 0, 0, 0)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render_html___construct, 0, 0, 1)
+	ZEND_ARG_INFO(0, render_flags)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render_html_block_code, 0, 0, 2)
-	ZEND_ARG_INFO(0, code)
 	ZEND_ARG_INFO(0, language)
 ZEND_END_ARG_INFO()
 
@@ -817,7 +817,7 @@ PHP_METHOD(sundown_render_html, __construct)
 	zval *render_flags, *c_flags;
 	
 	if(zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
-		"z", &render_flags) == FAILURE){
+		"|z", &render_flags) == FAILURE){
 		return;
 	}
 
