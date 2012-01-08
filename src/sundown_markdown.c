@@ -107,7 +107,7 @@ static void rndr_tablecell(struct buf *ob, const struct buf *text, int align, vo
 			break;
 	}
 
-	BLOCK_CALLBACK_EX(ob,"table_cell", 3,buf2obj(ob), buf2str(text), &php_align);
+	BLOCK_CALLBACK_EX(ob,"table_cell", 2,buf2str(text), &php_align);
 }
 
 /***
