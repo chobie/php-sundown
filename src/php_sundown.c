@@ -251,7 +251,7 @@ static void sundown__render(SundownRendererType render_type, INTERNAL_FUNCTION_P
 	}
 	opt.self = object;
 
-	markdown = sd_markdown_new(0, 16, &sundown_render, &opt);
+	markdown = sd_markdown_new(enabled_extensions, 16, &sundown_render, &opt);
 	sd_markdown_render(output_buf, input_buf.data, input_buf.size, markdown);
 	sd_markdown_free(markdown);
 

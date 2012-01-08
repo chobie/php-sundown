@@ -430,7 +430,7 @@ PHP_METHOD(sundown_markdown, render)
 		}
 	}
 
-	markdown = sd_markdown_new(render_flags, 16, &sundown_render, &opt);
+	markdown = sd_markdown_new(enabled_extensions, 16, &sundown_render, &opt);
 	sd_markdown_render(output_buf, input_buf.data, input_buf.size, markdown);
 	sd_markdown_free(markdown);
 
