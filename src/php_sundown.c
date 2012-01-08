@@ -288,7 +288,7 @@ static void sundown__render(SundownRendererType render_type, INTERNAL_FUNCTION_P
 	setup Sundown extension */
 PHP_METHOD(sundown, __construct)
 {
-	zval *extensions = NULL;
+	zval *extensions ,*c_extensions = NULL;
 	char *buffer;
 	int buffer_len = 0;
 
@@ -302,9 +302,10 @@ PHP_METHOD(sundown, __construct)
 		MAKE_STD_ZVAL(extensions);
 		array_init(extensions);
 	} else {
-		Z_ADDREF_P(extensions);
+		ALLOC_INIT_ZVAL(c_extensions);
+		ZVAL_ZVAL(c_extensions,extensions,1,0);
 	}
-	add_property_zval_ex(getThis(),"extensions",sizeof("extensions"),extensions TSRMLS_CC);
+	add_property_zval_ex(getThis(),"extensions",sizeof("extensions"),c_extensions TSRMLS_CC);
 }
 /* }}} */
 
@@ -315,9 +316,7 @@ PHP_METHOD(sundown, __destruct)
 	zval *extensions;
 	
 	extensions = zend_read_property(sundown_class_entry, getThis(),"extensions",sizeof("extensions")-1, 0 TSRMLS_CC);
-	if(extensions != NULL && Z_TYPE_P(extensions) != IS_NULL) {
-		zval_ptr_dtor(&extensions);
-	}
+	zval_ptr_dtor(&extensions);
 }
 /* }}} */
 

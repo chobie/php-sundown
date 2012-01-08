@@ -310,7 +310,7 @@ zend_object_value php_sundown_markdown_new(zend_class_entry *ce TSRMLS_DC)
 PHP_METHOD(sundown_markdown, __construct)
 {
 	zval *render;
-	zval *extensions = NULL;
+	zval *extensions, *c_extensions = NULL;
 	zend_class_entry **ce;
 	php_sundown_markdown_t *object = (php_sundown_markdown_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
 	
@@ -350,9 +350,10 @@ PHP_METHOD(sundown_markdown, __construct)
 		MAKE_STD_ZVAL(extensions);
 		array_init(extensions);
 	} else {
-		Z_ADDREF_P(extensions);
-        }
-	add_property_zval_ex(getThis(),"extensions",sizeof("extensions"),extensions TSRMLS_CC);
+		ALLOC_INIT_ZVAL(c_extensions);
+		ZVAL_ZVAL(c_extensions,extensions,1,0);
+	}
+	add_property_zval_ex(getThis(),"extensions",sizeof("extensions"),c_extensions TSRMLS_CC);
 }
 /* }}} */
 
@@ -364,9 +365,7 @@ PHP_METHOD(sundown_markdown, __destruct)
 	zval *extensions;
 	
 	extensions = zend_read_property(sundown_markdown_class_entry, getThis(),"extensions",sizeof("extensions")-1, 0 TSRMLS_CC);
-	if(extensions != NULL && Z_TYPE_P(extensions) != IS_NULL) {
-		zval_ptr_dtor(&extensions);
-	}
+	zval_ptr_dtor(&extensions);
 }
 /* }}} */
 
