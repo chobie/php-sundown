@@ -288,7 +288,7 @@ static void sundown__render(SundownRendererType render_type, INTERNAL_FUNCTION_P
 	setup Sundown extension */
 PHP_METHOD(sundown, __construct)
 {
-	zval *extensions ,*c_extensions = NULL;
+	zval *extensions = NULL,*c_extensions = NULL;
 	char *buffer;
 	int buffer_len = 0;
 

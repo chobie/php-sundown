@@ -310,7 +310,7 @@ zend_object_value php_sundown_markdown_new(zend_class_entry *ce TSRMLS_DC)
 PHP_METHOD(sundown_markdown, __construct)
 {
 	zval *render;
-	zval *extensions, *c_extensions = NULL;
+	zval *extensions = NULL, *c_extensions = NULL;
 	zend_class_entry **ce;
 	php_sundown_markdown_t *object = (php_sundown_markdown_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
 	
