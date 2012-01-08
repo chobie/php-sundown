@@ -181,7 +181,7 @@ void php_sundown__get_flags(HashTable *table, unsigned int *enabled_extensions_p
 		extensions |= MKDEXT_TABLES;
 	}
 
-	if (SUNDOWN_HAS_EXTENSION("fenced_code")) {
+	if (SUNDOWN_HAS_EXTENSION("fenced_code_blocks")) {
 		extensions |= MKDEXT_FENCED_CODE;
 	}
 
@@ -193,7 +193,7 @@ void php_sundown__get_flags(HashTable *table, unsigned int *enabled_extensions_p
 		extensions |= MKDEXT_STRIKETHROUGH;
 	}
 
-	if (SUNDOWN_HAS_EXTENSION("lax_htmlblock")) {
+	if (SUNDOWN_HAS_EXTENSION("lax_html_blocks")) {
 		extensions |= MKDEXT_LAX_HTML_BLOCKS;
 	}
 
