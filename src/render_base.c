@@ -612,7 +612,7 @@ PHP_METHOD(sundown_render_base, __construct)
 		return;
 	}
 
-	if (Z_TYPE_P(render_flags) == IS_ARRAY) {
+	if (render_flags != NULL && Z_TYPE_P(render_flags) == IS_ARRAY) {
 		ALLOC_INIT_ZVAL(c_flags);
 		ZVAL_ZVAL(c_flags, render_flags, 1, 1);
 		add_property_zval_ex(getThis(),"render_flags",sizeof("render_flags"),c_flags TSRMLS_CC);
