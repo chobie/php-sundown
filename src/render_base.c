@@ -54,6 +54,10 @@ zend_object_value php_sundown_render_base_new(zend_class_entry *ce TSRMLS_DC)
 	return retval;
 }
 
+ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render___construct,0,0,1)
+	ZEND_ARG_INFO(0, render_flags)
+ZEND_END_ARG_INFO()
+
 ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render_base_enable_pants, 0, 0, 0)
 ZEND_END_ARG_INFO()
 
@@ -599,7 +603,38 @@ PHP_METHOD(sundown_render_base, postprocess)
 }
 /* }}} */
 
+/* {{{ proto __construct([array render_flags])
+*/
+PHP_METHOD(sundown_render_base, __construct)
+{
+	zval *render_flags, *c_flags;
+	
+	if(zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
+		"z", &render_flags) == FAILURE){
+		return;
+	}
+
+	if (Z_TYPE_P(render_flags) == IS_ARRAY) {
+		ZVAL_ZVAL(c_flags, render_flags, 1, 1);
+		add_property_zval_ex(getThis(),"render_flags",sizeof("render_flags"),c_flags TSRMLS_CC);
+	}
+	RETURN_FALSE;
+}
+/* }}} */
+
+/* {{{ proto __destruct()
+*/
+PHP_METHOD(sundown_render_base, __destruct)
+{
+	zval *render_flags;
+	render_flags = zend_read_property(sundown_render_base_class_entry, getThis(),"render_flags",sizeof("render_flags")-1, 0 TSRMLS_CC);
+	if(Z_TYPE_P(render_flags) == IS_ARRAY) {
+		zval_ptr_dtor(&render_flags);
+	}
+}
+
 static zend_function_entry php_sundown_render_base_methods[] = {
+	PHP_ME(sundown_render_base, __construct,     arginfo_sundown_render___construct,          ZEND_ACC_PUBLIC)
 	PHP_ME(sundown_render_base, enable_pants,    arginfo_sundown_render_base_enable_pants,    ZEND_ACC_PUBLIC)
 	PHP_ME(sundown_render_base, block_code,      arginfo_sundown_render_base_block_code,      ZEND_ACC_PUBLIC)
 	PHP_ME(sundown_render_base, block_quote,     arginfo_sundown_render_base_block_quote,     ZEND_ACC_PUBLIC)
@@ -629,6 +664,7 @@ static zend_function_entry php_sundown_render_base_methods[] = {
 	PHP_ME(sundown_render_base, doc_footer,      arginfo_sundown_render_base_doc_footer,      ZEND_ACC_PUBLIC)
 	PHP_ME(sundown_render_base, preprocess,      arginfo_sundown_render_base_preprocess,      ZEND_ACC_PUBLIC)
 	PHP_ME(sundown_render_base, postprocess,     arginfo_sundown_render_base_postprocess,     ZEND_ACC_PUBLIC)
+	PHP_ME(sundown_render_base, __destruct,      NULL,                                        ZEND_ACC_PUBLIC)
 	{NULL,NULL,NULL}
 };
 
@@ -638,5 +674,5 @@ void php_sundown_render_base_init(TSRMLS_D)
 	INIT_NS_CLASS_ENTRY(ce, ZEND_NS_NAME("Sundown","Render"),"Base", php_sundown_render_base_methods);
 	sundown_render_base_class_entry = zend_register_internal_class(&ce TSRMLS_CC);
 	sundown_render_base_class_entry->create_object = php_sundown_render_base_new;
-
+	zend_declare_property_null(sundown_render_base_class_entry, "render_flags", sizeof("render_flags")-1,  ZEND_ACC_PUBLIC TSRMLS_CC);
 }

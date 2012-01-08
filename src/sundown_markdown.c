@@ -305,17 +305,17 @@ zend_object_value php_sundown_markdown_new(zend_class_entry *ce TSRMLS_DC)
 }
 
 
-/* {{{ proto string __construct($render [, $options])
+/* {{{ proto string __construct($render [, $extensions])
 */
 PHP_METHOD(sundown_markdown, __construct)
 {
 	zval *render;
-	zval *options = NULL;
+	zval *extensions = NULL;
 	zend_class_entry **ce;
 	php_sundown_markdown_t *object = (php_sundown_markdown_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
 	
 	if(zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
-		"z|a", &render, &options) == FAILURE){
+		"z|a", &render, &extensions) == FAILURE){
 		return;
 	}
 
@@ -346,13 +346,13 @@ PHP_METHOD(sundown_markdown, __construct)
 	}
 	object->render = render;
 
-	if (options == NULL) {
-		MAKE_STD_ZVAL(options);
-		array_init(options);
+	if (extensions == NULL) {
+		MAKE_STD_ZVAL(extensions);
+		array_init(extensions);
 	} else {
-		Z_ADDREF_P(options);
+		Z_ADDREF_P(extensions);
         }
-	add_property_zval_ex(getThis(),"extensions",sizeof("extensions"),options TSRMLS_CC);
+	add_property_zval_ex(getThis(),"extensions",sizeof("extensions"),extensions TSRMLS_CC);
 }
 /* }}} */
 
@@ -400,11 +400,19 @@ PHP_METHOD(sundown_markdown, render)
 	
 	output_buf = bufnew(128);
 	bufgrow(output_buf, strlen(buffer) * 1.2f);
+
+
+	if(Z_TYPE_P(zend_read_property(Z_OBJCE_P(object->render), object->render,"render_flags",sizeof("render_flags")-1, 0 TSRMLS_CC)) != IS_NULL) {
+		table = Z_ARRVAL_P(zend_read_property(Z_OBJCE_P(object->render), object->render,"render_flags",sizeof("render_flags")-1, 0 TSRMLS_CC));
+		php_sundown__get_render_flags(table, &render_flags);
+		table = NULL;
+	}
 	
 	if(Z_TYPE_P(zend_read_property(sundown_class_entry, getThis(),"extensions",sizeof("extensions")-1, 0 TSRMLS_CC)) != IS_NULL) {
 		table = Z_ARRVAL_P(zend_read_property(sundown_class_entry, getThis(),"extensions",sizeof("extensions")-1, 0 TSRMLS_CC));
+		php_sundown__get_extensions(table, &enabled_extensions);
+		table = NULL;
 	}
-	php_sundown__get_flags(table, &enabled_extensions, &render_flags);
 
 	// setup render
 	switch (SUNDOWN_RENDER_HTML) {

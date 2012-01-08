@@ -127,11 +127,10 @@ int call_user_function_v(HashTable *function_table, zval **object_pp, zval *func
 
 #define SUNDOWN_HAS_EXTENSION(name)  (table != NULL && zend_hash_exists(table, name,strlen(name)+1) == 1)
 
-void php_sundown__get_flags(HashTable *table, unsigned int *enabled_extensions_p, unsigned int *render_flags_p)
+void php_sundown__get_render_flags(HashTable *table, unsigned int *render_flags_p)
 {
 	TSRMLS_FETCH();
 	unsigned int render_flags = HTML_EXPAND_TABS;
-	unsigned int extensions = 0;
 
 	/* filter_html */
 	if (SUNDOWN_HAS_EXTENSION("filter_html")) {
@@ -170,6 +169,14 @@ void php_sundown__get_flags(HashTable *table, unsigned int *enabled_extensions_p
 		render_flags |= HTML_USE_XHTML;
 	}
 
+	*render_flags_p = render_flags;
+}
+
+void php_sundown__get_extensions(HashTable *table, unsigned int *enabled_extensions_p)
+{
+	TSRMLS_FETCH();
+	unsigned int extensions = 0;
+
 	/**
 	 * Markdown extensions -- all disabled by default 
 	 */
@@ -204,6 +211,18 @@ void php_sundown__get_flags(HashTable *table, unsigned int *enabled_extensions_p
 	if (SUNDOWN_HAS_EXTENSION("superscript")) {
 		extensions |= MKDEXT_SUPERSCRIPT;
 	}
+
+	*enabled_extensions_p = extensions;
+}
+
+void php_sundown__get_flags(HashTable *table, unsigned int *enabled_extensions_p, unsigned int *render_flags_p)
+{
+	TSRMLS_FETCH();
+	unsigned int extensions = 0;
+	unsigned int render_flags = HTML_EXPAND_TABS;
+
+	php_sundown__get_extensions(table, &extensions);
+	php_sundown__get_render_flags(table, &render_flags);
 
 	*enabled_extensions_p = extensions;
 	*render_flags_p = render_flags;
