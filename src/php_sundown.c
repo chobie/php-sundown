@@ -299,8 +299,8 @@ PHP_METHOD(sundown, __construct)
 	add_property_string_ex(getThis(),"data",sizeof("data"),buffer,1 TSRMLS_CC);
 
 	if (extensions == NULL) {
-		MAKE_STD_ZVAL(extensions);
-		array_init(extensions);
+		MAKE_STD_ZVAL(c_extensions);
+		array_init(c_extensions);
 	} else {
 		ALLOC_INIT_ZVAL(c_extensions);
 		ZVAL_ZVAL(c_extensions,extensions,1,0);

@@ -348,8 +348,8 @@ PHP_METHOD(sundown_markdown, __construct)
 	object->render = render;
 
 	if (extensions == NULL) {
-		MAKE_STD_ZVAL(extensions);
-		array_init(extensions);
+		MAKE_STD_ZVAL(c_extensions);
+		array_init(c_extensions);
 	} else {
 		ALLOC_INIT_ZVAL(c_extensions);
 		ZVAL_ZVAL(c_extensions,extensions,1,0);
