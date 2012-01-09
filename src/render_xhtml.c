@@ -62,7 +62,11 @@ ZEND_END_ARG_INFO()
 */
 PHP_METHOD(sundown_render_xhtml, __construct)
 {
-	zval *render_flags, *c_flags;
+	zval *render_flags = NULL, *c_flags = NULL;
+	HashTable *hash;
+	char *key = "xhtml";
+	zval **data;
+	long length = sizeof("xhtml");
 	
 	if(zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
 		"|z", &render_flags) == FAILURE){
@@ -72,14 +76,55 @@ PHP_METHOD(sundown_render_xhtml, __construct)
 	if (render_flags != NULL && Z_TYPE_P(render_flags) == IS_ARRAY) {
 		ALLOC_INIT_ZVAL(c_flags);
 		ZVAL_ZVAL(c_flags, render_flags, 1, 1);
-		add_property_zval_ex(getThis(),"render_flags",sizeof("render_flags"),c_flags TSRMLS_CC);
+	} else {
+		zval *t;
+		MAKE_STD_ZVAL(t);
+		ZVAL_TRUE(t);
+		MAKE_STD_ZVAL(c_flags);
+		array_init(c_flags);
+		hash = Z_ARRVAL_P(c_flags);
+		zend_hash_add(hash, key, length,&t,sizeof(zval *),NULL);
+		Z_ADDREF_P(t);
+		zval_ptr_dtor(&t);
+		t = NULL;
 	}
+
+	hash = Z_ARRVAL_P(c_flags);
+	if (zend_hash_find(hash, key, length, (void **)&data) != SUCCESS) {
+		zval *t;
+		MAKE_STD_ZVAL(t);
+		ZVAL_TRUE(t);
+		zend_hash_add(hash, key, length,&t,sizeof(zval *),NULL);
+		Z_ADDREF_P(t);
+	} else {
+		if (Z_BVAL_P(*data) == NULL || Z_BVAL_P(*data) == false) {
+			zval *t;
+			MAKE_STD_ZVAL(t);
+			ZVAL_TRUE(t);
+			zend_hash_update(hash, key, length,&t,sizeof(zval *),NULL);
+			Z_ADDREF_P(t);
+		}
+	}
+	
+	add_property_zval_ex(getThis(),"render_flags",sizeof("render_flags"),c_flags TSRMLS_CC);
 }
 /* }}} */
+
+/* {{{ proto __destruct()
+*/
+PHP_METHOD(sundown_render_xhtml, __destruct)
+{
+	zval *render_flags;
+	render_flags = zend_read_property(sundown_render_xhtml_class_entry, getThis(),"render_flags",sizeof("render_flags")-1, 0 TSRMLS_CC);
+	if(Z_TYPE_P(render_flags) == IS_ARRAY) {
+		zval_ptr_dtor(&render_flags);
+	}
+}
 
 
 static zend_function_entry php_sundown_render_xhtml_methods[] = {
 	PHP_ME(sundown_render_xhtml, __construct,     arginfo_sundown_render___construct,          ZEND_ACC_PUBLIC)
+	PHP_ME(sundown_render_xhtml, __destruct,      NULL,                                        ZEND_ACC_PUBLIC)
 	{NULL,NULL,NULL}
 };
 
