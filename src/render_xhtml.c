@@ -97,7 +97,7 @@ PHP_METHOD(sundown_render_xhtml, __construct)
 		zend_hash_add(hash, key, length,&t,sizeof(zval *),NULL);
 		Z_ADDREF_P(t);
 	} else {
-		if (Z_BVAL_P(*data) == NULL || Z_BVAL_P(*data) == false) {
+		if (Z_BVAL_P(*data) == NULL || !Z_BVAL_P(*data)) {
 			zval *t;
 			MAKE_STD_ZVAL(t);
 			ZVAL_TRUE(t);
