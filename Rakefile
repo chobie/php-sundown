@@ -24,7 +24,7 @@ end
 desc "run php test cases"
 task :test do
 	Dir.chdir("src") do
-		ENV["TESTS"] = "-q"
+		ENV["TESTS"] = "--show-diff -q"
 		sh "make test"
 	end
 end
