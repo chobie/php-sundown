@@ -25,6 +25,7 @@
 #include "php_sundown.h"
 
 extern void php_sundown_render_html_init(TSRMLS_D);
+extern void php_sundown_render_xhtml_init(TSRMLS_D);
 extern void php_sundown_markdown_init(TSRMLS_D);
 extern void php_sundown_markdown_init(TSRMLS_D);
 extern void php_sundown_buffer_init(TSRMLS_D);
@@ -359,6 +360,7 @@ PHP_MINIT_FUNCTION(sundown) {
 	php_sundown_buffer_init(TSRMLS_C);
 	php_sundown_render_base_init(TSRMLS_C);
 	php_sundown_render_html_init(TSRMLS_C);
+	php_sundown_render_xhtml_init(TSRMLS_C);
 	php_sundown_markdown_init(TSRMLS_C);
 
 	REGISTER_NS_STRING_CONSTANT(ZEND_NS_NAME("Sundown","Render"), "HTML", "Sundown\\Render\\HTML", CONST_CS | CONST_PERSISTENT);

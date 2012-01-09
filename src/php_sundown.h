@@ -65,6 +65,12 @@ typedef struct{
 typedef struct{
 	zend_object zo;
 	struct html_renderopt html;
+	struct sd_callbacks cb;
+} php_sundown_render_xhtml_t;
+
+typedef struct{
+	zend_object zo;
+	struct html_renderopt html;
 } php_sundown_render_base_t;
 
 #define SPAN_CALLBACK_EX(buffer,method_name, ...) {\
