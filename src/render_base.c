@@ -607,7 +607,7 @@ PHP_METHOD(sundown_render_base, postprocess)
 */
 PHP_METHOD(sundown_render_base, __construct)
 {
-	zval *render_flags, *c_flags;
+	zval *render_flags = NULL, *c_flags = NULL;
 	
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
 		"|z", &render_flags) == FAILURE) {
