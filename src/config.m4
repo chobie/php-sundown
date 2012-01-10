@@ -5,7 +5,6 @@ if test $PHP_SUNDOWN != "no"; then
   PHP_NEW_EXTENSION(sundown,
 	php_sundown.c \
 	sundown_markdown.c \
-	sundown_buffer.c \
 	render_base.c \
 	render_html.c \
 	render_xhtml.c \

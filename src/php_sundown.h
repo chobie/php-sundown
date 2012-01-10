@@ -22,7 +22,6 @@ extern zend_module_entry sundown_module_entry;
 
 extern int call_user_function_v(HashTable *function_table, zval **object_pp, zval *function_name, zval *retval_ptr, zend_uint param_count, ...);
 extern inline zval* buf2str(const struct buf *text);
-extern inline zval* buf2obj(const struct buf *text);
 extern inline zval* buf2long(long value);
 extern inline zval* char2str(char *text);
 extern struct buf* str2buf(const char *text, size_t length);
@@ -111,5 +110,7 @@ typedef struct{
 	zval_ptr_dtor(&ret);\
 	zval_dtor(&func);\
 }
+
+#define SUNDOWN_HAS_EXTENSION(name)  (table != NULL && zend_hash_exists(table, name,strlen(name)+1) == 1)
 
 #endif /* PHP_SUNDOWN_H */

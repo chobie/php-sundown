@@ -116,6 +116,7 @@ static void rndr_tablecell(struct buf *ob, const struct buf *text, int align, vo
 static int rndr_autolink(struct buf *ob, const struct buf *link, enum mkd_autolink type, void *opaque)
 {
 	zval *m_type;
+	
 	MAKE_STD_ZVAL(m_type);
 	if (type == MKDA_NORMAL) {
 		ZVAL_STRING(m_type, "url",1);
@@ -321,7 +322,7 @@ PHP_METHOD(sundown_markdown, __construct)
 	}
 
 	if (Z_TYPE_P(render) == IS_STRING) {
-		if(zend_lookup_class(Z_STRVAL_P(render), strlen(Z_STRVAL_P(render)), &ce TSRMLS_CC) == FAILURE) {
+		if (zend_lookup_class(Z_STRVAL_P(render), strlen(Z_STRVAL_P(render)), &ce TSRMLS_CC) == FAILURE) {
 			zend_throw_exception_ex(spl_ce_InvalidArgumentException, 0 TSRMLS_CC,"class %s does not find.", Z_STRVAL_P(render));
 		    return;
 		} else {

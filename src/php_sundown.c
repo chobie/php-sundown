@@ -28,7 +28,6 @@ extern void php_sundown_render_html_init(TSRMLS_D);
 extern void php_sundown_render_xhtml_init(TSRMLS_D);
 extern void php_sundown_markdown_init(TSRMLS_D);
 extern void php_sundown_markdown_init(TSRMLS_D);
-extern void php_sundown_buffer_init(TSRMLS_D);
 
 zend_class_entry *sundown_class_entry;
 
@@ -42,6 +41,7 @@ ZEND_END_ARG_INFO()
 inline zval* buf2str(const struct buf *text)
 {
 	zval *str;
+	
 	MAKE_STD_ZVAL(str);
 	if (text == NULL || text->size == 0) {
 		ZVAL_NULL(str);
@@ -54,6 +54,7 @@ inline zval* buf2str(const struct buf *text)
 inline zval* char2str(char *text)
 {
 	zval *str;
+	
 	MAKE_STD_ZVAL(str);
 	ZVAL_STRING(str, text ,1);
 	return str;
@@ -62,27 +63,16 @@ inline zval* char2str(char *text)
 inline zval* buf2long(long value)
 {
 	zval *data;
+	
 	MAKE_STD_ZVAL(data);
 	ZVAL_LONG(data,value);
 	return data;
 }
 
-inline zval* buf2obj(const struct buf *text)
-{
-	TSRMLS_FETCH();
-	zval *obj;
-	MAKE_STD_ZVAL(obj);
-
-	object_init_ex(obj, sundown_buffer_class_entry);
-	php_sundown_buffer_t *object = (php_sundown_buffer_t *) zend_object_store_get_object(obj TSRMLS_CC);
-	object->buffer = text;
-	
-	return obj;
-}
-
 inline struct buf* str2buf(const char *text, size_t length)
 {
 	struct buf* buffer;
+	
 	if (length > 0) {
 		buffer = bufnew(length);
 		bufput(buffer, text, length);
@@ -126,7 +116,6 @@ int call_user_function_v(HashTable *function_table, zval **object_pp, zval *func
 	return ret;
 }
 
-#define SUNDOWN_HAS_EXTENSION(name)  (table != NULL && zend_hash_exists(table, name,strlen(name)+1) == 1)
 
 void php_sundown__get_render_flags(HashTable *table, unsigned int *render_flags_p)
 {
@@ -253,7 +242,7 @@ static void sundown__render(SundownRendererType render_type, INTERNAL_FUNCTION_P
 	output_buf = bufnew(128);
 	bufgrow(output_buf, strlen(buffer) * 1.2f);
 
-	if(Z_TYPE_P(zend_read_property(sundown_class_entry, getThis(),"extensions",sizeof("extensions")-1, 0 TSRMLS_CC)) != IS_NULL) {
+	if (Z_TYPE_P(zend_read_property(sundown_class_entry, getThis(),"extensions",sizeof("extensions")-1, 0 TSRMLS_CC)) != IS_NULL) {
 		table = Z_ARRVAL_P(zend_read_property(sundown_class_entry, getThis(),"extensions",sizeof("extensions")-1, 0 TSRMLS_CC));
 	}
 	php_sundown__get_flags(table, &enabled_extensions, &render_flags);
@@ -357,7 +346,6 @@ static zend_function_entry php_sundown_methods[] = {
 
 PHP_MINIT_FUNCTION(sundown) {
 	php_sundown_init(TSRMLS_C);
-	php_sundown_buffer_init(TSRMLS_C);
 	php_sundown_render_base_init(TSRMLS_C);
 	php_sundown_render_html_init(TSRMLS_C);
 	php_sundown_render_xhtml_init(TSRMLS_C);
