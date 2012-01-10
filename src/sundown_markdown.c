@@ -314,8 +314,8 @@ PHP_METHOD(sundown_markdown, __construct)
 	zend_class_entry **ce;
 	php_sundown_markdown_t *object = (php_sundown_markdown_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
 	
-	if(zend_parse_parameters_ex(ZEND_PARSE_PARAMS_QUIET, ZEND_NUM_ARGS() TSRMLS_CC,
-		"z|a", &render, &extensions) == FAILURE){
+	if (zend_parse_parameters_ex(ZEND_PARSE_PARAMS_QUIET, ZEND_NUM_ARGS() TSRMLS_CC,
+		"z|a", &render, &extensions) == FAILURE) {
 		zend_throw_exception_ex(spl_ce_InvalidArgumentException, 0 TSRMLS_CC," Sundown\Markdown::__construct() expects parameter 2 to be array");
 		return;
 	}
@@ -389,28 +389,28 @@ PHP_METHOD(sundown_markdown, render)
 	zend_class_entry *ce;
 	HashTable *table;
 	
-	if(zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
-		"s", &buffer, &buffer_len) == FAILURE){
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
+		"s", &buffer, &buffer_len) == FAILURE) {
 		return;
 	}
 		
 	output_buf = bufnew(128);
-	bufgrow(output_buf, strlen(buffer) * 1.2f);
+	bufgrow(output_buf, buffer_len * 1.2f);
 
 
-	if(Z_TYPE_P(zend_read_property(Z_OBJCE_P(object->render), object->render,"render_flags",sizeof("render_flags")-1, 0 TSRMLS_CC)) != IS_NULL) {
+	if (Z_TYPE_P(zend_read_property(Z_OBJCE_P(object->render), object->render,"render_flags",sizeof("render_flags")-1, 0 TSRMLS_CC)) != IS_NULL) {
 		table = Z_ARRVAL_P(zend_read_property(Z_OBJCE_P(object->render), object->render,"render_flags",sizeof("render_flags")-1, 0 TSRMLS_CC));
 		php_sundown__get_render_flags(table, &render_flags);
 		table = NULL;
 	}
 	
-	if(Z_TYPE_P(zend_read_property(sundown_class_entry, getThis(),"extensions",sizeof("extensions")-1, 0 TSRMLS_CC)) != IS_NULL) {
+	if (Z_TYPE_P(zend_read_property(sundown_class_entry, getThis(),"extensions",sizeof("extensions")-1, 0 TSRMLS_CC)) != IS_NULL) {
 		table = Z_ARRVAL_P(zend_read_property(sundown_class_entry, getThis(),"extensions",sizeof("extensions")-1, 0 TSRMLS_CC));
 		php_sundown__get_extensions(table, &enabled_extensions);
 		table = NULL;
 	}
 
-	// setup render
+	/* @todo: setup render */
 	switch (SUNDOWN_RENDER_HTML) {
 		case SUNDOWN_RENDER_HTML:
 			sdhtml_renderer(&sundown_render, &opt.html, render_flags);
@@ -425,6 +425,7 @@ PHP_METHOD(sundown_markdown, render)
 	ce = Z_OBJCE_P(object->render);
 	opt.self = object->render;
 
+	/* @todo: move definitions to top */
 	void **source = (void **)&php_sundown_callbacks;
 	void **dest = (void **)&sundown_render;
 	size_t i;
@@ -434,7 +435,7 @@ PHP_METHOD(sundown_markdown, render)
 		}
 	}
 
-	// preprocess
+	/* preprocess */
 	MAKE_STD_ZVAL(ret);
 	MAKE_STD_ZVAL(params[0]);
 	ZVAL_STRINGL(params[0], buffer,strlen(buffer), 1);
