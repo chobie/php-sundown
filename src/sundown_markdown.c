@@ -336,7 +336,7 @@ PHP_METHOD(sundown_markdown, __construct)
 		Z_ADDREF_P(render);	
 	}
 
-	if (instanceof_function_ex(Z_OBJCE_P(render), sundown_render_base_class_entry, 0 TSRMLS_CC) == false) {
+	if (!instanceof_function_ex(Z_OBJCE_P(render), sundown_render_base_class_entry, 0 TSRMLS_CC)) {
 		zend_throw_exception_ex(spl_ce_InvalidArgumentException, 0 TSRMLS_CC,"Render class must extend Sundown\\Render\\Base");
 		return;
 	}
