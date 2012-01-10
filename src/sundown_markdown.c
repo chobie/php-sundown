@@ -306,7 +306,7 @@ zend_object_value php_sundown_markdown_new(zend_class_entry *ce TSRMLS_DC)
 }
 
 
-/* {{{ proto string __construct($render [, $extensions])
+/* {{{ proto string Sundown\Markdown::__construct(Sundown\Render\Base $render [, array $extensions])
 */
 PHP_METHOD(sundown_markdown, __construct)
 {
@@ -317,7 +317,7 @@ PHP_METHOD(sundown_markdown, __construct)
 	
 	if (zend_parse_parameters_ex(ZEND_PARSE_PARAMS_QUIET, ZEND_NUM_ARGS() TSRMLS_CC,
 		"z|a", &render, &extensions) == FAILURE) {
-		zend_throw_exception_ex(spl_ce_InvalidArgumentException, 0 TSRMLS_CC," Sundown\Markdown::__construct() expects parameter 2 to be array");
+		zend_throw_exception_ex(spl_ce_InvalidArgumentException, 0 TSRMLS_CC," Sundown\\Markdown::__construct() expects parameter 2 to be array");
 		return;
 	}
 
@@ -342,7 +342,7 @@ PHP_METHOD(sundown_markdown, __construct)
 		Z_ADDREF_P(render);	
 	}
 
-	if (instanceof_function_ex(Z_OBJCE_P(render), sundown_render_base_class_entry, 0 TSRMLS_CC) == FAILURE) {
+	if (instanceof_function_ex(Z_OBJCE_P(render), sundown_render_base_class_entry, 0 TSRMLS_CC) == false) {
 		zend_throw_exception_ex(spl_ce_InvalidArgumentException, 0 TSRMLS_CC,"Render class must extend Sundown\\Render\\Base");
 		return;
 	}
@@ -360,7 +360,7 @@ PHP_METHOD(sundown_markdown, __construct)
 /* }}} */
 
 
-/* {{{ proto void __destruct()
+/* {{{ proto void Sundown\Markdown::__destruct()
 	cleanup variables */
 PHP_METHOD(sundown_markdown, __destruct)
 {
@@ -373,7 +373,7 @@ PHP_METHOD(sundown_markdown, __destruct)
 
 
 
-/* {{{ proto string render($body)
+/* {{{ proto string Sundown\Markdown::render(string $body)
 */
 PHP_METHOD(sundown_markdown, render)
 {
@@ -389,6 +389,9 @@ PHP_METHOD(sundown_markdown, render)
 	int buffer_len = 0;
 	zend_class_entry *ce;
 	HashTable *table;
+	void **source, **dest;
+	size_t i;
+
 	
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
 		"s", &buffer, &buffer_len) == FAILURE) {
@@ -397,7 +400,6 @@ PHP_METHOD(sundown_markdown, render)
 		
 	output_buf = bufnew(128);
 	bufgrow(output_buf, buffer_len * 1.2f);
-
 
 	if (Z_TYPE_P(zend_read_property(Z_OBJCE_P(object->render), object->render,"render_flags",sizeof("render_flags")-1, 0 TSRMLS_CC)) != IS_NULL) {
 		table = Z_ARRVAL_P(zend_read_property(Z_OBJCE_P(object->render), object->render,"render_flags",sizeof("render_flags")-1, 0 TSRMLS_CC));
@@ -426,10 +428,8 @@ PHP_METHOD(sundown_markdown, render)
 	ce = Z_OBJCE_P(object->render);
 	opt.self = object->render;
 
-	/* @todo: move definitions to top */
-	void **source = (void **)&php_sundown_callbacks;
-	void **dest = (void **)&sundown_render;
-	size_t i;
+	source = (void **)&php_sundown_callbacks;
+	dest = (void **)&sundown_render;
 	for (i = 0; i < php_sundown_method_count; ++i) {
 		if (zend_hash_exists(&ce->function_table, php_sundown_method_names[i], strlen(php_sundown_method_names[i])+1)) {
 			dest[i] = source[i];
@@ -454,13 +454,13 @@ PHP_METHOD(sundown_markdown, render)
 	}
 	zval_ptr_dtor(&params[0]);
 
-	// proceess markdown
+	/* proceess markdown */
 	markdown = sd_markdown_new(enabled_extensions, 16, &sundown_render, &opt);
 	sd_markdown_render(output_buf, input_buf.data, input_buf.size, markdown);
 	sd_markdown_free(markdown);
 	
 	zval_ptr_dtor(&ret);
-	// postprocess
+	/* postprocess */
 	MAKE_STD_ZVAL(ret);
 	MAKE_STD_ZVAL(params[0]);
 	ZVAL_STRINGL(params[0], output_buf->data,output_buf->size, 1);
@@ -491,6 +491,7 @@ static zend_function_entry php_sundown_markdown_methods[] = {
 void php_sundown_markdown_init(TSRMLS_D)
 {
 	zend_class_entry ce;
+	
 	INIT_NS_CLASS_ENTRY(ce, "Sundown","Markdown", php_sundown_markdown_methods);
 	sundown_markdown_class_entry = zend_register_internal_class(&ce TSRMLS_CC);
 	sundown_markdown_class_entry->create_object = php_sundown_markdown_new;

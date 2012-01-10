@@ -178,7 +178,7 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render_base_postprocess, 0, 0, 1)
 	ZEND_ARG_INFO(0, full_document)
 ZEND_END_ARG_INFO()
 
-/* {{{ proto string block_code($code, $language)
+/* {{{ proto string Sundown\Render\Base::block_code($code, $language)
 */
 PHP_METHOD(sundown_render_base, block_code)
 {
@@ -194,7 +194,7 @@ PHP_METHOD(sundown_render_base, block_code)
 }
 /* }}} */
 
-/* {{{ proto string block_quote($quote)
+/* {{{ proto string Sundown\Render\Base::block_quote($quote)
 */
 PHP_METHOD(sundown_render_base, block_quote)
 {
@@ -210,7 +210,7 @@ PHP_METHOD(sundown_render_base, block_quote)
 }
 /* }}} */
 
-/* {{{ proto string block_html($raw_html)
+/* {{{ proto string Sundown\Render\Base::block_html($raw_html)
 */
 PHP_METHOD(sundown_render_base, block_html)
 {
@@ -226,7 +226,7 @@ PHP_METHOD(sundown_render_base, block_html)
 }
 /* }}} */
 
-/* {{{ proto string header($htext,$header_level)
+/* {{{ proto string Sundown\Render\Base::header($htext,$header_level)
 */
 PHP_METHOD(sundown_render_base, header)
 {
@@ -242,7 +242,7 @@ PHP_METHOD(sundown_render_base, header)
 }
 /* }}} */
 
-/* {{{ proto string hrule()
+/* {{{ proto string Sundown\Render\Base::hrule()
 */
 PHP_METHOD(sundown_render_base, hrule)
 {
@@ -252,7 +252,7 @@ PHP_METHOD(sundown_render_base, hrule)
 }
 /* }}} */
 
-/* {{{ proto string list_box($contents, $list_type)
+/* {{{ proto string Sundown\Render\Base::list_box($contents, $list_type)
 */
 PHP_METHOD(sundown_render_base, list_box)
 {
@@ -269,7 +269,7 @@ PHP_METHOD(sundown_render_base, list_box)
 }
 /* }}} */
 
-/* {{{ proto string list_item($text, $list_type)
+/* {{{ proto string Sundown\Render\Base::list_item($text, $list_type)
 */
 PHP_METHOD(sundown_render_base, list_item)
 {
@@ -286,7 +286,7 @@ PHP_METHOD(sundown_render_base, list_item)
 }
 /* }}} */
 
-/* {{{ proto string paragraph($text)
+/* {{{ proto string Sundown\Render\Base::paragraph($text)
 */
 PHP_METHOD(sundown_render_base, paragraph)
 {
@@ -303,7 +303,7 @@ PHP_METHOD(sundown_render_base, paragraph)
 }
 /* }}} */
 
-/* {{{ proto string table($header, $body)
+/* {{{ proto string Sundown\Render\Base::table($header, $body)
 */
 PHP_METHOD(sundown_render_base, table)
 {
@@ -319,7 +319,7 @@ PHP_METHOD(sundown_render_base, table)
 }
 /* }}} */
 
-/* {{{ proto string table_row($content)
+/* {{{ proto string Sundown\Render\Base::table_row($content)
 */
 PHP_METHOD(sundown_render_base, table_row)
 {
@@ -335,7 +335,7 @@ PHP_METHOD(sundown_render_base, table_row)
 }
 /* }}} */
 
-/* {{{ proto string table_cell($content, $alignment)
+/* {{{ proto string Sundown\Render\Base::table_cell($content, $alignment)
 */
 PHP_METHOD(sundown_render_base, table_cell)
 {
@@ -351,7 +351,7 @@ PHP_METHOD(sundown_render_base, table_cell)
 }
 /* }}} */
 
-/* {{{ proto string autolink($link, $link_type)
+/* {{{ proto string Sundown\Render\Base::autolink($link, $link_type)
 */
 PHP_METHOD(sundown_render_base, autolink)
 {
@@ -367,7 +367,7 @@ PHP_METHOD(sundown_render_base, autolink)
 }
 /* }}} */
 
-/* {{{ proto string codespan($code)
+/* {{{ proto string Sundown\Render\Base::codespan($code)
 */
 PHP_METHOD(sundown_render_base, codespan)
 {
@@ -383,7 +383,7 @@ PHP_METHOD(sundown_render_base, codespan)
 }
 /* }}} */
 
-/* {{{ proto string double_emphasis($text)
+/* {{{ proto string Sundown\Render\Base::double_emphasis($text)
 */
 PHP_METHOD(sundown_render_base, double_emphasis)
 {
@@ -399,7 +399,7 @@ PHP_METHOD(sundown_render_base, double_emphasis)
 }
 /* }}} */
 
-/* {{{ proto string emphasis($text)
+/* {{{ proto string Sundown\Render\Base::emphasis($text)
 */
 PHP_METHOD(sundown_render_base, emphasis)
 {
@@ -416,7 +416,7 @@ PHP_METHOD(sundown_render_base, emphasis)
 }
 /* }}} */
 
-/* {{{ proto string image($link, $title, $alt_text)
+/* {{{ proto string Sundown\Render\Base::image($link, $title, $alt_text)
 */
 PHP_METHOD(sundown_render_base, image)
 {
@@ -432,7 +432,7 @@ PHP_METHOD(sundown_render_base, image)
 }
 /* }}} */
 
-/* {{{ proto string linebreak()
+/* {{{ proto string Sundown\Render\Base::linebreak()
 */
 PHP_METHOD(sundown_render_base, linebreak)
 {
@@ -442,7 +442,7 @@ PHP_METHOD(sundown_render_base, linebreak)
 }
 /* }}} */
 
-/* {{{ proto string link($link,$title,$content)
+/* {{{ proto string Sundown\Render\Base::link($link,$title,$content)
 */
 PHP_METHOD(sundown_render_base, link)
 {
@@ -458,7 +458,7 @@ PHP_METHOD(sundown_render_base, link)
 }
 /* }}} */
 
-/* {{{ proto string raw_html($raw_html)
+/* {{{ proto string Sundown\Render\Base::raw_html($raw_html)
 */
 PHP_METHOD(sundown_render_base, raw_html)
 {
@@ -474,7 +474,7 @@ PHP_METHOD(sundown_render_base, raw_html)
 }
 /* }}} */
 
-/* {{{ proto string triple_emphasis($text)
+/* {{{ proto string Sundown\Render\Base::triple_emphasis($text)
 */
 PHP_METHOD(sundown_render_base, triple_emphasis)
 {
@@ -490,7 +490,7 @@ PHP_METHOD(sundown_render_base, triple_emphasis)
 }
 /* }}} */
 
-/* {{{ proto string strikethrough($text)
+/* {{{ proto string Sundown\Render\Base::strikethrough($text)
 */
 PHP_METHOD(sundown_render_base, strikethrough)
 {
@@ -506,7 +506,7 @@ PHP_METHOD(sundown_render_base, strikethrough)
 }
 /* }}} */
 
-/* {{{ proto string superscript($text)
+/* {{{ proto string Sundown\Render\Base::superscript($text)
 */
 PHP_METHOD(sundown_render_base, superscript)
 {
@@ -522,7 +522,7 @@ PHP_METHOD(sundown_render_base, superscript)
 }
 /* }}} */
 
-/* {{{ proto string entity($text)
+/* {{{ proto string Sundown\Render\Base::entity($text)
 */
 PHP_METHOD(sundown_render_base, entity)
 {
@@ -538,7 +538,7 @@ PHP_METHOD(sundown_render_base, entity)
 }
 /* }}} */
 
-/* {{{ proto string normal_text($text)
+/* {{{ proto string Sundown\Render\Base::normal_text($text)
 */
 PHP_METHOD(sundown_render_base, normal_text)
 {
@@ -554,7 +554,7 @@ PHP_METHOD(sundown_render_base, normal_text)
 }
 /* }}} */
 
-/* {{{ proto string doc_header()
+/* {{{ proto string Sundown\Render\Base::doc_header()
 */
 PHP_METHOD(sundown_render_base, doc_header)
 {
@@ -562,7 +562,7 @@ PHP_METHOD(sundown_render_base, doc_header)
 }
 /* }}} */
 
-/* {{{ proto string doc_footer()
+/* {{{ proto string Sundown\Render\Base::doc_footer()
 */
 PHP_METHOD(sundown_render_base, doc_footer)
 {
@@ -570,7 +570,7 @@ PHP_METHOD(sundown_render_base, doc_footer)
 }
 /* }}} */
 
-/* {{{ proto string preprocess($full_document)
+/* {{{ proto string Sundown\Render\Base::preprocess($full_document)
 */
 PHP_METHOD(sundown_render_base, preprocess)
 {
@@ -586,7 +586,7 @@ PHP_METHOD(sundown_render_base, preprocess)
 }
 /* }}} */
 
-/* {{{ proto string postprocess($full_document)
+/* {{{ proto string Sundown\Render\Base::postprocess($full_document)
 */
 PHP_METHOD(sundown_render_base, postprocess)
 {
@@ -609,7 +609,7 @@ PHP_METHOD(sundown_render_base, postprocess)
 }
 /* }}} */
 
-/* {{{ proto __construct([array render_flags])
+/* {{{ proto Sundown\Render\Base::__construct([array render_flags])
 */
 PHP_METHOD(sundown_render_base, __construct)
 {
@@ -628,7 +628,7 @@ PHP_METHOD(sundown_render_base, __construct)
 }
 /* }}} */
 
-/* {{{ proto __destruct()
+/* {{{ proto Sundown\Render\Base::__destruct()
 */
 PHP_METHOD(sundown_render_base, __destruct)
 {

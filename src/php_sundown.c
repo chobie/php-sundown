@@ -274,7 +274,7 @@ static void sundown__render(SundownRendererType render_type, INTERNAL_FUNCTION_P
 	}
 }
 
-/* {{{ proto string __construct(string $string [, array $extensions])
+/* {{{ proto string Sundonw::__construct(string $string [, array $extensions])
 	setup Sundown extension */
 PHP_METHOD(sundown, __construct)
 {
@@ -299,7 +299,7 @@ PHP_METHOD(sundown, __construct)
 }
 /* }}} */
 
-/* {{{ proto void __destruct()
+/* {{{ proto void Sundonw::__destruct()
 	cleanup variables */
 PHP_METHOD(sundown, __destruct)
 {
@@ -310,7 +310,7 @@ PHP_METHOD(sundown, __destruct)
 }
 /* }}} */
 
-/* {{{ proto string to_html()
+/* {{{ proto string Sundonw::to_html()
 	Returns converted HTML string */
 PHP_METHOD(sundown, to_html)
 {
@@ -318,7 +318,7 @@ PHP_METHOD(sundown, to_html)
 }
 /* }}} */
 
-/* {{{ proto string __toString()
+/* {{{ proto string Sundonw::__toString()
 	Returns converted HTML string */
 PHP_METHOD(sundown, __toString)
 {
@@ -326,7 +326,7 @@ PHP_METHOD(sundown, __toString)
 }
 /* }}} */
 
-/* {{{ proto string to_toc()
+/* {{{ proto string Sundonw::to_toc()
 	Returns table of contents*/
 PHP_METHOD(sundown, to_toc)
 {
@@ -336,6 +336,7 @@ PHP_METHOD(sundown, to_toc)
 static zend_function_entry php_sundown_methods[] = {
 	PHP_ME(sundown, __construct, arginfo_sundown__construct, ZEND_ACC_PUBLIC)
 	PHP_ME(sundown, __destruct,  NULL,                       ZEND_ACC_PUBLIC)
+	/* to_html and to_toc methods are compatible with Redcarpet */
 	PHP_ME(sundown, to_html,     NULL,                       ZEND_ACC_PUBLIC)
 	PHP_ME(sundown, to_toc,      NULL,                       ZEND_ACC_PUBLIC)
 	PHP_ME(sundown, __toString,  NULL,                       ZEND_ACC_PUBLIC)
@@ -382,6 +383,7 @@ zend_module_entry sundown_module_entry = {
 void php_sundown_init(TSRMLS_D)
 {
 	zend_class_entry ce;
+	
 	INIT_CLASS_ENTRY(ce, "Sundown", php_sundown_methods);
 	sundown_class_entry = zend_register_internal_class(&ce TSRMLS_CC);
 	zend_declare_property_null(sundown_class_entry, "extensions", sizeof("extensions")-1,  ZEND_ACC_PUBLIC TSRMLS_CC);
