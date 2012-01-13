@@ -1,37 +1,29 @@
 
 desc "compile php-sundown"
 task :compile => ['sundown/src/markdown.h'] do
-	Dir.chdir("src") do
-		sh "phpize"
-		sh "./configure"
-		sh "make"
-	end
+	sh "phpize"
+	sh "./configure"
+	sh "make"
 end
 
 desc "install php-sundown to your php"
 task :install => [:compile] do
-	Dir.chdir("src") do
-		sh "make install"
-	end
+	sh "make install"
 end
 
 task :clean do
-	Dir.chdir("src") do
-		sh "phpize --clean"
-	end
+	sh "phpize --clean"
 end
 
 desc "run php test cases"
 task :test do
-	Dir.chdir("src") do
-		ENV["TESTS"] = "--show-diff -q"
-		sh "make test"
-	end
+	ENV["TESTS"] = "--show-diff -q"
+	sh "make test"
 end
 
 desc "Run conformance tests"
 task "test:conformance" do
-	Dir.chdir("test") do
+	Dir.chdir("conformance_test") do
 		script = "#{pwd}/Markdown.sh"
 		Dir.chdir("MarkdownTest_1.0.3") do 
 			sh "./MarkdownTest.pl --script='#{script}' --tidy"
@@ -48,7 +40,7 @@ task :gather => 'sundown/src/markdown.h' do |t|
       'sundown/html/{html,html_smartypants,houdini_html_e,houdini_href_e}.c',
       'sundown/html/{html,houdini}.h',
     ]
-  cp files, 'src/',
+  cp files, './',
     :preserve => true,
     :verbose => true
 end
@@ -56,8 +48,6 @@ end
 file 'sundown/src/markdown.h' do |t|
   abort "The Sundown submodule is required."
 end
-
-
 
 task :submodule do
   sh "git submodule init"
