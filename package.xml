@@ -34,49 +34,49 @@ PECL Sundown provides straight forward object oriented Markdwon API and customiz
    <file role="doc" name="EXPERIMENTAL" />
    <file role="doc" name="LICENSE" />
    <file role="doc" name="README.md" />
-   <file role="doc" name="ExtensionsAndRenderFlags.md" />
-   <file role="doc" name="Render.md" />
    <file role="doc" name="Rakefile" />
-   <dir name="src" baseinstalldir="/">
-    <!-- bundled Sundowon library -->
-    <file role="src" name="autolink.c" />
-    <file role="src" name="autolink.h" />
-    <file role="src" name="buffer.c" />
-    <file role="src" name="buffer.h" />
-    <file role="src" name="houdini.h" />
-    <file role="src" name="houdini_href_e.c" />
-    <file role="src" name="houdini_html_e.c" />
-    <file role="src" name="html.h" />
-    <file role="src" name="html.c" />
-    <file role="src" name="html_blocks.h" />
-    <file role="src" name="html_smartypants.c" />
-    <file role="src" name="markdown.c" />
-    <file role="src" name="markdown.h" />
-    <file role="src" name="stack.c" />
-    <file role="src" name="stack.h" />
-    <!-- /bundled Sundown library -->
-    <file role="src" name="config.m4" />
-    <file role="src" name="config.w32" />
-    <file role="src" name="php_sundown.h" />
-    <file role="src" name="php_sundown.c" />
-    <file role="src" name="sundown_markdown.c" />
-    <file role="src" name="render_base.c" />
-    <file role="src" name="render_html.c" />
-    <file role="src" name="render_xhtml.c" />
-    <dir name="tests">
-     <file role="test" name="001.phpt" />
-     <file role="test" name="002-basic-constructor-arguments.phpt" />
-     <file role="test" name="002-basic-to_html.phpt" />
-     <file role="test" name="002-constructor-arguments.phpt" />
-     <file role="test" name="003-advanced-constructor.phpt" />
-     <file role="test" name="003-advanced-render-html-block_code.phpt" />
-     <file role="test" name="003-advanced-render-html-block_html.phpt" />
-     <file role="test" name="003-advanced-render-html-block_quote.phpt" />
-     <file role="test" name="003-advanced-render-html-header.phpt" />
-     <file role="test" name="003-advanced-render-html-list.phpt" />
-     <file role="test" name="003-advanced-render-html-paragraph.phpt" />
-     <file role="test" name="003-to_html.phpt" />
-    </dir>
+   <!-- bundled Sundowon library -->
+   <file role="src" name="autolink.c" />
+   <file role="src" name="autolink.h" />
+   <file role="src" name="buffer.c" />
+   <file role="src" name="buffer.h" />
+   <file role="src" name="houdini.h" />
+   <file role="src" name="houdini_href_e.c" />
+   <file role="src" name="houdini_html_e.c" />
+   <file role="src" name="html.h" />
+   <file role="src" name="html.c" />
+   <file role="src" name="html_blocks.h" />
+   <file role="src" name="html_smartypants.c" />
+   <file role="src" name="markdown.c" />
+   <file role="src" name="markdown.h" />
+   <file role="src" name="stack.c" />
+   <file role="src" name="stack.h" />
+   <!-- /bundled Sundown library -->
+   <file role="src" name="config.m4" />
+   <file role="src" name="config.w32" />
+   <file role="src" name="php_sundown.h" />
+   <file role="src" name="php_sundown.c" />
+   <file role="src" name="sundown_markdown.c" />
+   <file role="src" name="render_base.c" />
+   <file role="src" name="render_html.c" />
+   <file role="src" name="render_xhtml.c" />
+   <dir name="tests">
+    <file role="test" name="001.phpt" />
+    <file role="test" name="002-basic-constructor-arguments.phpt" />
+    <file role="test" name="002-basic-to_html.phpt" />
+    <file role="test" name="002-constructor-arguments.phpt" />
+    <file role="test" name="003-advanced-constructor.phpt" />
+    <file role="test" name="003-advanced-render-html-block_code.phpt" />
+    <file role="test" name="003-advanced-render-html-block_html.phpt" />
+    <file role="test" name="003-advanced-render-html-block_quote.phpt" />
+    <file role="test" name="003-advanced-render-html-header.phpt" />
+    <file role="test" name="003-advanced-render-html-list.phpt" />
+    <file role="test" name="003-advanced-render-html-paragraph.phpt" />
+    <file role="test" name="003-to_html.phpt" />
+   </dir>
+   <dir name="docs">
+    <file role="doc" name="ExtensionsAndRenderFlags.md" />
+    <file role="doc" name="Render.md" />
    </dir>
   </dir>
  </contents>
