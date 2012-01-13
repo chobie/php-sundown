@@ -7,31 +7,34 @@ php-sundown is just simple wrapper of <https://github.com/tanoku/sundown>.
 
 License
 -------
+PHP License
 
-Copyright (c) 2012, Shuhei Tanuma
+THIS SOFTWARE IS PROVIDED BY THE PHP DEVELOPMENT TEAM ``AS IS'' AND 
+ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A 
+PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE PHP
+DEVELOPMENT TEAM OR ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
+INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES 
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR 
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+OF THE POSSIBILITY OF SUCH DAMAGE.
 
-Permission to use, copy, modify, and distribute this software for any
-purpose with or without fee is hereby granted, provided that the above
-copyright notice and this permission notice appear in all copies.
-
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
-WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
-ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
-WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
-ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
-OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+Author: Shuhei Tanuma
 
 Requirements
 ------------
 
 PHP5.3 higher
 
-Install
--------
+Install for developpers
+-----------------------
 
     git clone https://github.com/chobie/php-sundown.git php-sundown -b development
     cd php-sundown
+    # this command will fetch submodule and copy neccesally files to src dir. and compile it.
     rake submodule compile
     sudo rake install
     # please add following line to your php.ini
@@ -162,8 +165,8 @@ echo $md->render("Hello World");n
 
 ### \Sundown\Render\Base
 
-documented at [Render.md](https://github.com/chobie/php-sundown/blob/development/Render.md)
+documented at [Render.md](https://github.com/chobie/php-sundown/blob/development/docs/Render.md)
 
 ### Extensions and Render flags
 
-documented at [ExtensionsAndRenderFlags.md](https://github.com/chobie/php-sundown/blob/development/ExtensionsAndRenderFlags.md)
+documented at [ExtensionsAndRenderFlags.md](https://github.com/chobie/php-sundown/blob/development/docs/ExtensionsAndRenderFlags.md)
