@@ -118,7 +118,7 @@ PHP_METHOD(sundown_render_xhtml, __destruct)
 
 
 static zend_function_entry php_sundown_render_xhtml_methods[] = {
-	PHP_ME(sundown_render_xhtml, __construct,     arginfo_sundown_render___construct,          ZEND_ACC_PUBLIC)
+	PHP_ME(sundown_render_xhtml, __construct,     arginfo_sundown_render___construct,          ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
 	PHP_ME(sundown_render_xhtml, __destruct,      NULL,                                        ZEND_ACC_PUBLIC)
 	{NULL,NULL,NULL}
 };

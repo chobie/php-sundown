@@ -843,7 +843,7 @@ PHP_METHOD(sundown_render_html, __destruct)
 
 
 static zend_function_entry php_sundown_render_html_methods[] = {
-	PHP_ME(sundown_render_html, __construct,     arginfo_sundown_render_html___construct,     ZEND_ACC_PUBLIC)
+	PHP_ME(sundown_render_html, __construct,     arginfo_sundown_render_html___construct,     ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
 	PHP_ME(sundown_render_html, block_code,      arginfo_sundown_render_html_block_code,      ZEND_ACC_PUBLIC)
 	PHP_ME(sundown_render_html, block_quote,     arginfo_sundown_render_html_block_quote,     ZEND_ACC_PUBLIC)
 	PHP_ME(sundown_render_html, block_html,      arginfo_sundown_render_html_block_html,      ZEND_ACC_PUBLIC)

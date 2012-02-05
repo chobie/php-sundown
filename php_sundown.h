@@ -20,12 +20,6 @@
 extern zend_module_entry sundown_module_entry;
 #define phpext_sundown_ptr &sundown_module_entry;
 
-extern int call_user_function_v(HashTable *function_table, zval **object_pp, zval *function_name, zval *retval_ptr, zend_uint param_count, ...);
-extern inline zval* buf2str(const struct buf *text);
-extern inline zval* buf2long(long value);
-extern inline zval* char2str(char *text);
-extern struct buf* str2buf(const char *text, size_t length);
-
 extern zend_class_entry *sundown_class_entry, *sundown_buffer_class_entry, *php_sundown_buffer_class_entry;
 
 typedef enum
@@ -112,5 +106,84 @@ typedef struct{
 }
 
 #define SUNDOWN_HAS_EXTENSION(name)  (table != NULL && zend_hash_exists(table, name,strlen(name)+1) == 1)
+
+static int call_user_function_v(HashTable *function_table, zval **object_pp, zval *function_name, zval *retval_ptr, zend_uint param_count, ...)
+{
+	va_list ap;
+	size_t i;
+	int ret;
+	zval **params;
+	zval *tmp;
+	TSRMLS_FETCH();
+
+	if (param_count > 0) {
+		params = emalloc(sizeof(zval**) * param_count);
+		va_start(ap, param_count);
+		for (i=0; i<param_count;i++) {
+			params[i] = va_arg(ap, zval*);
+		}
+		va_end(ap);
+	} else {
+		params = NULL;
+	}
+
+	ret = call_user_function(function_table, object_pp, function_name, retval_ptr, param_count,params TSRMLS_CC);
+
+	if (param_count > 0) {
+		for (i=0; i<param_count;i++) {
+			if (params[i] != NULL) {
+				zval_ptr_dtor(&params[i]);
+			}
+		}
+		efree(params);
+	}
+	return ret;
+}
+
+static inline zval* buf2str(const struct buf *text)
+{
+	zval *str;
+	
+	MAKE_STD_ZVAL(str);
+	if (text == NULL || text->size == 0) {
+		ZVAL_NULL(str);
+	} else {
+		ZVAL_STRINGL(str, text->data, text->size,1);
+	}
+	return str;
+}
+
+static inline zval* char2str(char *text)
+{
+	zval *str;
+	
+	MAKE_STD_ZVAL(str);
+	ZVAL_STRING(str, text ,1);
+	return str;
+}
+
+static inline zval* buf2long(long value)
+{
+	zval *data;
+	
+	MAKE_STD_ZVAL(data);
+	ZVAL_LONG(data,value);
+	return data;
+}
+
+static inline struct buf* str2buf(const char *text, size_t length)
+{
+	struct buf* buffer;
+	
+	if (length > 0) {
+		buffer = bufnew(length);
+		bufput(buffer, text, length);
+	} else {
+		buffer = NULL;
+	}
+	
+	return buffer;
+}
+
 
 #endif /* PHP_SUNDOWN_H */

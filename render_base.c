@@ -634,7 +634,7 @@ PHP_METHOD(sundown_render_base, __destruct)
 }
 
 static zend_function_entry php_sundown_render_base_methods[] = {
-	PHP_ME(sundown_render_base, __construct,     arginfo_sundown_render___construct,          ZEND_ACC_PUBLIC)
+	PHP_ME(sundown_render_base, __construct,     arginfo_sundown_render___construct,          ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
 	PHP_ME(sundown_render_base, block_code,      arginfo_sundown_render_base_block_code,      ZEND_ACC_PUBLIC)
 	PHP_ME(sundown_render_base, block_quote,     arginfo_sundown_render_base_block_quote,     ZEND_ACC_PUBLIC)
 	PHP_ME(sundown_render_base, block_html,      arginfo_sundown_render_base_block_html,      ZEND_ACC_PUBLIC)

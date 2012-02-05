@@ -33,86 +33,7 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown__construct, 0, 0, 2)
 	ZEND_ARG_ARRAY_INFO(0, extensions, 0)
 ZEND_END_ARG_INFO()
 
-inline zval* buf2str(const struct buf *text)
-{
-	zval *str;
-	
-	MAKE_STD_ZVAL(str);
-	if (text == NULL || text->size == 0) {
-		ZVAL_NULL(str);
-	} else {
-		ZVAL_STRINGL(str, text->data, text->size,1);
-	}
-	return str;
-}
-
-inline zval* char2str(char *text)
-{
-	zval *str;
-	
-	MAKE_STD_ZVAL(str);
-	ZVAL_STRING(str, text ,1);
-	return str;
-}
-
-inline zval* buf2long(long value)
-{
-	zval *data;
-	
-	MAKE_STD_ZVAL(data);
-	ZVAL_LONG(data,value);
-	return data;
-}
-
-inline struct buf* str2buf(const char *text, size_t length)
-{
-	struct buf* buffer;
-	
-	if (length > 0) {
-		buffer = bufnew(length);
-		bufput(buffer, text, length);
-	} else {
-		buffer = NULL;
-	}
-	
-	return buffer;
-}
-
-int call_user_function_v(HashTable *function_table, zval **object_pp, zval *function_name, zval *retval_ptr, zend_uint param_count, ...)
-{
-	va_list ap;
-	size_t i;
-	int ret;
-	zval **params;
-	zval *tmp;
-	TSRMLS_FETCH();
-
-	if (param_count > 0) {
-		params = emalloc(sizeof(zval**) * param_count);
-		va_start(ap, param_count);
-		for (i=0; i<param_count;i++) {
-			params[i] = va_arg(ap, zval*);
-		}
-		va_end(ap);
-	} else {
-		params = NULL;
-	}
-
-	ret = call_user_function(function_table, object_pp, function_name, retval_ptr, param_count,params TSRMLS_CC);
-
-	if (param_count > 0) {
-		for (i=0; i<param_count;i++) {
-			if (params[i] != NULL) {
-				zval_ptr_dtor(&params[i]);
-			}
-		}
-		efree(params);
-	}
-	return ret;
-}
-
-
-void php_sundown__get_render_flags(HashTable *table, unsigned int *render_flags_p)
+static void php_sundown__get_render_flags(HashTable *table, unsigned int *render_flags_p)
 {
 	TSRMLS_FETCH();
 	unsigned int render_flags = HTML_EXPAND_TABS;
@@ -157,7 +78,7 @@ void php_sundown__get_render_flags(HashTable *table, unsigned int *render_flags_
 	*render_flags_p = render_flags;
 }
 
-void php_sundown__get_extensions(HashTable *table, unsigned int *enabled_extensions_p)
+static void php_sundown__get_extensions(HashTable *table, unsigned int *enabled_extensions_p)
 {
 	TSRMLS_FETCH();
 	unsigned int extensions = 0;
@@ -200,7 +121,7 @@ void php_sundown__get_extensions(HashTable *table, unsigned int *enabled_extensi
 	*enabled_extensions_p = extensions;
 }
 
-void php_sundown__get_flags(HashTable *table, unsigned int *enabled_extensions_p, unsigned int *render_flags_p)
+static void php_sundown__get_flags(HashTable *table, unsigned int *enabled_extensions_p, unsigned int *render_flags_p)
 {
 	TSRMLS_FETCH();
 	unsigned int extensions = 0;
