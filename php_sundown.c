@@ -305,9 +305,9 @@ PHP_METHOD(sundown, __destruct)
 }
 /* }}} */
 
-/* {{{ proto string Sundonw::to_html()
+/* {{{ proto string Sundonw::toHtml()
 	Returns converted HTML string */
-PHP_METHOD(sundown, to_html)
+PHP_METHOD(sundown, toHtml)
 {
 	sundown__render(SUNDOWN_RENDER_HTML,INTERNAL_FUNCTION_PARAM_PASSTHRU);
 }
@@ -321,9 +321,9 @@ PHP_METHOD(sundown, __toString)
 }
 /* }}} */
 
-/* {{{ proto string Sundonw::to_toc()
+/* {{{ proto string Sundonw::toToc()
 	Returns table of contents*/
-PHP_METHOD(sundown, to_toc)
+PHP_METHOD(sundown, toToc)
 {
 	sundown__render(SUNDOWN_RENDER_TOC,INTERNAL_FUNCTION_PARAM_PASSTHRU);
 }
@@ -331,10 +331,12 @@ PHP_METHOD(sundown, to_toc)
 static zend_function_entry php_sundown_methods[] = {
 	PHP_ME(sundown, __construct, arginfo_sundown__construct, ZEND_ACC_PUBLIC)
 	PHP_ME(sundown, __destruct,  NULL,                       ZEND_ACC_PUBLIC)
-	/* to_html and to_toc methods are compatible with Redcarpet */
-	PHP_ME(sundown, to_html,     NULL,                       ZEND_ACC_PUBLIC)
-	PHP_ME(sundown, to_toc,      NULL,                       ZEND_ACC_PUBLIC)
+	PHP_ME(sundown, toHtml,      NULL,                       ZEND_ACC_PUBLIC)
+	PHP_ME(sundown, toToc,       NULL,                       ZEND_ACC_PUBLIC)
 	PHP_ME(sundown, __toString,  NULL,                       ZEND_ACC_PUBLIC)
+	/* to_html and to_toc methods are compatible with Redcarpet */
+	PHP_MALIAS(sundown, to_html, toHtml, NULL, ZEND_ACC_PUBLIC)
+	PHP_MALIAS(sundown, to_toc,  toToc,  NULL, ZEND_ACC_PUBLIC)
 	{NULL, NULL, NULL}
 };
 /* }}} */
