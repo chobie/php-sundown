@@ -11,11 +11,11 @@ PECL Sundown provides straight forward object oriented Markdwon API and customiz
  </description>
  <lead>
   <name>Shuhei Tanuma</name>
-  <user>chobie</user>
-  <email>chobie@php.net</email>
+  <user>chobieeee</user>
+  <email>chobieeee@php.net</email>
   <active>yes</active>
  </lead>
- <date>2012-01-13</date>
+ <date>2012-02-05</date>
  <version>
   <release>0.1.0b</release>
   <api>0.1.0b</api>
@@ -26,7 +26,7 @@ PECL Sundown provides straight forward object oriented Markdwon API and customiz
  </stability>
  <license uri="http://www.php.net/license">PHP</license>
  <notes>
-* Sundown::to_html and Sundown::to_toc methods will be mark deprecated. these methods will be toHtml and toToc.
+* Sundown::to_html and Sundown::to_toc methods will be mark deprecated.
  </notes>
  <contents>
   <dir name="/">
@@ -104,7 +104,7 @@ PECL Sundown provides straight forward object oriented Markdwon API and customiz
     <release>0.1.0b</release>
     <api>0.1.0b</api>
    </version>
-   <date>2012-01-13</date>
+   <date>2012-02-05</date>
    <notes>
    - Initial PECL Sundown release.
    </notes>
