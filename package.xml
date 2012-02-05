@@ -7,7 +7,7 @@
 by Natacha PortÃ© and improved Vicent Marti.
 this extension inspired Redcarpet ruby extension which created by Vicent.
 
-PECL Sundown provides straight forward object oriented Markdwon API and customizeable Renders.
+PECL Sundown provides straight forward object oriented Markdown API and customizable Renders.
  </description>
  <lead>
   <name>Shuhei Tanuma</name>
@@ -26,7 +26,24 @@ PECL Sundown provides straight forward object oriented Markdwon API and customiz
  </stability>
  <license uri="http://www.php.net/license">PHP</license>
  <notes>
-* Sundown::to_html and Sundown::to_toc methods will be mark deprecated.
+Initial Release.
+this extension provides following classes.
+
+* Sundown
+simple markdown render.
+
+* Sundown\Markdown
+customizable markdown render.
+
+* Sundown\Render\Base
+render base class.
+
+* Sundown\Render\HTML
+builtin markdown html render.
+
+* Sundown\Render\XHTML
+builtin markdown xhtml render.
+
  </notes>
  <contents>
   <dir name="/">
