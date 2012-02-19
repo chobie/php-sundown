@@ -77,7 +77,7 @@ $sd = new Sundown("Hello World");
 $sd->to_html();
 ````
 
-### \Sundown::to_html()
+### \Sundown::toHTML()
 
 ##### *Description*
 
@@ -94,10 +94,10 @@ parse text as markdown and returns rendered html.
 ````php
 <?php
 $sd = new Sundown("Hello World");
-echo $sd->to_html();
+echo $sd->toHTML();
 ````
 
-### \Sundown::to_toc()
+### \Sundown::toTOC()
 
 ##### *Description*
 
@@ -114,7 +114,7 @@ parse text as markdown and only returns toc parts.
 ````php
 <?php
 $sd = new Sundown("Hello World");
-echo $sd->to_toc();
+echo $sd->toTOC();
 ````
 
 ### \Sundown\Markdown::__construct(\Sundown\Render\Base $render[, array $config])
