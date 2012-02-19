@@ -33,6 +33,14 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown__construct, 0, 0, 2)
 	ZEND_ARG_ARRAY_INFO(0, extensions, 0)
 ZEND_END_ARG_INFO()
 
+ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_has_extension, 0, 0, 1)
+	ZEND_ARG_INFO(0, name)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_has_render_flag, 0, 0, 1)
+	ZEND_ARG_INFO(0, name)
+ZEND_END_ARG_INFO()
+
 static void sundown__render(SundownRendererType render_type, INTERNAL_FUNCTION_PARAMETERS)
 {
 	zval *object;
@@ -148,12 +156,54 @@ PHP_METHOD(sundown, toToc)
 	sundown__render(SUNDOWN_RENDER_TOC,INTERNAL_FUNCTION_PARAM_PASSTHRU);
 }
 
+
+/* {{{ proto string Sundown::hasExtension(string $ext_name)
+*/
+PHP_METHOD(sundown, hasExtension)
+{
+	char *name;
+	int name_len = 0;
+	HashTable *table;
+
+	
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
+		"s", &name, &name_len) == FAILURE) {
+		return;
+	}
+	
+	if (Z_TYPE_P(zend_read_property(sundown_class_entry, getThis(),"extensions",sizeof("extensions")-1, 0 TSRMLS_CC)) != IS_NULL) {
+		table = Z_ARRVAL_P(zend_read_property(sundown_class_entry, getThis(),"extensions",sizeof("extensions")-1, 0 TSRMLS_CC));
+		RETVAL_BOOL(php_sundown_has_ext(table, name));
+	}
+}
+
+/* {{{ proto string Sundown::hasRenderFlag(string $ext_name)
+*/
+PHP_METHOD(sundown, hasRenderFlag)
+{
+	char *name;
+	int name_len = 0;
+	HashTable *table;
+	
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
+		"s", &name, &name_len) == FAILURE) {
+		return;
+	}
+	
+	if (Z_TYPE_P(zend_read_property(sundown_class_entry, getThis(),"extensions",sizeof("extensions")-1, 0 TSRMLS_CC)) != IS_NULL) {
+		table = Z_ARRVAL_P(zend_read_property(sundown_class_entry, getThis(),"extensions",sizeof("extensions")-1, 0 TSRMLS_CC));
+		RETVAL_BOOL(php_sundown_has_ext(table, name));
+	}
+}
+
 static zend_function_entry php_sundown_methods[] = {
 	PHP_ME(sundown, __construct, arginfo_sundown__construct, ZEND_ACC_PUBLIC)
 	PHP_ME(sundown, __destruct,  NULL,                       ZEND_ACC_PUBLIC)
 	PHP_ME(sundown, toHtml,      NULL,                       ZEND_ACC_PUBLIC)
 	PHP_ME(sundown, toToc,       NULL,                       ZEND_ACC_PUBLIC)
 	PHP_ME(sundown, __toString,  NULL,                       ZEND_ACC_PUBLIC)
+	PHP_ME(sundown, hasExtension,arginfo_sundown_has_extension,ZEND_ACC_PUBLIC)
+	PHP_ME(sundown, hasRenderFlag,arginfo_sundown_has_render_flag,ZEND_ACC_PUBLIC)
 	/* to_html and to_toc methods are compatible with Redcarpet */
 	PHP_MALIAS(sundown, to_html, toHtml, NULL, ZEND_ACC_PUBLIC)
 	PHP_MALIAS(sundown, to_toc,  toToc,  NULL, ZEND_ACC_PUBLIC)
