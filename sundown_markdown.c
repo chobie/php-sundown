@@ -269,6 +269,10 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_markdown_render, 0, 0, 1)
 	ZEND_ARG_INFO(0, body)
 ZEND_END_ARG_INFO()
 
+ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_markdown_has_extension, 0, 0, 1)
+	ZEND_ARG_INFO(0, name)
+ZEND_END_ARG_INFO()
+
 static void php_sundown_markdown_free_storage(php_sundown_markdown_t *obj TSRMLS_DC)
 {
 	zend_object_std_dtor(&obj->zo TSRMLS_CC);
@@ -474,11 +478,32 @@ PHP_METHOD(sundown_markdown, render)
 }
 
 
+/* {{{ proto string Sundown\Markdown::hasExtension(string $ext_name)
+*/
+PHP_METHOD(sundown_markdown, hasExtension)
+{
+	char *name;
+	int name_len = 0;
+	HashTable *table;
+
+	
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
+		"s", &name, &name_len) == FAILURE) {
+		return;
+	}
+	
+	if (Z_TYPE_P(zend_read_property(sundown_class_entry, getThis(),"extensions",sizeof("extensions")-1, 0 TSRMLS_CC)) != IS_NULL) {
+		table = Z_ARRVAL_P(zend_read_property(sundown_class_entry, getThis(),"extensions",sizeof("extensions")-1, 0 TSRMLS_CC));
+		RETVAL_BOOL(php_sundown_has_ext(table, name));
+	}
+}
+
 
 static zend_function_entry php_sundown_markdown_methods[] = {
 	PHP_ME(sundown_markdown, __construct, arginfo_sundown_markdown__construct, ZEND_ACC_PUBLIC)
 	PHP_ME(sundown_markdown, __destruct, NULL, ZEND_ACC_PUBLIC)
 	PHP_ME(sundown_markdown, render, arginfo_sundown_markdown_render, ZEND_ACC_PUBLIC)
+	PHP_ME(sundown_markdown, hasExtension, arginfo_sundown_markdown_has_extension, ZEND_ACC_PUBLIC)
 	{NULL,NULL,NULL}
 };
 

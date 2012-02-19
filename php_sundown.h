@@ -105,7 +105,26 @@ typedef struct{
 	zval_dtor(&func);\
 }
 
-#define SUNDOWN_HAS_EXTENSION(name)  (table != NULL && zend_hash_exists(table, name,strlen(name)+1) == 1)
+static int php_sundown_has_ext(HashTable *table, const char *name)
+{
+	zval **data = NULL;
+	zval *ret = NULL;
+	int length = strlen(name) + 1;
+	
+	if (zend_hash_find(table, name, length, (void **)&data) == SUCCESS) {
+		if (Z_TYPE_PP(data) != IS_BOOL) {
+			convert_to_boolean((zval *)*data);
+		}
+		
+		if (Z_LVAL_PP(data) == 1) {
+			return 1;
+		}
+	}
+	
+	return 0;
+}
+
+#define SUNDOWN_HAS_EXTENSION(name)  (table != NULL && php_sundown_has_ext(table, name))
 
 static int call_user_function_v(HashTable *function_table, zval **object_pp, zval *function_name, zval *retval_ptr, zend_uint param_count, ...)
 {
