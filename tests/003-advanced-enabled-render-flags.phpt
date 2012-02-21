@@ -123,14 +123,14 @@ bool(false)
 bool(false)
 bool(true)
 render flags and extensions should not conflict 2:
-NULL
-NULL
-NULL
-NULL
-NULL
-NULL
-NULL
-NULL
+bool(false)
+bool(false)
+bool(false)
+bool(false)
+bool(false)
+bool(false)
+bool(false)
+bool(false)
 test filter_html:
 bool(true)
 bool(false)

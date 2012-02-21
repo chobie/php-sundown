@@ -619,9 +619,13 @@ PHP_METHOD(sundown_render_base, __construct)
 
 	if (render_flags != NULL && Z_TYPE_P(render_flags) == IS_ARRAY) {
 		ALLOC_INIT_ZVAL(c_flags);
-		ZVAL_ZVAL(c_flags, render_flags, 1, 1);
-		add_property_zval_ex(getThis(),"render_flags",sizeof("render_flags"),c_flags TSRMLS_CC);
+		ZVAL_ZVAL(c_flags, render_flags, 1, 0);
+	} else {
+		MAKE_STD_ZVAL(c_flags);
+		array_init(c_flags);
 	}
+	add_property_zval_ex(getThis(),"render_flags",sizeof("render_flags"),c_flags TSRMLS_CC);
+
 }
 /* }}} */
 
@@ -644,14 +648,18 @@ PHP_METHOD(sundown_render_base, getRenderFlags)
 */
 PHP_METHOD(sundown_render_base, setRenderFlags)
 {
-	zval *render_flags, *c_render_flags = NULL;
+	zval *render_flags, *c_render_flags, *tmp = NULL;
 	
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
 		"a", &render_flags) == FAILURE) {
 		return;
 	}
-
-	add_property_zval_ex(getThis(),"render_flags",sizeof("render_flags"),render_flags TSRMLS_CC);
+	MAKE_STD_ZVAL(c_render_flags);
+	ZVAL_ZVAL(c_render_flags,render_flags,1,0);
+	tmp = zend_read_property(sundown_render_base_class_entry, getThis(), "render_flags", sizeof("render_flags")-1, 0 TSRMLS_CC);
+	zval_ptr_dtor(&tmp);
+	
+	add_property_zval_ex(getThis(),"render_flags",sizeof("render_flags"),c_render_flags TSRMLS_CC);
 }
 /* }}} */
 
@@ -661,7 +669,6 @@ PHP_METHOD(sundown_render_base, setRenderFlags)
 PHP_METHOD(sundown_render_base, __destruct)
 {
 	zval *render_flags;
-	
 	render_flags = zend_read_property(sundown_render_base_class_entry, getThis(),"render_flags",sizeof("render_flags")-1, 0 TSRMLS_CC);
 	if (Z_TYPE_P(render_flags) == IS_ARRAY) {
 		zval_ptr_dtor(&render_flags);

@@ -70,7 +70,7 @@ PHP_METHOD(sundown_render_xhtml, __construct)
 
 	if (render_flags != NULL && Z_TYPE_P(render_flags) == IS_ARRAY) {
 		ALLOC_INIT_ZVAL(c_flags);
-		ZVAL_ZVAL(c_flags, render_flags, 1, 1);
+		ZVAL_ZVAL(c_flags, render_flags, 1, 0);
 	} else {
 		zval *t;
 		MAKE_STD_ZVAL(t);
