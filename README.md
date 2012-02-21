@@ -152,7 +152,7 @@ parse and render specified string.
 
 ##### *Return Value*
 
-*mixed*: renderd something. (this depends render) 
+*mixed*: rendered something. (this depends render) 
 
 ##### *Example*
 
@@ -162,6 +162,73 @@ $render = new \Sundown\Render\HTML();
 $md = new \Sundown\Markdown($render);
 echo $md->render("Hello World");n
 ````
+
+
+
+### \Sundown\Markdown::getExtensions()
+
+##### *Description*
+
+get current extensions.
+
+##### *Parameters*
+
+##### *Return Value*
+
+* array
+
+##### *Example*
+
+````php
+<?php
+$md = new \Sundown\Markdown(\Sundown\Render\HTML,array("autolink"=>true));
+$extensions = $md->getExtensions();
+var_dump($extensions);
+````
+
+### \Sundown\Markdown::setExtensions(array $extensions)
+
+##### *Description*
+
+set extensions.
+
+##### *Parameters*
+
+*$extensions*: extensions array.
+
+##### *Return Value*
+
+* void
+
+##### *Example*
+
+````php
+<?php
+$md = new \Sundown\Markdown(\Sundown\Render\HTML,array("autolink"=>true));
+$md->setExtensions(array("autolink"=>false));
+var_dump($md->getExtensions());
+````
+
+### \Sundown\Markdown::getRender()
+
+##### *Description*
+
+get current render instance.
+
+##### *Parameters*
+
+##### *Return Value*
+
+* Sundown\Render\Base 
+
+##### *Example*
+
+````php
+<?php
+$md = new \Sundown\Markdown(\Sundown\Render\HTML,array("autolink"=>true));
+$md->getRender()->setRenderFlags(array("filter_html"=>true));
+````
+
 
 ### \Sundown\Render\Base
 
