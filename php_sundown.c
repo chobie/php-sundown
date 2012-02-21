@@ -230,7 +230,7 @@ PHP_MINFO_FUNCTION(sundown)
 	php_printf("PHP Sundown Extension\n");
 	php_info_print_table_start();
 	php_info_print_table_row(2,"Sundown Support",  "enabled");
-	php_info_print_table_row(2,"Sundown Version", "86a4790c47e1d6e0c71e017d312ff758b610ef69");
+	php_info_print_table_row(2,"Sundown Version", "3361ebcd22089fe64860f96a7b6acaf18a55746e");
 	php_info_print_table_end();
 }
 
