@@ -1,6 +1,0 @@
-ARG_WITH('sundown', 'sundown extension', 'no');
-
-if (SUNDOWN != "no") {
-
-  EXTENSION("sundown", "sundown.c array.c buffer.c markdown.c html.c html_smartypants.c autolink.c");
-}

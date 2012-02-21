@@ -3,65 +3,237 @@ PHP + Sundown
 
 php-sundown is just simple wrapper of <https://github.com/tanoku/sundown>.
 
+[![Build Status](https://secure.travis-ci.org/chobie/php-sundown.png)](http://travis-ci.org/chobie/php-sundown)
+
 License
 -------
+PHP License
 
-Copyright (c) 2011, Shuhei Tanuma
+THIS SOFTWARE IS PROVIDED BY THE PHP DEVELOPMENT TEAM ``AS IS'' AND 
+ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A 
+PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE PHP
+DEVELOPMENT TEAM OR ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
+INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES 
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR 
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+OF THE POSSIBILITY OF SUCH DAMAGE.
 
-Permission to use, copy, modify, and distribute this software for any
-purpose with or without fee is hereby granted, provided that the above
-copyright notice and this permission notice appear in all copies.
+Author: Shuhei Tanuma
 
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
-WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
-ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
-WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
-ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
-OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+Requirements
+------------
 
-Install
--------
+PHP5.3 higher
 
-    git clone https://github.com/chobie/php-sundown.git && cd php-sundown
-    cd src
-    phpize && ./configure
-    make
-    sudo make install
+Install for developpers
+-----------------------
+
+    git clone https://github.com/chobie/php-sundown.git php-sundown -b development
+    cd php-sundown
+    # this command will fetch submodule and copy neccesally files to src dir. and compile it.
+    rake submodule compile
+    sudo rake install
     # please add following line to your php.ini
     # extension=sundown.so
 
-Example
+Conformance Testing
+-------------------
+
+    rake test:conformance
+
+Overview
 -------
 
-    $sundown = new Sundown(string $string [, array $extensions]);
-    echo $sundown->to_html();
-    echo $sundownn->to_toc();
+php-sudown has two styles: basic and advance.
 
-Supported Extensions
---------------------
+*basic*: less exntensiblity, fast rendering.
+*advance*: custmize your own markdown render, little bit slower than basic.
 
-````
+
+### \Sundown::__construct(string $str [, array $config])
+
+##### *Description*
+
+make a basic Sundown instance with specified string and config.
+
+##### *Parameters*
+
+*str*: you want parse and render as markdown html.
+*config*: sundown parser options
+
+##### *Return Value*
+
+*\Sundown*: sundown instance
+
+##### *Example*
+
+````php
 <?php
-
-// default: disable all.
-// maybe this array will be integer (bit flags).
-new Sundown('something',array(
-	"filter_html"=>true,
-	"no_image"=>true,
-	"no_links"=>true,
-	"filter_styles"=>true,
-	"safelink" => true,
-	"generate_toc" => true,
-	"hard_wrap" => true,
-	"gh_blockcode" => true,
-	"xhtml" => true,
-	"autolink"=>true,
-	"no_intraemphasis" => true,
-	"tables" => true,
-	"fenced_code" => true,
-	"strikethrough" => true,
-	"lax_htmlblock" => true,
-	"space_header" => true,
-));
+$sd = new Sundown("Hello World");
+$sd->to_html();
 ````
+
+### \Sundown::toHTML()
+
+##### *Description*
+
+parse text as markdown and returns rendered html.
+
+##### *Parameters*
+
+##### *Return Value*
+
+*string*: rendered html
+
+##### *Example*
+
+````php
+<?php
+$sd = new Sundown("Hello World");
+echo $sd->toHTML();
+````
+
+### \Sundown::toTOC()
+
+##### *Description*
+
+parse text as markdown and only returns toc parts.
+
+##### *Parameters*
+
+##### *Return Value*
+
+*string*: rendered html
+
+##### *Example*
+
+````php
+<?php
+$sd = new Sundown("Hello World");
+echo $sd->toTOC();
+````
+
+### \Sundown\Markdown::__construct(\Sundown\Render\Base $render[, array $config])
+
+##### *Description*
+
+make a advance Sundown instance with specified render and config.
+
+##### *Parameters*
+
+*$render*: it inherits Sundown\Render\Base class. also class name accepts.
+*$config*: sundown parser option.
+
+##### *Return Value*
+
+*\Sundown\Markdown*: 
+
+##### *Example*
+
+````php
+<?php
+$md = new \Sundown\Markdown(\Sundown\Render\HTML);
+echo $md->render("Hello World");
+````
+
+### \Sundown\Markdown::render(string $str)
+
+##### *Description*
+
+parse and render specified string.
+
+##### *Parameters*
+
+*$str*: parse and render as markdown text.
+
+##### *Return Value*
+
+*mixed*: rendered something. (this depends render) 
+
+##### *Example*
+
+````php
+<?php
+$render = new \Sundown\Render\HTML();
+$md = new \Sundown\Markdown($render);
+echo $md->render("Hello World");n
+````
+
+
+
+### \Sundown\Markdown::getExtensions()
+
+##### *Description*
+
+get current extensions.
+
+##### *Parameters*
+
+##### *Return Value*
+
+* array
+
+##### *Example*
+
+````php
+<?php
+$md = new \Sundown\Markdown(\Sundown\Render\HTML,array("autolink"=>true));
+$extensions = $md->getExtensions();
+var_dump($extensions);
+````
+
+### \Sundown\Markdown::setExtensions(array $extensions)
+
+##### *Description*
+
+set extensions.
+
+##### *Parameters*
+
+*$extensions*: extensions array.
+
+##### *Return Value*
+
+* void
+
+##### *Example*
+
+````php
+<?php
+$md = new \Sundown\Markdown(\Sundown\Render\HTML,array("autolink"=>true));
+$md->setExtensions(array("autolink"=>false));
+var_dump($md->getExtensions());
+````
+
+### \Sundown\Markdown::getRender()
+
+##### *Description*
+
+get current render instance.
+
+##### *Parameters*
+
+##### *Return Value*
+
+* Sundown\Render\Base 
+
+##### *Example*
+
+````php
+<?php
+$md = new \Sundown\Markdown(\Sundown\Render\HTML,array("autolink"=>true));
+$md->getRender()->setRenderFlags(array("filter_html"=>true));
+````
+
+
+### \Sundown\Render\Base
+
+documented at [Render.md](https://github.com/chobie/php-sundown/blob/development/docs/Render.md)
+
+### Extensions and Render flags
+
+documented at [ExtensionsAndRenderFlags.md](https://github.com/chobie/php-sundown/blob/development/docs/ExtensionsAndRenderFlags.md)
