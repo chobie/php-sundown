@@ -269,6 +269,10 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_markdown_render, 0, 0, 1)
 	ZEND_ARG_INFO(0, body)
 ZEND_END_ARG_INFO()
 
+ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_markdown_set_extensions, 0, 0, 1)
+	ZEND_ARG_INFO(0, extension)
+ZEND_END_ARG_INFO()
+
 ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_markdown_has_extension, 0, 0, 1)
 	ZEND_ARG_INFO(0, name)
 ZEND_END_ARG_INFO()
@@ -523,10 +527,39 @@ PHP_METHOD(sundown_markdown, hasRenderFlag)
 }
 
 
+/* {{{ proto void string Sundown\Markdown::setExtension(array $extensions)
+*/
+PHP_METHOD(sundown_markdown, setExtensions)
+{
+	zval *extensions = NULL;
+
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
+		"a", &extensions) == FAILURE) {
+		return;
+	}
+
+	add_property_zval_ex(getThis(),"extensions",sizeof("extensions"),extensions TSRMLS_CC);
+}
+
+/* {{{ proto array Sundown\Markdown::getExtensions()
+*/
+PHP_METHOD(sundown_markdown, getExtensions)
+{
+	if (Z_TYPE_P(zend_read_property(sundown_class_entry, getThis(),"extensions",sizeof("extensions")-1, 0 TSRMLS_CC)) != IS_NULL) {
+		zval *result;
+
+		result = zend_read_property(sundown_class_entry, getThis(),"extensions",sizeof("extensions")-1, 0 TSRMLS_CC);
+		RETVAL_ZVAL(result, 1, 1);
+	}
+}
+
+
 static zend_function_entry php_sundown_markdown_methods[] = {
 	PHP_ME(sundown_markdown, __construct, arginfo_sundown_markdown__construct, ZEND_ACC_PUBLIC)
 	PHP_ME(sundown_markdown, __destruct, NULL, ZEND_ACC_PUBLIC)
 	PHP_ME(sundown_markdown, render, arginfo_sundown_markdown_render, ZEND_ACC_PUBLIC)
+	PHP_ME(sundown_markdown, getExtensions, NULL, ZEND_ACC_PUBLIC)
+	PHP_ME(sundown_markdown, setExtensions, arginfo_sundown_markdown_set_extensions, ZEND_ACC_PUBLIC)
 	PHP_ME(sundown_markdown, hasExtension, arginfo_sundown_markdown_has_extension, ZEND_ACC_PUBLIC)
 	PHP_ME(sundown_markdown, hasRenderFlag, arginfo_sundown_markdown_has_render_flag, ZEND_ACC_PUBLIC)
 	{NULL,NULL,NULL}
