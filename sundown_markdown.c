@@ -484,6 +484,7 @@ PHP_METHOD(sundown_markdown, render)
 	zval_dtor(&postprocess);
 	zval_dtor(&preprocess);
 }
+/* }}} */
 
 
 /* {{{ proto string Sundown\Markdown::hasExtension(string $ext_name)
@@ -505,6 +506,7 @@ PHP_METHOD(sundown_markdown, hasExtension)
 		RETVAL_BOOL(php_sundown_has_ext(table, name));
 	}
 }
+/* }}} */
 
 /* {{{ proto string Sundown\Markdown::hasRenderFlag(string $ext_name)
 */
@@ -525,6 +527,7 @@ PHP_METHOD(sundown_markdown, hasRenderFlag)
 		RETVAL_BOOL(php_sundown_has_ext(table, name));
 	}
 }
+/* }}} */
 
 
 /* {{{ proto void string Sundown\Markdown::setExtension(array $extensions)
@@ -540,6 +543,7 @@ PHP_METHOD(sundown_markdown, setExtensions)
 
 	add_property_zval_ex(getThis(),"extensions",sizeof("extensions"),extensions TSRMLS_CC);
 }
+/* }}} */
 
 /* {{{ proto array Sundown\Markdown::getExtensions()
 */
@@ -552,6 +556,7 @@ PHP_METHOD(sundown_markdown, getExtensions)
 		RETVAL_ZVAL(result, 1, 1);
 	}
 }
+/* }}} */
 
 /* {{{ proto Sundown\Render\Base Sundown\Markdown::getRender()
 */
