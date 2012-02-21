@@ -553,11 +553,20 @@ PHP_METHOD(sundown_markdown, getExtensions)
 	}
 }
 
+/* {{{ proto Sundown\Render\Base Sundown\Markdown::getRender()
+*/
+PHP_METHOD(sundown_markdown, getRender)
+{
+	php_sundown_markdown_t *object = (php_sundown_markdown_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
+	RETVAL_ZVAL(object->render, 1, 0);
+}
+/* }}} */
 
 static zend_function_entry php_sundown_markdown_methods[] = {
 	PHP_ME(sundown_markdown, __construct, arginfo_sundown_markdown__construct, ZEND_ACC_PUBLIC)
 	PHP_ME(sundown_markdown, __destruct, NULL, ZEND_ACC_PUBLIC)
 	PHP_ME(sundown_markdown, render, arginfo_sundown_markdown_render, ZEND_ACC_PUBLIC)
+	PHP_ME(sundown_markdown, getRender, NULL, ZEND_ACC_PUBLIC)
 	PHP_ME(sundown_markdown, getExtensions, NULL, ZEND_ACC_PUBLIC)
 	PHP_ME(sundown_markdown, setExtensions, arginfo_sundown_markdown_set_extensions, ZEND_ACC_PUBLIC)
 	PHP_ME(sundown_markdown, hasExtension, arginfo_sundown_markdown_has_extension, ZEND_ACC_PUBLIC)

@@ -52,6 +52,10 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render___construct,0,0,1)
 	ZEND_ARG_INFO(0, render_flags)
 ZEND_END_ARG_INFO()
 
+ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render_base_set_render_flags,0,0,1)
+	ZEND_ARG_INFO(0, render_flags)
+ZEND_END_ARG_INFO()
+
 ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render_base_block_code, 0, 0, 2)
 	ZEND_ARG_INFO(0, code)
 	ZEND_ARG_INFO(0, language)
@@ -621,6 +625,37 @@ PHP_METHOD(sundown_render_base, __construct)
 }
 /* }}} */
 
+
+
+/* {{{ proto array Sundown\Render\Base::getRenderFlags()
+*/
+PHP_METHOD(sundown_render_base, getRenderFlags)
+{
+	if (Z_TYPE_P(zend_read_property(sundown_render_base_class_entry, getThis(),"render_flags",sizeof("render_flags")-1, 0 TSRMLS_CC)) != IS_NULL) {
+		zval *result, *tmp = NULL;
+
+		tmp = zend_read_property(sundown_render_base_class_entry, getThis(),"render_flags",sizeof("render_flags")-1, 0 TSRMLS_CC);
+		RETVAL_ZVAL(tmp, 1, 0);
+	}
+}
+/* }}} */
+
+/* {{{ proto void Sundown\Render\Base::setRenderFlags(array render_flags)
+*/
+PHP_METHOD(sundown_render_base, setRenderFlags)
+{
+	zval *render_flags, *c_render_flags = NULL;
+	
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
+		"a", &render_flags) == FAILURE) {
+		return;
+	}
+
+	add_property_zval_ex(getThis(),"render_flags",sizeof("render_flags"),render_flags TSRMLS_CC);
+}
+/* }}} */
+
+
 /* {{{ proto Sundown\Render\Base::__destruct()
 */
 PHP_METHOD(sundown_render_base, __destruct)
@@ -635,6 +670,8 @@ PHP_METHOD(sundown_render_base, __destruct)
 
 static zend_function_entry php_sundown_render_base_methods[] = {
 	PHP_ME(sundown_render_base, __construct,     arginfo_sundown_render___construct,          ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
+	PHP_ME(sundown_render_base, getRenderFlags,  NULL,                                        ZEND_ACC_PUBLIC)
+	PHP_ME(sundown_render_base, setRenderFlags,  arginfo_sundown_render_base_set_render_flags,ZEND_ACC_PUBLIC)
 	PHP_ME(sundown_render_base, block_code,      arginfo_sundown_render_base_block_code,      ZEND_ACC_PUBLIC)
 	PHP_ME(sundown_render_base, block_quote,     arginfo_sundown_render_base_block_quote,     ZEND_ACC_PUBLIC)
 	PHP_ME(sundown_render_base, block_html,      arginfo_sundown_render_base_block_html,      ZEND_ACC_PUBLIC)
