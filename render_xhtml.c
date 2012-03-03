@@ -62,6 +62,8 @@ PHP_METHOD(sundown_render_xhtml, __construct)
 	char *key = "xhtml";
 	zval **data;
 	long length = sizeof("xhtml");
+	php_sundown_render_html_t *object;
+	struct php_sundown_renderopt_ex opt;
 	
 	if(zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
 		"|z", &render_flags) == FAILURE){
@@ -102,24 +104,16 @@ PHP_METHOD(sundown_render_xhtml, __construct)
 	}
 	
 	add_property_zval_ex(getThis(),"render_flags",sizeof("render_flags"),c_flags TSRMLS_CC);
+
+	object = (php_sundown_render_html_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
+	sdhtml_renderer(&object->cb, &opt.html, 0);
+	opt.self = getThis();
 }
 /* }}} */
-
-/* {{{ proto Sundown\Render\XHTML::__destruct()
-*/
-PHP_METHOD(sundown_render_xhtml, __destruct)
-{
-	zval *render_flags;
-	render_flags = zend_read_property(sundown_render_xhtml_class_entry, getThis(),"render_flags",sizeof("render_flags")-1, 0 TSRMLS_CC);
-	if(Z_TYPE_P(render_flags) == IS_ARRAY) {
-		zval_ptr_dtor(&render_flags);
-	}
-}
 
 
 static zend_function_entry php_sundown_render_xhtml_methods[] = {
 	PHP_ME(sundown_render_xhtml, __construct,     arginfo_sundown_render___construct,          ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
-	PHP_ME(sundown_render_xhtml, __destruct,      NULL,                                        ZEND_ACC_PUBLIC)
 	{NULL,NULL,NULL}
 };
 
