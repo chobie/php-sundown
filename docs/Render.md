@@ -7,70 +7,64 @@ there are two render in php-sundown:
 *Sundown\Render\HTML*: HTML render class.
 *Sundown\Render\XHTML*: XHTML render class.
 
-# EXPERIMENTAL
-
-these methods name will be use came case.
-
 ### \Sundown\Render\Base::__construct()
 
 ### \Sundown\Render\Base::getRenderFlags()
 
 ### \Sundown\Render\Base::setRenderFlags(array $flags)
 
-### SundownRenderBase::enable_pants
+### SundownRenderBase::blockCode(string $code, string $language)
 
-### SundownRenderBase::block_code
+### SundownRenderBase::blockQuote(string $quote)
 
-### SundownRenderBase::block_quote
+### SundownRenderBase::blockHtml(string $raw_html)
 
-### SundownRenderBase::block_html
+### SundownRenderBase::header(string $htext, int $header_level)
 
-### SundownRenderBase::header
+### SundownRenderBase::hrule()
 
-### SundownRenderBase::hrule
+### SundownRenderBase::listBox(string $contents, int $list_type)
 
-### SundownRenderBase::list_box
+### SundownRenderBase::listItem(string $text int $list_type)
 
-### SundownRenderBase::list_item
+### SundownRenderBase::paragraph(string $text)
 
-### SundownRenderBase::paragraph
+### SundownRenderBase::table(string $header, string $body)
 
-### SundownRenderBase::table
+### SundownRenderBase::tableRow(string $content)
 
-### SundownRenderBase::table_row
+### SundownRenderBase::tableCell(string $content, string $alignment)
 
-### SundownRenderBase::table_cell
+### SundownRenderBase::autolink(string $link, string $link_type)
 
-### SundownRenderBase::autolink
+### SundownRenderBase::codespan(string $code)
 
-### SundownRenderBase::codespan
+### SundownRenderBase::doubleEmphasis(string $text)
 
-### SundownRenderBase::double_emphasis
+### SundownRenderBase::emphasis(string $text)
 
-### SundownRenderBase::emphasis
-
-### SundownRenderBase::image
+### SundownRenderBase::image(string $link, string $title, string $alt_text)
 
 ### SundownRenderBase::linebreak
 
-### SundownRenderBase::link
+### SundownRenderBase::link(string $link, string $title, string $content)
 
-### SundownRenderBase::raw_html
+### SundownRenderBase::rawHtml(string $raw_html)
 
-### SundownRenderBase::triple_emphasis
+### SundownRenderBase::tripleEmphasis(stirng $text)
 
-### SundownRenderBase::strikethrough
+### SundownRenderBase::strikethrough(string $text)
 
-### SundownRenderBase::superscript
+### SundownRenderBase::superscript(string $text)
 
-### SundownRenderBase::entity
+### SundownRenderBase::entity(string $text)
 
-### SundownRenderBase::normal_text
+### SundownRenderBase::normalText(string $text)
 
-### SundownRenderBase::doc_header
+### SundownRenderBase::docHeader()
 
-### SundownRenderBase::doc_footer
+### SundownRenderBase::docFooter()
 
-### SundownRenderBase::preprocess
+### SundownRenderBase::preprocess(string $full_document)
 
-### SundownRenderBase::postprocess
+### SundownRenderBase::postprocess(string $full_document)
