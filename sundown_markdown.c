@@ -24,17 +24,17 @@ zend_class_entry *sundown_markdown_class_entry;
 
 static void rndr_blockcode(struct buf *ob, const struct buf *text, const struct buf *lang, void *opaque)
 {
-	BLOCK_CALLBACK_EX(ob,"block_code", 2, buf2str(text), buf2str(lang));
+	BLOCK_CALLBACK_EX(ob,"blockCode", 2, buf2str(text), buf2str(lang));
 }
 
 static void rndr_blockquote(struct buf *ob, const struct buf *text, void *opaque)
 {
-	BLOCK_CALLBACK_EX(ob,"block_quote", 1, buf2str(text));
+	BLOCK_CALLBACK_EX(ob,"blockQuote", 1, buf2str(text));
 }
 
 static void rndr_raw_block(struct buf *ob, const struct buf *text, void *opaque)
 {
-	BLOCK_CALLBACK_EX(ob,"block_html", 1, buf2str(text));
+	BLOCK_CALLBACK_EX(ob,"blockHtml", 1, buf2str(text));
 }
 
 static void rndr_header(struct buf *ob, const struct buf *text, int level, void *opaque)
@@ -52,7 +52,7 @@ static void rndr_list(struct buf *ob, const struct buf *text, int flags, void *o
 	zval *flag;
 	MAKE_STD_ZVAL(flag);
 	ZVAL_LONG(flag, flags);
-	BLOCK_CALLBACK_EX(ob,"list_box", 2,buf2str(text),flag);
+	BLOCK_CALLBACK_EX(ob,"listBox", 2,buf2str(text),flag);
 	
 }
 
@@ -61,7 +61,7 @@ static void rndr_listitem(struct buf *ob, const struct buf *text, int flags, voi
 	zval *flag;
 	MAKE_STD_ZVAL(flag);
 	ZVAL_LONG(flag, flags);
-	BLOCK_CALLBACK_EX(ob,"list_item", 2, buf2str(text),flag);
+	BLOCK_CALLBACK_EX(ob,"listItem", 2, buf2str(text),flag);
 }
 
 static void rndr_paragraph(struct buf *ob, const struct buf *text, void *opaque)
@@ -76,7 +76,7 @@ static void rndr_table(struct buf *ob, const struct buf *header, const struct bu
 
 static void rndr_tablerow(struct buf *ob, const struct buf *text, void *opaque)
 {
-	BLOCK_CALLBACK_EX(ob,"table_row", 1, buf2str(text));
+	BLOCK_CALLBACK_EX(ob,"tableRow", 1, buf2str(text));
 }
 
 static void rndr_tablecell(struct buf *ob, const struct buf *text, int align, void *opaque)
@@ -101,7 +101,7 @@ static void rndr_tablecell(struct buf *ob, const struct buf *text, int align, vo
 			break;
 	}
 
-	BLOCK_CALLBACK_EX(ob,"table_cell", 2,buf2str(text), &php_align);
+	BLOCK_CALLBACK_EX(ob,"tableCell", 2,buf2str(text), &php_align);
 }
 
 /***
@@ -127,7 +127,7 @@ static int rndr_codespan(struct buf *ob, const struct buf *text, void *opaque)
 
 static int rndr_double_emphasis(struct buf *ob, const struct buf *text, void *opaque)
 {
-	SPAN_CALLBACK_EX(ob,"double_emphasis", 1, buf2str(text));
+	SPAN_CALLBACK_EX(ob,"doubleEmphasis", 1, buf2str(text));
 }
 
 static int rndr_emphasis(struct buf *ob, const struct buf *text, void *opaque)
@@ -152,12 +152,12 @@ static int rndr_link(struct buf *ob, const struct buf *link, const struct buf *t
 
 static int rndr_raw_html(struct buf *ob, const struct buf *text, void *opaque)
 {
-	SPAN_CALLBACK_EX(ob, "raw_html", 1, buf2str(text));
+	SPAN_CALLBACK_EX(ob, "rawHtml", 1, buf2str(text));
 }
 
 static int rndr_triple_emphasis(struct buf *ob, const struct buf *text, void *opaque)
 {
-	SPAN_CALLBACK_EX(ob, "triple_emphasis", 1, buf2str(text));
+	SPAN_CALLBACK_EX(ob, "tripleEmphasis", 1, buf2str(text));
 }
 
 static int rndr_strikethrough(struct buf *ob, const struct buf *text, void *opaque)
@@ -180,17 +180,17 @@ static void rndr_entity(struct buf *ob, const struct buf *text, void *opaque)
 
 static void rndr_normal_text(struct buf *ob, const struct buf *text, void *opaque)
 {
-	BLOCK_CALLBACK_EX(ob, "normal_text", 1, buf2str(text));
+	BLOCK_CALLBACK_EX(ob, "normalText", 1, buf2str(text));
 }
 
 static void rndr_doc_header(struct buf *ob, void *opaque)
 {
-	BLOCK_CALLBACK_EX(ob, "doc_header", 0);
+	BLOCK_CALLBACK_EX(ob, "docHeader", 0);
 }
 
 static void rndr_doc_footer(struct buf *ob, void *opaque)
 {
-	BLOCK_CALLBACK_EX(ob, "doc_footer", 0);
+	BLOCK_CALLBACK_EX(ob, "docFooter", 0);
 }
 
 
@@ -227,35 +227,35 @@ static struct sd_callbacks php_sundown_callbacks = {
 };
 
 static const char *php_sundown_method_names[] = {
-	"block_code",
-	"block_quote",
-	"block_html",
+	"blockCode",
+	"blockQuote",
+	"blockHtml",
 	"header",
 	"hrule",
-	"list_box",
-	"list_item",
+	"listBox",
+	"listItem",
 	"paragraph",
 	"table",
-	"table_row",
-	"table_cell",
+	"tableRow",
+	"tableCell",
 
 	"autolink",
 	"codespan",
-	"double_emphasis",
+	"doubleEmphasis",
 	"emphasis",
 	"image",
 	"linebreak",
 	"link",
-	"raw_html",
-	"triple_emphasis",
+	"rawHtml",
+	"tripleEmphasis",
 	"strikethrough",
 	"superscript",
 
 	"entity",
-	"normal_text",
+	"normalText",
 
-	"doc_header",
-	"doc_footer"
+	"docHeader",
+	"docFooter"
 };
 
 static const size_t php_sundown_method_count = sizeof(php_sundown_method_names)/sizeof(char *);
@@ -385,6 +385,7 @@ PHP_METHOD(sundown_markdown, render)
 {
 	php_sundown_markdown_t *object = (php_sundown_markdown_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
 	php_sundown_buffer_t *buffer_object_t;
+	php_sundown_render_base_t *render_base;
 	zval *buffer_object, preprocess, postprocess, *params[1], *ret;
 	struct buf input_buf, *output_buf;
 	struct sd_callbacks sundown_render;
@@ -430,6 +431,9 @@ PHP_METHOD(sundown_markdown, render)
 		default:
 			RETURN_FALSE;
 	}
+
+	render_base = (php_sundown_render_base_t *) zend_object_store_get_object(object->render TSRMLS_CC);
+	render_base->html = opt.html;
 
 	ce = Z_OBJCE_P(object->render);
 	opt.self = object->render;

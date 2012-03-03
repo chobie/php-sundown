@@ -116,7 +116,7 @@ static int php_sundown_has_ext(HashTable *table, const char *name)
 			convert_to_boolean((zval *)*data);
 		}
 		
-		if (Z_LVAL_PP(data) == 1) {
+		if (Z_BVAL_PP(data)) {
 			return 1;
 		}
 	}
