@@ -5,6 +5,6 @@ Check for Sundown\Render\HTML::block_html() feature
 --FILE--
 <?php
 $render = new Sundown\Render\HTML();
-echo $render->block_html("block html") . PHP_EOL;
+echo $render->blockHtml("block html") . PHP_EOL;
 --EXPECT--
 block html

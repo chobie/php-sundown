@@ -5,8 +5,8 @@ Check for Sundown\Render\HTML::block_code() feature
 --FILE--
 <?php
 $render = new Sundown\Render\HTML();
-echo $render->block_code("echo 'abc'","php") . PHP_EOL;
-echo $render->block_code("echo 'abc'", null) . PHP_EOL;
+echo $render->blockCode("echo 'abc'","php") . PHP_EOL;
+echo $render->blockCode("echo 'abc'", null) . PHP_EOL;
 --EXPECT--
 <pre><code class="php">echo &#39;abc&#39;</code></pre>
 

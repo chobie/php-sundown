@@ -5,10 +5,10 @@ Check for Sundown\Render\HTML::list_box() feature
 --FILE--
 <?php
 $render = new Sundown\Render\HTML();
-echo $render->list_box("",1);
-echo $render->list_box("",0);
-echo $render->list_item("hello",1);
-echo $render->list_item("hello",0);
+echo $render->listBox("",1);
+echo $render->listBox("",0);
+echo $render->listItem("hello",1);
+echo $render->listItem("hello",0);
 --EXPECT--
 <ol>
 </ol>

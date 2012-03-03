@@ -5,7 +5,7 @@ Check for Sundown\Render\HTML::block_quote() feature
 --FILE--
 <?php
 $render = new Sundown\Render\HTML();
-echo $render->block_quote("quoted paragraph") . PHP_EOL;
+echo $render->blockQuote("quoted paragraph") . PHP_EOL;
 --EXPECT--
 <blockquote>
 quoted paragraph</blockquote>
