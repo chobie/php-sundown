@@ -15,10 +15,10 @@ PECL Sundown provides straight forward object oriented Markdown API and customiz
   <email>chobieeee@php.net</email>
   <active>yes</active>
  </lead>
- <date>2012-02-21</date>
+ <date>2012-03-04</date>
  <version>
-  <release>0.2.0</release>
-  <api>0.2.0</api>
+  <release>0.3.0</release>
+  <api>0.3.0</api>
  </version>
  <stability>
   <release>beta</release>
@@ -26,25 +26,19 @@ PECL Sundown provides straight forward object oriented Markdown API and customiz
  </stability>
  <license uri="http://www.php.net/license">PHP</license>
  <notes>
-* checks extensions and render flags value.
+bumped up 0.3.0
 
-0.1.0b release only checks specified key exist. Now, it also checks their value.
-
-* added useful methods.
-
-array Sundown\Render\Base::getRenderFlags()
-void Sundown\Render\Base::setRenderFlags(array $render_flags)
-
-array Sundown\Markdown::getExtensions()
-void Sundown\Markdown::setExtensions(array $extensions)
-Sundown\Render\Base Sundown\Markdown::getRender()
-
-* update bundled Sundown library
+change callback method name for PECL standards.
+php-sundown aims to implement more test cases until next minor version release.
 
 [summary]
-  * Fix segfault on empty link refs
-  * Escape html inside table of contents.
-  * hanging whitespace breaks tables
+  * change callback method names for PECL standards
+  * fix segfault when using XHTML render
+  * fix getting render flags issue
+  * improve Sundown\Markdown
+    don'd read render / extensions property directly.
+  * fix memory leaks
+  * implement more test cases.
  </notes>
  <contents>
   <dir name="/">
@@ -113,6 +107,38 @@ Sundown\Render\Base Sundown\Markdown::getRender()
  <providesextension>sundown</providesextension>
  <extsrcrelease/>
  <changelog>
+  <release>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <version>
+    <release>0.2.0</release>
+    <api>0.2.0</api>
+   </version>
+   <date>2012-02-21</date>
+   <notes>
+* checks extensions and render flags value.
+
+0.1.0b release only checks specified key exist. Now, it also checks their value.
+
+* added useful methods.
+
+array Sundown\Render\Base::getRenderFlags()
+void Sundown\Render\Base::setRenderFlags(array $render_flags)
+
+array Sundown\Markdown::getExtensions()
+void Sundown\Markdown::setExtensions(array $extensions)
+Sundown\Render\Base Sundown\Markdown::getRender()
+
+* update bundled Sundown library
+
+[summary]
+  * Fix segfault on empty link refs
+  * Escape html inside table of contents.
+  * hanging whitespace breaks tables
+   </notes>
+  </release>
   <release>
    <stability>
     <release>beta</release>
