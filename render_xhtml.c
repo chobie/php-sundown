@@ -100,6 +100,7 @@ PHP_METHOD(sundown_render_xhtml, __construct)
 			ZVAL_TRUE(t);
 			zend_hash_update(hash, key, length,&t,sizeof(zval *),NULL);
 			Z_ADDREF_P(t);
+			zval_ptr_dtor(&t);
 		}
 	}
 	
