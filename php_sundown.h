@@ -13,6 +13,7 @@
 #include "markdown.h"
 #include "html.h"
 #include "ext/spl/spl_exceptions.h"
+#include "zend_interfaces.h"
 
 /* Define the entry point symbol
  * Zend will use when loading this module
