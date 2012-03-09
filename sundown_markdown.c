@@ -554,12 +554,15 @@ PHP_METHOD(sundown_markdown, hasRenderFlag)
 */
 PHP_METHOD(sundown_markdown, setExtensions)
 {
-	zval *extensions = NULL;
+	zval *tmp, *extensions = NULL;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
 		"a", &extensions) == FAILURE) {
 		return;
 	}
+
+	tmp = zend_read_property(sundown_class_entry, getThis(),"extensions",sizeof("extensions")-1, 0 TSRMLS_CC);
+	zval_ptr_dtor(&tmp);
 
 	add_property_zval_ex(getThis(),"extensions",sizeof("extensions"),extensions TSRMLS_CC);
 }
