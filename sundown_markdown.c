@@ -573,7 +573,7 @@ PHP_METHOD(sundown_markdown, getExtensions)
 		zval *result;
 
 		result = zend_read_property(sundown_class_entry, getThis(),"extensions",sizeof("extensions")-1, 0 TSRMLS_CC);
-		RETVAL_ZVAL(result, 1, 1);
+		RETVAL_ZVAL(result, 1, 0);
 	}
 }
 /* }}} */
