@@ -32,7 +32,7 @@ $m2 = new Sundown\Markdown(
     array('fenced_code_blocks' => true)
 );
 
-$m->render('
+$m2->render('
 This is a normal paragraph.
 
 ``` php

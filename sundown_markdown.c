@@ -227,35 +227,35 @@ static struct sd_callbacks php_sundown_callbacks = {
 };
 
 static const char *php_sundown_method_names[] = {
-	"blockCode",
-	"blockQuote",
-	"blockHtml",
+	"blockcode",
+	"blockquote",
+	"blockhtml",
 	"header",
 	"hrule",
-	"listBox",
-	"listItem",
+	"listbox",
+	"listitem",
 	"paragraph",
 	"table",
-	"tableRow",
-	"tableCell",
+	"tablerow",
+	"tablecell",
 
 	"autolink",
 	"codespan",
-	"doubleEmphasis",
+	"doubleemphasis",
 	"emphasis",
 	"image",
 	"linebreak",
 	"link",
-	"rawHtml",
-	"tripleEmphasis",
+	"rawhtml",
+	"tripleemphasis",
 	"strikethrough",
 	"superscript",
 
 	"entity",
-	"normalText",
+	"normaltext",
 
-	"docHeader",
-	"docFooter"
+	"docheader",
+	"docfooter"
 };
 
 static const size_t php_sundown_method_count = sizeof(php_sundown_method_names)/sizeof(char *);
