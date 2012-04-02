@@ -15,9 +15,9 @@ PECL Sundown provides straight forward object oriented Markdown API and customiz
   <email>chobieeee@php.net</email>
   <active>yes</active>
  </lead>
- <date>2012-03-04</date>
+ <date>2012-04-02</date>
  <version>
-  <release>0.3.0</release>
+  <release>0.3.1</release>
   <api>0.3.0</api>
  </version>
  <stability>
@@ -26,18 +26,11 @@ PECL Sundown provides straight forward object oriented Markdown API and customiz
  </stability>
  <license uri="http://www.php.net/license">PHP</license>
  <notes>
-bumped up 0.3.0
-
-change callback method name for PECL standards.
-php-sundown aims to implement more test cases until next minor version release.
+bumped up 0.3.1
 
 [summary]
-  * change callback method names for PECL standards
-  * fix segfault when using XHTML render
-  * fix getting render flags issue
-  * improve Sundown\Markdown
-    don'd read render / extensions property directly.
-  * fix memory leaks
+  * fixed overloading callback methods. 
+  * fixed segfault when calling render method more than once.
   * implement more test cases.
  </notes>
  <contents>
@@ -107,6 +100,30 @@ php-sundown aims to implement more test cases until next minor version release.
  <providesextension>sundown</providesextension>
  <extsrcrelease/>
  <changelog>
+  <release>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <version>0.3.0</version>
+   <version>0.3.0</version>
+   <date>2012-03-04</date>
+   <notes>
+bumped up 0.3.0
+
+change callback method name for PECL standards.
+php-sundown aims to implement more test cases until next minor version release.
+
+[summary]
+  * change callback method names for PECL standards
+  * fix segfault when using XHTML render
+  * fix getting render flags issue
+  * improve Sundown\Markdown
+    don'd read render / extensions property directly.
+  * fix memory leaks
+  * implement more test cases.
+   </notes>
+  </release>
   <release>
    <stability>
     <release>beta</release>
