@@ -7,7 +7,7 @@ Check for determine enabled extensions.
 $render = new Sundown\Render\HTML();
 
 $markdown = new Sundown\Markdown($render, array());
-$extensions = array("no_intraemphasis","tables","fenced_code_blocks","autolink","strikethrough","lax_html_blocks","space_after_header","superscript");
+$extensions = array("no_intra_emphasis","tables","fenced_code_blocks","autolink","strikethrough","lax_html_blocks","space_after_header","superscript");
 
 $enabled = array();
 foreach ($extensions as $ext) {
@@ -52,7 +52,7 @@ bool(true)
 bool(true)
 bool(true)
 bool(true)
-only no_intraemphasis:
+only no_intra_emphasis:
 bool(true)
 bool(false)
 bool(false)

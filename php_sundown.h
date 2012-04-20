@@ -258,7 +258,7 @@ static void php_sundown__get_extensions(HashTable *table, unsigned int *enabled_
 	/**
 	 * Markdown extensions -- all disabled by default 
 	 */
-	if (SUNDOWN_HAS_EXTENSION("no_intraemphasis")) {
+	if (SUNDOWN_HAS_EXTENSION("no_intra_emphasis")) {
 		extensions |= MKDEXT_NO_INTRA_EMPHASIS;
 	}
 
