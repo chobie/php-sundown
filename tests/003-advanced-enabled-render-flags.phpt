@@ -21,7 +21,7 @@ foreach ($flags as $flag) {
     }
 }
 
-$extensions = array("no_intraemphasis","tables","fenced_code_blocks","autolink","strikethrough","lax_html_blocks","space_after_header","superscript");
+$extensions = array("no_intra_emphasis","tables","fenced_code_blocks","autolink","strikethrough","lax_html_blocks","space_after_header","superscript");
 $exts = array();
 foreach ($extensions as $ext) {
     $exts[$ext] = true;
