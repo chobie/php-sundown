@@ -105,8 +105,10 @@ bumped up 0.3.1
     <release>beta</release>
     <api>beta</api>
    </stability>
-   <version>0.3.0</version>
-   <version>0.3.0</version>
+   <version>
+    <release>0.3.1</release>
+    <api>0.3.0</api>
+   </version>
    <date>2012-03-04</date>
    <notes>
 bumped up 0.3.0
