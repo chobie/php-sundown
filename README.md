@@ -50,8 +50,8 @@ Overview
 
 php-sudown has two styles: basic and advance.
 
-*basic*: less exntensiblity, fast rendering.
-*advance*: custmize your own markdown render, little bit slower than basic.
+*basic*: simple, fast rendering.
+*advance*: customize your own markdown render, little bit slower than basic.
 
 
 ### \Sundown::__construct(string $str [, array $config])
@@ -237,7 +237,6 @@ documented at [Render.md](https://github.com/chobie/php-sundown/blob/development
 ### Extensions and Render flags
 
 documented at [ExtensionsAndRenderFlags.md](https://github.com/chobie/php-sundown/blob/development/docs/ExtensionsAndRenderFlags.md)
-
 
 
 Contributors
