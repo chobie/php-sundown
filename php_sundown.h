@@ -282,7 +282,7 @@ static void php_sundown__get_extensions(HashTable *table, unsigned int *enabled_
 		extensions |= MKDEXT_LAX_HTML_BLOCKS;
 	}
 
-	if (SUNDOWN_HAS_EXTENSION("space_after_header")) {
+	if (SUNDOWN_HAS_EXTENSION("space_after_headers")) {
 		extensions |= MKDEXT_SPACE_HEADERS;
 	}
 
