@@ -269,6 +269,11 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_markdown_render, 0, 0, 1)
 	ZEND_ARG_INFO(0, body)
 ZEND_END_ARG_INFO()
 
+ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_markdown_set_render, 0, 0, 1)
+	ZEND_ARG_INFO(0, render)
+ZEND_END_ARG_INFO()
+
+
 ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_markdown_set_extensions, 0, 0, 1)
 	ZEND_ARG_INFO(0, extension)
 ZEND_END_ARG_INFO()
@@ -590,11 +595,35 @@ PHP_METHOD(sundown_markdown, getRender)
 }
 /* }}} */
 
+/* {{{ proto void string Sundown\Markdown::setRender(Sundown\Render\Base $render)
+*/
+PHP_METHOD(sundown_markdown, setRender)
+{
+	zval *render = NULL;
+	php_sundown_markdown_t *object = (php_sundown_markdown_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
+
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
+		"z", &render) == FAILURE) {
+		return;
+	}
+
+	if (!instanceof_function_ex(Z_OBJCE_P(render), sundown_render_base_class_entry, 0 TSRMLS_CC)) {
+		zend_throw_exception_ex(spl_ce_InvalidArgumentException, 0 TSRMLS_CC,"Render class must extend Sundown\\Render\\Base");
+		return;
+	}
+	zval_ptr_dtor(&object->render);
+	object->render = render;
+	Z_ADDREF_P(render);
+}
+/* }}} */
+
+
 static zend_function_entry php_sundown_markdown_methods[] = {
 	PHP_ME(sundown_markdown, __construct, arginfo_sundown_markdown__construct, ZEND_ACC_PUBLIC)
 	PHP_ME(sundown_markdown, __destruct, NULL, ZEND_ACC_PUBLIC)
 	PHP_ME(sundown_markdown, render, arginfo_sundown_markdown_render, ZEND_ACC_PUBLIC)
 	PHP_ME(sundown_markdown, getRender, NULL, ZEND_ACC_PUBLIC)
+	PHP_ME(sundown_markdown, setRender, arginfo_sundown_markdown_set_render, ZEND_ACC_PUBLIC)
 	PHP_ME(sundown_markdown, getExtensions, NULL, ZEND_ACC_PUBLIC)
 	PHP_ME(sundown_markdown, setExtensions, arginfo_sundown_markdown_set_extensions, ZEND_ACC_PUBLIC)
 	PHP_ME(sundown_markdown, hasExtension, arginfo_sundown_markdown_has_extension, ZEND_ACC_PUBLIC)
