@@ -60,6 +60,12 @@ typedef struct{
 	zend_object zo;
 	struct html_renderopt html;
 	struct sd_callbacks cb;
+} php_sundown_render_html_toc_t;
+
+typedef struct{
+	zend_object zo;
+	struct html_renderopt html;
+	struct sd_callbacks cb;
 } php_sundown_render_xhtml_t;
 
 typedef struct{
