@@ -15,10 +15,10 @@ PECL Sundown provides straight forward object oriented Markdown API and customiz
   <email>chobieeee@php.net</email>
   <active>yes</active>
  </lead>
- <date>2012-04-22</date>
+ <date>2012-05-14</date>
  <version>
-  <release>0.3.3</release>
-  <api>0.3.0</api>
+  <release>0.3.4</release>
+  <api>0.3.4</api>
  </version>
  <stability>
   <release>beta</release>
@@ -26,10 +26,13 @@ PECL Sundown provides straight forward object oriented Markdown API and customiz
  </stability>
  <license uri="http://www.php.net/license">PHP</license>
  <notes>
-bumped up 0.3.3
+bumped up 0.3.4
 
 [summary]
-  * fix #16 missing space_after_headers extension
+  * add Sundown\Render\HTML_TOC render.
+  * add Sundown\Markdown::setRender(Sundown\Render\Base $render);
+  * improve build script.
+  * add Changelog, adjust package.xml
  </notes>
  <contents>
   <dir name="/">
@@ -126,6 +129,23 @@ bumped up 0.3.3
     <api>beta</api>
    </stability>
    <version>
+    <release>0.3.3</release>
+    <api>0.3.0</api>
+   </version>
+   <date>2012-04-22</date>
+   <notes>
+bumped up 0.3.3
+
+[summary]
+  * fix #16 missing space_after_headers extension
+   </notes>
+  </release>
+  <release>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <version>
     <release>0.3.2</release>
     <api>0.3.0</api>
    </version>
@@ -137,7 +157,6 @@ bumped up 0.3.2
   * use no_intra_emphasis instead of no_intraemphasis
    </notes>
   </release>
-
   <release>
    <stability>
     <release>beta</release>
