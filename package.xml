@@ -15,10 +15,10 @@ PECL Sundown provides straight forward object oriented Markdown API and customiz
   <email>chobieeee@php.net</email>
   <active>yes</active>
  </lead>
- <date>2012-04-22</date>
+ <date>2012-05-14</date>
  <version>
-  <release>0.3.3</release>
-  <api>0.3.0</api>
+  <release>0.3.4</release>
+  <api>0.3.4</api>
  </version>
  <stability>
   <release>beta</release>
@@ -26,10 +26,13 @@ PECL Sundown provides straight forward object oriented Markdown API and customiz
  </stability>
  <license uri="http://www.php.net/license">PHP</license>
  <notes>
-bumped up 0.3.3
+bumped up 0.3.4
 
 [summary]
-  * fix #16 missing space_after_headers extension
+  * add Sundown\Render\HTML_TOC render.
+  * add Sundown\Markdown::setRender(Sundown\Render\Base $render);
+  * improve build script.
+  * add Changelog, adjust package.xml
  </notes>
  <contents>
   <dir name="/">
@@ -38,23 +41,6 @@ bumped up 0.3.3
    <file role="doc" name="LICENSE" />
    <file role="doc" name="README.md" />
    <file role="doc" name="Rakefile" />
-   <!-- bundled Sundowon library -->
-   <file role="src" name="autolink.c" />
-   <file role="src" name="autolink.h" />
-   <file role="src" name="buffer.c" />
-   <file role="src" name="buffer.h" />
-   <file role="src" name="houdini.h" />
-   <file role="src" name="houdini_href_e.c" />
-   <file role="src" name="houdini_html_e.c" />
-   <file role="src" name="html.h" />
-   <file role="src" name="html.c" />
-   <file role="src" name="html_blocks.h" />
-   <file role="src" name="html_smartypants.c" />
-   <file role="src" name="markdown.c" />
-   <file role="src" name="markdown.h" />
-   <file role="src" name="stack.c" />
-   <file role="src" name="stack.h" />
-   <!-- /bundled Sundown library -->
    <file role="src" name="config.m4" />
    <file role="src" name="config.w32" />
    <file role="src" name="php_sundown.h" />
@@ -62,24 +48,63 @@ bumped up 0.3.3
    <file role="src" name="sundown_markdown.c" />
    <file role="src" name="render_base.c" />
    <file role="src" name="render_html.c" />
+   <file role="src" name="render_html_toc.c" />
    <file role="src" name="render_xhtml.c" />
    <dir name="tests">
-    <file role="test" name="001.phpt" />
-    <file role="test" name="002-basic-constructor-arguments.phpt" />
-    <file role="test" name="002-basic-to_html.phpt" />
-    <file role="test" name="002-constructor-arguments.phpt" />
-    <file role="test" name="003-advanced-constructor.phpt" />
-    <file role="test" name="003-advanced-render-html-block_code.phpt" />
-    <file role="test" name="003-advanced-render-html-block_html.phpt" />
-    <file role="test" name="003-advanced-render-html-block_quote.phpt" />
-    <file role="test" name="003-advanced-render-html-header.phpt" />
-    <file role="test" name="003-advanced-render-html-list.phpt" />
-    <file role="test" name="003-advanced-render-html-paragraph.phpt" />
-    <file role="test" name="003-to_html.phpt" />
-   </dir>
+     <file role="test" name="001.phpt" />
+     <file role="test" name="002-basic-constructor-arguments.phpt" />
+     <file role="test" name="002-basic-enabled-extensions.phpt" />
+     <file role="test" name="002-basic-enabled-render-flags.phpt" />
+     <file role="test" name="002-basic-to_html.phpt" />
+     <file role="test" name="002-constructor-arguments.phpt" />
+     <file role="test" name="003-advanced-constructor.phpt" />
+     <file role="test" name="003-advanced-enabled-extensions.phpt" />
+     <file role="test" name="003-advanced-enabled-render-flags.phpt" />
+     <file role="test" name="003-advanced-get-extensions.phpt" />
+     <file role="test" name="003-advanced-get-render.phpt" />
+     <file role="test" name="003-advanced-render-base-get_render_flags.phpt" />
+     <file role="test" name="003-advanced-render-base-set_render_flags.phpt" />
+     <file role="test" name="003-advanced-render-html-block_code.phpt" />
+     <file role="test" name="003-advanced-render-html-block_html.phpt" />
+     <file role="test" name="003-advanced-render-html-block_quote.phpt" />
+     <file role="test" name="003-advanced-render-html-header.phpt" />
+     <file role="test" name="003-advanced-render-html-list.phpt" />
+     <file role="test" name="003-advanced-render-html-paragraph.phpt" />
+     <file role="test" name="003-advanced-set-extensions.phpt" />
+     <file role="test" name="003-advanced-set-render.phpt" />
+     <file role="test" name="003-to_html.phpt" />
+     <file role="test" name="004-render-extensions-fenced_code_blocks.phpt" />
+     <file role="test" name="004-render-extensions-space_after_headers.phpt" />
+     <file role="test" name="004-render-html.phpt" />
+     <file role="test" name="005-render-xhtml.phpt" />
+     <file role="test" name="006-render-custom-codeblock.phpt" />
+     <file role="test" name="999-regression-no12.phpt" />
+    </dir>
    <dir name="docs">
     <file role="doc" name="ExtensionsAndRenderFlags.md" />
     <file role="doc" name="Render.md" />
+   </dir>
+   <dir name="sundown">
+     <file role="doc" name="README.markdown" />
+     <dir name="src">
+       <file role="src" name="autolink.c" />
+       <file role="src" name="autolink.h" />
+       <file role="src" name="buffer.c" />
+       <file role="src" name="buffer.h" />
+       <file role="src" name="html_blocks.h" />
+       <file role="src" name="markdown.c" />
+       <file role="src" name="markdown.h" />
+       <file role="src" name="stack.c" />
+       <file role="src" name="stack.h" />
+     </dir>
+     <dir name="html">
+       <file role="src" name="houdini.h" />
+       <file role="src" name="houdini_href_e.c" />
+       <file role="src" name="houdini_html_e.c" />
+       <file role="src" name="html.h" />
+       <file role="src" name="html.c" />
+       <file role="src" name="html_smartypants.c" />
+     </dir>
    </dir>
   </dir>
  </contents>
@@ -104,6 +129,23 @@ bumped up 0.3.3
     <api>beta</api>
    </stability>
    <version>
+    <release>0.3.3</release>
+    <api>0.3.0</api>
+   </version>
+   <date>2012-04-22</date>
+   <notes>
+bumped up 0.3.3
+
+[summary]
+  * fix #16 missing space_after_headers extension
+   </notes>
+  </release>
+  <release>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <version>
     <release>0.3.2</release>
     <api>0.3.0</api>
    </version>
@@ -115,7 +157,6 @@ bumped up 0.3.2
   * use no_intra_emphasis instead of no_intraemphasis
    </notes>
   </release>
-
   <release>
    <stability>
     <release>beta</release>
@@ -186,36 +227,6 @@ void Sundown\Markdown::setExtensions(array $extensions)
 Sundown\Render\Base Sundown\Markdown::getRender()
 
 * update bundled Sundown library
-
-[summary]
-  * Fix segfault on empty link refs
-  * Escape html inside table of contents.
-  * hanging whitespace breaks tables
-   </notes>
-  </release>
-  <release>
-   <stability>
-    <release>beta</release>
-    <api>beta</api>
-   </stability>
-   <version>
-    <release>0.2.0</release>
-    <api>0.2.0</api>
-   </version>
-   <date>2012-02-21</date>
-   <notes>
-* checks extensions and render flags value.
-
-0.1.0b release only checks specified key exist. Now, it also checks their value.
-
-* added useful methods.
-
-array Sundown\Render\Base::getRenderFlags()
-void Sundown\Render\Base::setRenderFlags(array $render_flags)
-
-array Sundown\Markdown::getExtensions()
-void Sundown\Markdown::setExtensions(array $extensions)
-Sundown\Render\Base Sundown\Markdown::getRender()
 
 [summary]
   * Fix segfault on empty link refs
