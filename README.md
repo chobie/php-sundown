@@ -34,9 +34,11 @@ Install for developpers
 
     git clone https://github.com/chobie/php-sundown.git php-sundown -b development
     cd php-sundown
-    # this command will fetch submodule and copy neccesally files to src dir. and compile it.
-    rake submodule compile
-    sudo rake install
+    git submodule init && git submodule update
+    phpze
+    ./configure
+    make
+    make install
     # please add following line to your php.ini
     # extension=sundown.so
 
@@ -229,6 +231,28 @@ $md = new \Sundown\Markdown(\Sundown\Render\HTML,array("autolink"=>true));
 $md->getRender()->setRenderFlags(array("filter_html"=>true));
 ````
 
+### \Sundown\Markdown::setRender(Sundown\Render\Base $render)
+
+##### *Description*
+
+set render instance.
+
+##### *Parameters*
+
+*render*: render instance 
+
+##### *Return Value*
+
+* void
+
+##### *Example*
+
+````php
+<?php
+$md = new \Sundown\Markdown(\Sundown\Render\HTML,array("autolink"=>true));
+$render2 = \Sundown\Render\HTML();
+$md->setRender($render2);
+````
 
 ### \Sundown\Render\Base
 
