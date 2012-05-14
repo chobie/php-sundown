@@ -49,7 +49,7 @@ zend_object_value php_sundown_render_xhtml_new(zend_class_entry *ce TSRMLS_DC)
 	return retval;
 }
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render___construct,0,0,1)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render_xhtml__construct,0,0,1)
 	ZEND_ARG_INFO(0, render_flags)
 ZEND_END_ARG_INFO()
 
@@ -114,7 +114,7 @@ PHP_METHOD(sundown_render_xhtml, __construct)
 
 
 static zend_function_entry php_sundown_render_xhtml_methods[] = {
-	PHP_ME(sundown_render_xhtml, __construct,     arginfo_sundown_render___construct,          ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
+	PHP_ME(sundown_render_xhtml, __construct,     arginfo_sundown_render_xhtml__construct,          ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
 	{NULL,NULL,NULL}
 };
 

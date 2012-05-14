@@ -1,0 +1,61 @@
+2010-04-22  Shuhei Tanuma <chobieeee@php.net>
+
+        * bumped up 0.3.3:
+
+            [summary]
+            * fix #16 missing space_after_headers extension
+
+2010-04-02  Shuhei Tanuma <chobieeee@php.net>
+
+        * bumped up 0.3.1:
+
+            [summary]
+            * fixed overloading callback methods. 
+            * fixed segfault when calling render method more than once.
+            * implement more test cases.
+
+2010-03-04  Shuhei Tanuma <chobieeee@php.net>
+
+        * bumped up 0.3.0:
+
+            change callback method name for PECL standards.
+            php-sundown aims to implement more test cases until next minor version release.
+
+            [summary]
+            * change callback method names for PECL standards
+            * fix segfault when using XHTML render
+            * fix getting render flags issue
+            * improve Sundown\Markdown
+            don'd read render / extensions property directly.
+            * fix memory leaks
+            * implement more test cases.
+
+2010-03-04  Shuhei Tanuma <chobieeee@php.net>
+
+        * bumped up 0.2.0:
+
+            * checks extensions and render flags value.
+
+            0.1.0b release only checks specified key exist. Now, it also checks their value.
+
+            * added useful methods.
+
+            array Sundown\Render\Base::getRenderFlags()
+            void Sundown\Render\Base::setRenderFlags(array $render_flags)
+
+            array Sundown\Markdown::getExtensions()
+            void Sundown\Markdown::setExtensions(array $extensions)
+            Sundown\Render\Base Sundown\Markdown::getRender()
+
+            * update bundled Sundown library
+
+           [summary]
+           * Fix segfault on empty link refs
+           * Escape html inside table of contents.
+           * hanging whitespace breaks tables
+
+
+2010-02-05  Shuhei Tanuma <chobieeee@php.net>
+
+        * bumped up 0.2.0:
+        - Initial PECL Sundown release.

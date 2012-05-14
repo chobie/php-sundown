@@ -24,6 +24,7 @@ sundown/html/houdini_html_e.c
   PHP_SUBST([CFLAGS])
 
   PHP_ADD_BUILD_DIR([$ext_builddir/sundown/src])
+  PHP_ADD_BUILD_DIR([$ext_builddir/sundown/html])
 
   PHP_ADD_INCLUDE([$ext_srcdir/sundown/src])
   PHP_ADD_INCLUDE([$ext_srcdir/sundown/html])
