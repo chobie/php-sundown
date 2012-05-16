@@ -352,12 +352,13 @@ PHP_METHOD(sundown_render_base, tableCell)
 */
 PHP_METHOD(sundown_render_base, autolink)
 {
-	char *link, *link_type;
-	int link_len, link_type_len;
+	char *link;
+	int link_len;
+	long link_type;
 	php_sundown_buffer_t *object;
 	
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
-		"ss",&link, &link_len, &link_type, &link_type_len) == FAILURE) {
+		"sl",&link, &link_len, &link_type) == FAILURE) {
 		return;
 	}
 	RETVAL_STRINGL(link,link_len,1);

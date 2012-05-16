@@ -458,23 +458,22 @@ PHP_METHOD(sundown_render_html, tableCell)
 */
 PHP_METHOD(sundown_render_html, autolink)
 {
-	char *link, *link_type;
-	int link_len, link_type_len;
+	char *link;
+	int link_len = 0;
+	long link_type;
 	struct buf *m_link, *output;
 	php_sundown_buffer_t *object;
-	/* @Todo: map types. */
-	enum mkd_autolink type = MKDA_NORMAL;
 	php_sundown_render_html_t *html;
 	
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
-		"ss", &link, &link_len, &link_type, &link_type_len) == FAILURE) {
+		"sl", &link, &link_len, &link_type) == FAILURE) {
 		return;
 	}
-
+	
 	m_link = str2buf(link, link_len);
 	output = bufnew(128);
 	html = (php_sundown_render_html_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
-	html->cb.autolink(output,m_link,type, &html->html);
+	html->cb.autolink(output,m_link,link_type, &html->html);
 	bufrelease(m_link);
 	RETVAL_STRINGL(output->data, output->size,1);
 	bufrelease(output);

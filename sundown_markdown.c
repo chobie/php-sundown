@@ -109,15 +109,7 @@ static void rndr_tablecell(struct buf *ob, const struct buf *text, int align, vo
 */
 static int rndr_autolink(struct buf *ob, const struct buf *link, enum mkd_autolink type, void *opaque)
 {
-	zval *m_type;
-	
-	MAKE_STD_ZVAL(m_type);
-	if (type == MKDA_NORMAL) {
-		ZVAL_STRING(m_type, "url",1);
-	} else {
-		ZVAL_STRING(m_type, "email",1);
-	}
-	SPAN_CALLBACK_EX(ob,"autolink", 2,buf2str(link),m_type);
+	SPAN_CALLBACK_EX(ob,"autolink", 2,buf2str(link),buf2long(type));
 }
 
 static int rndr_codespan(struct buf *ob, const struct buf *text, void *opaque)
