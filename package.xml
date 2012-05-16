@@ -15,10 +15,10 @@ PECL Sundown provides straight forward object oriented Markdown API and customiz
   <email>chobieeee@php.net</email>
   <active>yes</active>
  </lead>
- <date>2012-05-14</date>
+ <date>2012-05-16</date>
  <version>
-  <release>0.3.4</release>
-  <api>0.3.4</api>
+  <release>0.3.5</release>
+  <api>0.3.5</api>
  </version>
  <stability>
   <release>beta</release>
@@ -26,14 +26,18 @@ PECL Sundown provides straight forward object oriented Markdown API and customiz
  </stability>
  <license uri="http://www.php.net/license">PHP</license>
  <notes>
-bumped up 0.3.4
+	* bumped up 0.3.5
 
-[summary]
-  * add Sundown\Render\HTML_TOC render.
-  * add Sundown\Markdown::setRender(Sundown\Render\Base $render);
-  * improve build script.
-  * add Changelog, adjust package.xml
- </notes>
+fix #19 Autolink is broken for emails
+
+[added constants]:
+Sundown\Render\MKDA_NORMAL
+Sundown\Render\MKDA_EMAIL
+
+[changed signature]:
+Sundown\Render\Base::autolink(string$link, int $type)
+  type should be Sundown\Render\MKDA_NORMAL or Sundown\Render\MKDA_EMAIL
+</notes>
  <contents>
   <dir name="/">
    <file role="doc" name="CREDITS" />
@@ -123,6 +127,26 @@ bumped up 0.3.4
  <providesextension>sundown</providesextension>
  <extsrcrelease/>
  <changelog>
+  <release>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <version>
+    <release>0.3.4</release>
+    <api>0.3.4</api>
+   </version>
+   <date>2012-05-14</date>
+   <notes>
+	* bumped up 0.3.4
+
+            [summary]
+            * add Sundown\Render\HTML_TOC render.
+            * add Sundown\Markdown::setRender(Sundown\Render\Base $render);
+            * improve build script.
+            * add Changelog, adjust package.xml
+   </notes>
+  </release>
   <release>
    <stability>
     <release>beta</release>

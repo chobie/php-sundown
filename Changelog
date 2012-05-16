@@ -1,11 +1,35 @@
-2010-04-22  Shuhei Tanuma <chobieeee@php.net>
+2012-05-17  Shuhei Tanuma <chobieeee@php.net>
+
+	* bumped up 0.3.5
+
+            fix #19 Autolink is broken for emails
+    
+            [added constants]:
+            Sundown\Render\MKDA_NORMAL
+            Sundown\Render\MKDA_EMAIL
+
+            [changed signature]:
+            Sundown\Render\Base::autolink(string$link, int $type)
+            type should be Sundown\Render\MKDA_NORMAL or Sundown\Render\MKDA_EMAIL
+
+2012-05-14  Shuhei Tanuma <chobieeee@php.net>
+
+	* bumped up 0.3.4
+
+            [summary]
+            * add Sundown\Render\HTML_TOC render.
+            * add Sundown\Markdown::setRender(Sundown\Render\Base $render);
+            * improve build script.
+            * add Changelog, adjust package.xml
+
+2012-04-22  Shuhei Tanuma <chobieeee@php.net>
 
         * bumped up 0.3.3:
 
             [summary]
             * fix #16 missing space_after_headers extension
 
-2010-04-02  Shuhei Tanuma <chobieeee@php.net>
+2012-04-02  Shuhei Tanuma <chobieeee@php.net>
 
         * bumped up 0.3.1:
 
@@ -14,7 +38,7 @@
             * fixed segfault when calling render method more than once.
             * implement more test cases.
 
-2010-03-04  Shuhei Tanuma <chobieeee@php.net>
+2012-03-04  Shuhei Tanuma <chobieeee@php.net>
 
         * bumped up 0.3.0:
 
@@ -30,7 +54,7 @@
             * fix memory leaks
             * implement more test cases.
 
-2010-03-04  Shuhei Tanuma <chobieeee@php.net>
+2012-03-04  Shuhei Tanuma <chobieeee@php.net>
 
         * bumped up 0.2.0:
 
@@ -55,7 +79,7 @@
            * hanging whitespace breaks tables
 
 
-2010-02-05  Shuhei Tanuma <chobieeee@php.net>
+2012-02-05  Shuhei Tanuma <chobieeee@php.net>
 
         * bumped up 0.2.0:
         - Initial PECL Sundown release.

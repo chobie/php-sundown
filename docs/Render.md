@@ -35,7 +35,9 @@ there are two render in php-sundown:
 
 ### SundownRenderBase::tableCell(string $content, string $alignment)
 
-### SundownRenderBase::autolink(string $link, string $link_type)
+### SundownRenderBase::autolink(string $link, long $link_type)
+
+link type should be Sundown\Render\MKDA_EMAIL or Sundown\Render\MKDA_NORMAL.
 
 ### SundownRenderBase::codespan(string $code)
 
