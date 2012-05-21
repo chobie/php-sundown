@@ -12,7 +12,9 @@
 #include "php.h"
 #include "markdown.h"
 #include "html.h"
+
 #include "ext/spl/spl_exceptions.h"
+
 #include "zend_interfaces.h"
 
 /* Define the entry point symbol
@@ -21,7 +23,7 @@
 extern zend_module_entry sundown_module_entry;
 #define phpext_sundown_ptr &sundown_module_entry;
 
-extern zend_class_entry *sundown_class_entry, *sundown_buffer_class_entry, *php_sundown_buffer_class_entry;
+extern zend_class_entry *sundown_class_entry, *php_sundown_buffer_class_entry;
 
 typedef enum
 {
@@ -44,11 +46,6 @@ typedef struct{
 	zend_object zo;
 	zval *render;
 } php_sundown_markdown_t;
-
-typedef struct{
-	zend_object zo;
-	struct buf *buffer;
-} php_sundown_buffer_t;
 
 typedef struct{
 	zend_object zo;

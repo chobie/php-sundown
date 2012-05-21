@@ -202,8 +202,8 @@ PHP_METHOD(sundown_render_html_toc, header)
 	int htext_len;
 	long header_level;
 	struct buf *input, *output;
-	php_sundown_buffer_t *object;
 	php_sundown_render_html_toc_t *html;
+	php_sundown_render_base_t *base;
 	
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
 		"sl",&htext, &htext_len, &header_level) == FAILURE) {
@@ -211,7 +211,7 @@ PHP_METHOD(sundown_render_html_toc, header)
 	}
 
 	html = (php_sundown_render_html_toc_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
-	php_sundown_render_base_t *base = (php_sundown_render_base_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
+	base = (php_sundown_render_base_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
 	input = str2buf(htext, htext_len);
         output = bufnew(128);
 	html->cb.header(output,input,header_level, &base->html);
@@ -292,7 +292,6 @@ PHP_METHOD(sundown_render_html_toc, codespan)
 	char *code;
 	int code_len;
 	struct buf *input, *output;
-	php_sundown_buffer_t *object;
 	php_sundown_render_html_toc_t *html;
 	
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
@@ -317,16 +316,15 @@ PHP_METHOD(sundown_render_html_toc, doubleEmphasis)
 	char *text;
 	int text_len;
 	struct buf *input, *output;
-	php_sundown_buffer_t *object;
 	php_sundown_render_html_toc_t *html;
-	
+	php_sundown_render_base_t *base;
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
 		"s",&text, &text_len) == FAILURE) {
 		return;
 	}
 
 	html = (php_sundown_render_html_toc_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
-	php_sundown_render_base_t *base = (php_sundown_render_base_t *) zend_object_store_get_object(getThis() TSRMLS_CC);\
+	base = (php_sundown_render_base_t *) zend_object_store_get_object(getThis() TSRMLS_CC);\
 	input = str2buf(text, text_len);
 	output = bufnew(128);
 	html->cb.double_emphasis(output,input, &base->html);
@@ -343,8 +341,8 @@ PHP_METHOD(sundown_render_html_toc, emphasis)
 	char *text;
 	int text_len;
 	struct buf *input, *output;
-	php_sundown_buffer_t *object;
 	php_sundown_render_html_toc_t *html;
+	php_sundown_render_base_t *base;
 	
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
 		"s", &text, &text_len) == FAILURE) {
@@ -352,7 +350,7 @@ PHP_METHOD(sundown_render_html_toc, emphasis)
 	}
 
 	html = (php_sundown_render_html_toc_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
-	php_sundown_render_base_t *base = (php_sundown_render_base_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
+	base = (php_sundown_render_base_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
 	input = str2buf(text, text_len);
 	output = bufnew(128);
 	html->cb.emphasis(output,input, &base->html);
@@ -385,7 +383,6 @@ PHP_METHOD(sundown_render_html_toc, link)
 	char *link, *title, *content;
 	int link_len, title_len, content_len;
 	struct buf *m_link, *m_title, *m_content, *output;
-	php_sundown_buffer_t *object;
 	php_sundown_render_html_toc_t *html;
 	
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
@@ -422,7 +419,6 @@ PHP_METHOD(sundown_render_html_toc, tripleEmphasis)
 	char *text;
 	int text_len;
 	struct buf *input, *output;
-	php_sundown_buffer_t *object;
 	php_sundown_render_html_toc_t *html;
 	
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
@@ -448,7 +444,6 @@ PHP_METHOD(sundown_render_html_toc, strikethrough)
 	int text_len;
 	struct buf *input, *output;
 	php_sundown_render_html_toc_t *html;
-	php_sundown_buffer_t *object;
 	
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
 		"s", &text, &text_len) == FAILURE) {
@@ -472,7 +467,6 @@ PHP_METHOD(sundown_render_html_toc, superscript)
 	char *text;
 	int text_len;
 	struct buf *input, *output;
-	php_sundown_buffer_t *object;
 	php_sundown_render_html_toc_t *html;
 	
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
@@ -527,7 +521,6 @@ PHP_METHOD(sundown_render_html_toc, docHeader)
 PHP_METHOD(sundown_render_html_toc, docFooter)
 {
 	struct buf *output;
-	php_sundown_buffer_t *object;
 	php_sundown_render_html_toc_t *html;
 
 	html = (php_sundown_render_html_toc_t *) zend_object_store_get_object(getThis() TSRMLS_CC);

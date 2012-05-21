@@ -381,7 +381,6 @@ PHP_METHOD(sundown_markdown, __destruct)
 PHP_METHOD(sundown_markdown, render)
 {
 	php_sundown_markdown_t *object = (php_sundown_markdown_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
-	php_sundown_buffer_t *buffer_object_t;
 	php_sundown_render_base_t *render_base;
 	zval *buffer_object, preprocess, postprocess, *params[1], *ret, *render, *m_retval;
 	struct buf input_buf, *output_buf;

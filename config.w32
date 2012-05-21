@@ -1,6 +1,9 @@
 ARG_WITH('sundown', 'sundown extension', 'no');
 
 if (PHP_SUNDOWN != "no") {
+  STDOUT.WriteLine("Generating Makefile");
 
-  EXTENSION("sundown", "php_sundown.c sundown_markdown.c render_base.c render_html.c render_xhtml.c buffer.c markdown.c html.c html_smartypants.c autolink.c stack.c houdini_href_e.c houdini_html_e.c");
+  EXTENSION("sundown", "php_sundown.c sundown_markdown.c render_base.c render_html.c render_html_toc.c render_xhtml.c", true, "-Isundown\\src;sundown\\html");
+  ADD_SOURCES(configure_module_dirname + "\\sundown","sundown\\src\\buffer.c sundown\\src\\markdown.c sundown\\html\\html.c sundown\\html\\html_smartypants.c sundown\\html\\autolink.c sundown\\src\\stack.c sundown\\html\\houdini_href_e.c sundown\\html\\houdini_html_e.c", "sundown");
+  ADD_EXTENSION_DEP('sundown','spl',true);
 }
