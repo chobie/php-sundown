@@ -3,7 +3,7 @@
 #define PHP_SUNDOWN_H
 
 #define PHP_SUNDOWN_EXTNAME "sundown"
-#define PHP_SUNDOWN_EXTVER "0.1"
+#define PHP_SUNDOWN_EXTVER "0.3.6-dev"
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
@@ -14,6 +14,10 @@
 #include "html.h"
 #include "ext/spl/spl_exceptions.h"
 #include "zend_interfaces.h"
+
+#ifndef SUNDOWN_VERSION
+#define SUNDOWN_VERSION UPSKIRT_VERSION
+#endif
 
 /* Define the entry point symbol
  * Zend will use when loading this module
