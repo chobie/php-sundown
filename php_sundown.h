@@ -9,16 +9,12 @@
 #include "config.h"
 #endif
 
+#include "php.h"
 #include "markdown.h"
 #include "html.h"
 
-#include "php.h"
 #include "zend_interfaces.h"
 #include "zend_exceptions.h"
-
-#if HAVE_STDINT_H
-#include <stdint.h>
-#endif
 
 /* Define the entry point symbol
  * Zend will use when loading this module
