@@ -434,7 +434,7 @@ PHP_METHOD(sundown_render_html, tableCell)
 	char *content;
 	int content_len;
 	long alignment;
-	struct buf *input, *output,*al;
+	struct buf *input, *output;
 	php_sundown_render_html_t *html;
 	php_sundown_render_base_t *base;
 
