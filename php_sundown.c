@@ -230,10 +230,10 @@ PHP_MINIT_FUNCTION(sundown) {
 
 PHP_MINFO_FUNCTION(sundown)
 {
-	php_printf("PHP Sundown Extension\n");
 	php_info_print_table_start();
-	php_info_print_table_row(2,"Sundown Support",  "enabled");
-	php_info_print_table_row(2,"Sundown Version", "3361ebcd22089fe64860f96a7b6acaf18a55746e");
+	php_info_print_table_header(2,"Sundown Support",  "enabled");
+	php_info_print_table_row(2,"Version", PHP_SUNDOWN_EXTVER);
+	php_info_print_table_row(2,"Sundown Version", SUNDOWN_VERSION);
 	php_info_print_table_end();
 }
 
