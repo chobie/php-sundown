@@ -19,6 +19,7 @@
 #include "php_sundown.h"
 
 extern zend_class_entry *sundown_render_base_class_entry;
+static zend_class_entry *spl_ce_InvalidArgumentException;
 
 zend_class_entry *sundown_markdown_class_entry;
 
@@ -630,4 +631,13 @@ void php_sundown_markdown_init(TSRMLS_D)
 	sundown_markdown_class_entry = zend_register_internal_class(&ce TSRMLS_CC);
 	sundown_markdown_class_entry->create_object = php_sundown_markdown_new;
 	zend_declare_property_null(sundown_markdown_class_entry, "extensions", sizeof("extensions")-1,  ZEND_ACC_PUBLIC TSRMLS_CC);
+
+	if (!spl_ce_InvalidArgumentException) {
+		/* when I'm building this extension on windows box. I can't fix redefintion macro error. for now lookup the class */
+		zend_class_entry **pce;
+		
+		if (zend_hash_find(CG(class_table), "invalidargumentexception", sizeof("InvalidArgumentException"), (void **)&pce) == SUCCESS) {
+			spl_ce_InvalidArgumentException = *pce;
+		}
+	}
 }

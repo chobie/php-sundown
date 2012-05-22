@@ -1,15 +1,14 @@
 ARG_WITH('sundown', 'sundown extension', 'no');
 
 if (PHP_SUNDOWN != "no") {
-	ADD_EXTENSION_DEP('sundown','spl',true);
-
-	if (CHECK_HEADER_ADD_INCLUDE("markdown.h", "CFLAGS_SUNDOWN", "..\\pecl\\sundown\\sundown\\src") &&
-		CHECK_HEADER_ADD_INCLUDE("html.h", "CFLAGS_SUNDOWN", "..\\pecl\\sundown\\sundown\\html")) {
-		ADD_SOURCES(configure_module_dirname + "\\sundown\\src","buffer.c markdown.c  autolink.c stack.c", "sundown");
-		ADD_SOURCES(configure_module_dirname + "\\sundown\\html","html.c html_smartypants.c houdini_href_e.c houdini_html_e.c", "sundown");
+	if (CHECK_HEADER_ADD_INCLUDE("markdown.h", "CFLAGS_SUNDOWN", ".\\sundown\\src") &&
+		CHECK_HEADER_ADD_INCLUDE("html.h", "CFLAGS_SUNDOWN", ".\\sundown\\html")) {
+		ADD_SOURCES(configure_module_dirname + ".\\sundown\\src","buffer.c markdown.c  autolink.c stack.c", "sundown");
+		ADD_SOURCES(configure_module_dirname + ".\\sundown\\html","html.c html_smartypants.c houdini_href_e.c houdini_html_e.c", "sundown");
 
 		EXTENSION("sundown", "php_sundown.c sundown_markdown.c render_base.c render_html.c render_html_toc.c render_xhtml.c");
 	} else {
 		WARNING( "sundown not enabled: headers not found");
 	}
+	ADD_EXTENSION_DEP('sundown','spl',true);
 }
