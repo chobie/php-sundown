@@ -283,7 +283,6 @@ PHP_METHOD(sundown_render_base, paragraph)
 {
 	char *text;
 	int text_len;
-	zval *buffer;
 	
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
 		"s", &text, &text_len) == FAILURE) {
@@ -390,7 +389,6 @@ PHP_METHOD(sundown_render_base, emphasis)
 {
 	char *text;
 	int text_len;
-	zval *buffer;
 	
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
 		"s", &text, &text_len) == FAILURE) {
@@ -615,7 +613,7 @@ PHP_METHOD(sundown_render_base, __construct)
 PHP_METHOD(sundown_render_base, getRenderFlags)
 {
 	if (Z_TYPE_P(zend_read_property(sundown_render_base_class_entry, getThis(),"render_flags",sizeof("render_flags")-1, 0 TSRMLS_CC)) != IS_NULL) {
-		zval *result, *tmp = NULL;
+		zval *tmp = NULL;
 
 		tmp = zend_read_property(sundown_render_base_class_entry, getThis(),"render_flags",sizeof("render_flags")-1, 0 TSRMLS_CC);
 		RETVAL_ZVAL(tmp, 1, 0);

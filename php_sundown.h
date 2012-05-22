@@ -16,6 +16,7 @@
 #include "ext/spl/spl_exceptions.h"
 
 #include "zend_interfaces.h"
+#include "zend_exceptions.h"
 
 /* Define the entry point symbol
  * Zend will use when loading this module
@@ -136,7 +137,6 @@ static int call_user_function_v(HashTable *function_table, zval **object_pp, zva
 	size_t i;
 	int ret;
 	zval **params;
-	zval *tmp;
 	TSRMLS_FETCH();
 
 	if (param_count > 0) {
