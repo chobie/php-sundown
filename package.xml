@@ -4,7 +4,7 @@
  <channel>pecl.php.net</channel>
  <summary>Sundown is a fast, robust Markdown parsing library for PHP5</summary>
  <description>Sundown is a fast, robust Markdown parsing library, originally created
-by Natacha PortÃ© and improved Vicent Marti.
+by Natacha Port� and improved Vicent Marti.
 this extension inspired Redcarpet ruby extension which created by Vicent.
 
 PECL Sundown provides straight forward object oriented Markdown API and customizable Renders.
