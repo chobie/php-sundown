@@ -181,7 +181,6 @@ PHP_METHOD(sundown_render_base, blockCode)
 {
 	char *code, *block_code;
 	int code_len, block_code_len;
-	php_sundown_buffer_t *object;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
 		"ss", &code, &code_len, &block_code, &block_code_len) == FAILURE) {
@@ -197,7 +196,6 @@ PHP_METHOD(sundown_render_base, blockQuote)
 {
 	char *quote;
 	int quote_len;
-	php_sundown_buffer_t *object;
 	
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
 		"s", &quote, &quote_len) == FAILURE) {
@@ -213,7 +211,6 @@ PHP_METHOD(sundown_render_base, blockHtml)
 {
 	char *raw;
 	int raw_len;
-	php_sundown_buffer_t *object;
 	
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
 		"s", &raw, &raw_len) == FAILURE) {
@@ -229,7 +226,6 @@ PHP_METHOD(sundown_render_base, header)
 {
 	char *htext;
 	int htext_len, header_level;
-	php_sundown_buffer_t *object;
 	
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
 		"sl",&htext, &htext_len, &header_level) == FAILURE) {
@@ -256,7 +252,6 @@ PHP_METHOD(sundown_render_base, listBox)
 	char *contents;
 	int contents_len;
 	long list_type;
-	php_sundown_buffer_t *object;
 	
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
 		"sl", &contents, &contents_len, &list_type) == FAILURE) {
@@ -273,7 +268,6 @@ PHP_METHOD(sundown_render_base, listItem)
 	char *text;
 	int text_len;
 	long list_type;
-	php_sundown_buffer_t *object;
 	
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
 		"sl",&text, &text_len, &list_type) == FAILURE) {
@@ -289,8 +283,6 @@ PHP_METHOD(sundown_render_base, paragraph)
 {
 	char *text;
 	int text_len;
-	zval *buffer;
-	php_sundown_buffer_t *object;
 	
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
 		"s", &text, &text_len) == FAILURE) {
@@ -306,7 +298,6 @@ PHP_METHOD(sundown_render_base, table)
 {
 	char *header, *body;
 	int header_len, body_len;
-	php_sundown_buffer_t *object;
 	
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
 		"ss", &header, &header_len, &body, &body_len) == FAILURE) {
@@ -322,7 +313,6 @@ PHP_METHOD(sundown_render_base, tableRow)
 {
 	char *contents;
 	int contents_len;
-	php_sundown_buffer_t *object;
 	
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
 		"s", &contents, &contents_len) == FAILURE) {
@@ -338,7 +328,6 @@ PHP_METHOD(sundown_render_base, tableCell)
 {
 	char *content, *alignment;
 	int content_len, alignment_len;
-	php_sundown_buffer_t *object;
 	
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
 		"ss", &content, &content_len, &alignment, &alignment_len) == FAILURE) {
@@ -355,7 +344,6 @@ PHP_METHOD(sundown_render_base, autolink)
 	char *link;
 	int link_len;
 	long link_type;
-	php_sundown_buffer_t *object;
 	
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
 		"sl",&link, &link_len, &link_type) == FAILURE) {
@@ -371,7 +359,6 @@ PHP_METHOD(sundown_render_base, codespan)
 {
 	char *code;
 	int code_len;
-	php_sundown_buffer_t *object;
 	
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
 		"s", &code, &code_len) == FAILURE) {
@@ -387,7 +374,6 @@ PHP_METHOD(sundown_render_base, doubleEmphasis)
 {
 	char *text;
 	int text_len;
-	php_sundown_buffer_t *object;
 	
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
 		"s", &text, &text_len) == FAILURE) {
@@ -403,8 +389,6 @@ PHP_METHOD(sundown_render_base, emphasis)
 {
 	char *text;
 	int text_len;
-	zval *buffer;
-	php_sundown_buffer_t *object;
 	
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
 		"s", &text, &text_len) == FAILURE) {
@@ -420,7 +404,6 @@ PHP_METHOD(sundown_render_base, image)
 {
 	char *link, *title, *alt_text;
 	int link_len, title_len, alt_text_len;
-	php_sundown_buffer_t *object;
 	
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
 		"sss",&link, &link_len, &title, &title_len, &alt_text, &alt_text_len) == FAILURE) {
@@ -446,7 +429,6 @@ PHP_METHOD(sundown_render_base, link)
 {
 	char *link, *title, *content;
 	int link_len, title_len, content_len;
-	php_sundown_buffer_t *object;
 	
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
 		"sss",&link, &link_len, &title, &title_len, &content, &content_len) == FAILURE) {
@@ -462,7 +444,6 @@ PHP_METHOD(sundown_render_base, rawHtml)
 {
 	char *raw;
 	int raw_len;
-	php_sundown_buffer_t *object;
 	
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
 		"s", &raw, &raw_len) == FAILURE) {
@@ -478,7 +459,6 @@ PHP_METHOD(sundown_render_base, tripleEmphasis)
 {
 	char *text;
 	int text_len;
-	php_sundown_buffer_t *object;
 	
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
 		"s", &text, &text_len) == FAILURE) {
@@ -494,7 +474,6 @@ PHP_METHOD(sundown_render_base, strikethrough)
 {
 	char *text;
 	int text_len;
-	php_sundown_buffer_t *object;
 	
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
 		"s", &text, &text_len) == FAILURE) {
@@ -510,7 +489,6 @@ PHP_METHOD(sundown_render_base, superscript)
 {
 	char *text;
 	int text_len;
-	php_sundown_buffer_t *object;
 	
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
 		"s", &text, &text_len) == FAILURE) {
@@ -526,7 +504,6 @@ PHP_METHOD(sundown_render_base, entity)
 {
 	char *text;
 	int text_len;
-	php_sundown_buffer_t *object;
 	
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
 		"s", &text, &text_len) == FAILURE) {
@@ -542,7 +519,6 @@ PHP_METHOD(sundown_render_base, normalText)
 {
 	char *text;
 	int text_len;
-	php_sundown_buffer_t *object;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
 		"s",&text, &text_len) == FAILURE) {
@@ -637,7 +613,7 @@ PHP_METHOD(sundown_render_base, __construct)
 PHP_METHOD(sundown_render_base, getRenderFlags)
 {
 	if (Z_TYPE_P(zend_read_property(sundown_render_base_class_entry, getThis(),"render_flags",sizeof("render_flags")-1, 0 TSRMLS_CC)) != IS_NULL) {
-		zval *result, *tmp = NULL;
+		zval *tmp = NULL;
 
 		tmp = zend_read_property(sundown_render_base_class_entry, getThis(),"render_flags",sizeof("render_flags")-1, 0 TSRMLS_CC);
 		RETVAL_ZVAL(tmp, 1, 0);

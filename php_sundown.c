@@ -18,7 +18,9 @@
 
 
 #include "php_sundown.h"
+#include "ext/standard/info.h"
 
+extern void php_sundown_render_base_init(TSRMLS_D);
 extern void php_sundown_render_html_init(TSRMLS_D);
 extern void php_sundown_render_html_toc_init(TSRMLS_D);
 extern void php_sundown_render_xhtml_init(TSRMLS_D);
@@ -51,7 +53,6 @@ static void sundown__render(SundownRendererType render_type, INTERNAL_FUNCTION_P
 	unsigned int enabled_extensions = 0, render_flags = 0;
 	char *buffer;
 	int buffer_len = 0;
-	zend_class_entry *ce;
 	HashTable *table;
 	
 	object = getThis();

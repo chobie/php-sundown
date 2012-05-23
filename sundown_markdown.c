@@ -19,6 +19,7 @@
 #include "php_sundown.h"
 
 extern zend_class_entry *sundown_render_base_class_entry;
+static zend_class_entry *spl_ce_InvalidArgumentException;
 
 zend_class_entry *sundown_markdown_class_entry;
 
@@ -381,9 +382,8 @@ PHP_METHOD(sundown_markdown, __destruct)
 PHP_METHOD(sundown_markdown, render)
 {
 	php_sundown_markdown_t *object = (php_sundown_markdown_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
-	php_sundown_buffer_t *buffer_object_t;
 	php_sundown_render_base_t *render_base;
-	zval *buffer_object, preprocess, postprocess, *params[1], *ret, *render, *m_retval;
+	zval preprocess, postprocess, *params[1], *ret, *render, *m_retval;
 	struct buf input_buf, *output_buf;
 	struct sd_callbacks sundown_render;
 	struct php_sundown_renderopt_ex opt;
@@ -631,4 +631,13 @@ void php_sundown_markdown_init(TSRMLS_D)
 	sundown_markdown_class_entry = zend_register_internal_class(&ce TSRMLS_CC);
 	sundown_markdown_class_entry->create_object = php_sundown_markdown_new;
 	zend_declare_property_null(sundown_markdown_class_entry, "extensions", sizeof("extensions")-1,  ZEND_ACC_PUBLIC TSRMLS_CC);
+
+	if (!spl_ce_InvalidArgumentException) {
+		/* when I'm building this extension on windows box. I can't fix redefintion macro error. for now lookup the class */
+		zend_class_entry **pce;
+		
+		if (zend_hash_find(CG(class_table), "invalidargumentexception", sizeof("InvalidArgumentException"), (void **)&pce) == SUCCESS) {
+			spl_ce_InvalidArgumentException = *pce;
+		}
+	}
 }
