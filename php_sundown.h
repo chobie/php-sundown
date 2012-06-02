@@ -74,7 +74,6 @@ typedef struct{
 } php_sundown_render_base_t;
 
 #define SPAN_CALLBACK_EX(buffer,method_name, ...) {\
-	TSRMLS_FETCH();\
 	struct php_sundown_renderopt_ex *opt = (struct php_sundown_renderopt_ex*)opaque;\
 	zval func, *ret;\
 \
@@ -95,7 +94,6 @@ typedef struct{
 
 
 #define BLOCK_CALLBACK_EX(buffer,method_name, ...) {\
-	TSRMLS_FETCH();\
 	struct php_sundown_renderopt_ex *opt = (struct php_sundown_renderopt_ex*)opaque;\
 	zval func, *ret;\
 \
@@ -115,7 +113,6 @@ typedef struct{
 static int php_sundown_has_ext(HashTable *table, const char *name)
 {
 	zval **data = NULL;
-	zval *ret = NULL;
 	int length = strlen(name) + 1;
 	
 	if (zend_hash_find(table, name, length, (void **)&data) == SUCCESS) {
@@ -212,7 +209,6 @@ static inline struct buf* str2buf(const char *text, size_t length)
 
 static void php_sundown__get_render_flags(HashTable *table, unsigned int *render_flags_p)
 {
-	TSRMLS_FETCH();
 	unsigned int render_flags = HTML_EXPAND_TABS;
 
 	/* filter_html */
@@ -257,7 +253,6 @@ static void php_sundown__get_render_flags(HashTable *table, unsigned int *render
 
 static void php_sundown__get_extensions(HashTable *table, unsigned int *enabled_extensions_p)
 {
-	TSRMLS_FETCH();
 	unsigned int extensions = 0;
 
 	/**
@@ -300,7 +295,6 @@ static void php_sundown__get_extensions(HashTable *table, unsigned int *enabled_
 
 static void php_sundown__get_flags(HashTable *table, unsigned int *enabled_extensions_p, unsigned int *render_flags_p)
 {
-	TSRMLS_FETCH();
 	unsigned int extensions = 0;
 	unsigned int render_flags = HTML_EXPAND_TABS;
 

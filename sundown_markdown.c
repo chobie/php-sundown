@@ -524,7 +524,6 @@ PHP_METHOD(sundown_markdown, hasRenderFlag)
 	int name_len = 0;
 	HashTable *table;
 	zval *render_flags,*render = NULL;
-	php_sundown_markdown_t *object = (php_sundown_markdown_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
 	
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
 		"s", &name, &name_len) == FAILURE) {
