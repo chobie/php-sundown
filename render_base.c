@@ -695,4 +695,8 @@ void php_sundown_render_base_init(TSRMLS_D)
 	sundown_render_base_class_entry = zend_register_internal_class(&ce TSRMLS_CC);
 	sundown_render_base_class_entry->create_object = php_sundown_render_base_new;
 	zend_declare_property_null(sundown_render_base_class_entry, "render_flags", sizeof("render_flags")-1,  ZEND_ACC_PUBLIC TSRMLS_CC);
+
+	zend_declare_class_constant_long(sundown_render_base_class_entry, "LIST_ORDERED", sizeof("LIST_ORDERED")-1, 1 TSRMLS_CC);
+	zend_declare_class_constant_long(sundown_render_base_class_entry, "MKDA_EMAIL", sizeof("MKDA_EMAIL")-1, MKDA_EMAIL TSRMLS_CC);
+	zend_declare_class_constant_long(sundown_render_base_class_entry, "MKDA_NORMAL", sizeof("MKDA_NORMAL")-1, MKDA_NORMAL TSRMLS_CC);
 }
