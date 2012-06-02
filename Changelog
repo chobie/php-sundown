@@ -1,3 +1,23 @@
+2012-06-02  Shuhei Tanuma <chobieeee@php.net>
+
+	* bumped up 0.3.6
+
+            now, php-sundown is able to use under windows box.
+            Thank you stealth35!
+
+            * prettify phpinfo, add ext and sundown version
+            * windows support
+            * fix several compile warnings
+
+            [removed constants]:
+            Sundown\Render\MKDA_NORMAL
+            Sundown\Render\MKDA_EMAIL
+
+            [added constants]:
+            Sundown\Render::MKDA_NORMAL
+            Sundown\Render::MKDA_EMAIL
+
+
 2012-05-17  Shuhei Tanuma <chobieeee@php.net>
 
 	* bumped up 0.3.5
