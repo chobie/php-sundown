@@ -15,10 +15,10 @@ PECL Sundown provides straight forward object oriented Markdown API and customiz
   <email>chobieeee@php.net</email>
   <active>yes</active>
  </lead>
- <date>2012-05-16</date>
+ <date>2012-06-02</date>
  <version>
-  <release>0.3.5</release>
-  <api>0.3.5</api>
+  <release>0.3.6</release>
+  <api>0.3.6</api>
  </version>
  <stability>
   <release>beta</release>
@@ -26,17 +26,22 @@ PECL Sundown provides straight forward object oriented Markdown API and customiz
  </stability>
  <license uri="http://www.php.net/license">PHP</license>
  <notes>
-	* bumped up 0.3.5
+	* bumped up 0.3.6
 
-fix #19 Autolink is broken for emails
+now, php-sundown is able to use under windows box.
+Thank you stealth35!
 
-[added constants]:
+* prettify phpinfo, add ext and sundown version
+* windows support
+* fix several compile warnings
+
+[removed constants]:
 Sundown\Render\MKDA_NORMAL
 Sundown\Render\MKDA_EMAIL
 
-[changed signature]:
-Sundown\Render\Base::autolink(string$link, int $type)
-  type should be Sundown\Render\MKDA_NORMAL or Sundown\Render\MKDA_EMAIL
+[added constants]:
+Sundown\Render::MKDA_NORMAL
+Sundown\Render::MKDA_EMAIL
 </notes>
  <contents>
   <dir name="/">
@@ -83,6 +88,7 @@ Sundown\Render\Base::autolink(string$link, int $type)
      <file role="test" name="005-render-xhtml.phpt" />
      <file role="test" name="006-render-custom-codeblock.phpt" />
      <file role="test" name="999-regression-no12.phpt" />
+     <file role="test" name="999-regression-no19.phpt" />
     </dir>
    <dir name="docs">
     <file role="doc" name="ExtensionsAndRenderFlags.md" />
@@ -127,6 +133,30 @@ Sundown\Render\Base::autolink(string$link, int $type)
  <providesextension>sundown</providesextension>
  <extsrcrelease/>
  <changelog>
+  <release>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <version>
+    <release>0.3.5</release>
+    <api>0.3.5</api>
+   </version>
+   <date>2012-05-17</date>
+   <notes>
+	* bumped up 0.3.5
+
+fix #19 Autolink is broken for emails
+
+[added constants]:
+Sundown\Render\MKDA_NORMAL
+Sundown\Render\MKDA_EMAIL
+
+[changed signature]:
+Sundown\Render\Base::autolink(string$link, int $type)
+  type should be Sundown\Render\MKDA_NORMAL or Sundown\Render\MKDA_EMAIL
+   </notes>
+  </release>
   <release>
    <stability>
     <release>beta</release>
