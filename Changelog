@@ -10,12 +10,14 @@
             * fix several compile warnings
 
             [removed constants]:
+            Sundown\Render\LIST_ORDERED
             Sundown\Render\MKDA_NORMAL
             Sundown\Render\MKDA_EMAIL
 
             [added constants]:
-            Sundown\Render::MKDA_NORMAL
-            Sundown\Render::MKDA_EMAIL
+            Sundown\Render\Base::LIST_ORDERED
+            Sundown\Render\Base::MKDA_NORMAL
+            Sundown\Render\Base::MKDA_EMAIL
 
 
 2012-05-17  Shuhei Tanuma <chobieeee@php.net>
