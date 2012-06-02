@@ -18,7 +18,9 @@
 
 
 #include "php_sundown.h"
+#include "ext/standard/info.h"
 
+extern void php_sundown_render_base_init(TSRMLS_D);
 extern void php_sundown_render_html_init(TSRMLS_D);
 extern void php_sundown_render_html_toc_init(TSRMLS_D);
 extern void php_sundown_render_xhtml_init(TSRMLS_D);
@@ -51,7 +53,6 @@ static void sundown__render(SundownRendererType render_type, INTERNAL_FUNCTION_P
 	unsigned int enabled_extensions = 0, render_flags = 0;
 	char *buffer;
 	int buffer_len = 0;
-	zend_class_entry *ce;
 	HashTable *table;
 	
 	object = getThis();
@@ -221,19 +222,16 @@ PHP_MINIT_FUNCTION(sundown) {
 	php_sundown_markdown_init(TSRMLS_C);
 
 	REGISTER_NS_STRING_CONSTANT(ZEND_NS_NAME("Sundown","Render"), "HTML", "Sundown\\Render\\HTML", CONST_CS | CONST_PERSISTENT);
-	REGISTER_NS_LONG_CONSTANT(ZEND_NS_NAME("Sundown","Render"), "LIST_ORDERED",    1, CONST_CS | CONST_PERSISTENT);
-	REGISTER_NS_LONG_CONSTANT(ZEND_NS_NAME("Sundown","Render"), "MKDA_EMAIL",     MKDA_EMAIL, CONST_CS | CONST_PERSISTENT);
-	REGISTER_NS_LONG_CONSTANT(ZEND_NS_NAME("Sundown","Render"), "MKDA_NORMAL",    MKDA_NORMAL, CONST_CS | CONST_PERSISTENT);
 	return SUCCESS;
 }
 
 
 PHP_MINFO_FUNCTION(sundown)
 {
-	php_printf("PHP Sundown Extension\n");
 	php_info_print_table_start();
-	php_info_print_table_row(2,"Sundown Support",  "enabled");
-	php_info_print_table_row(2,"Sundown Version", "3361ebcd22089fe64860f96a7b6acaf18a55746e");
+	php_info_print_table_header(2,"Sundown Support",  "enabled");
+	php_info_print_table_row(2,"Version", PHP_SUNDOWN_EXTVER);
+	php_info_print_table_row(2,"Sundown Version", SUNDOWN_VERSION);
 	php_info_print_table_end();
 }
 

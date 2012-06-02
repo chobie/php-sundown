@@ -3,7 +3,7 @@
 #define PHP_SUNDOWN_H
 
 #define PHP_SUNDOWN_EXTNAME "sundown"
-#define PHP_SUNDOWN_EXTVER "0.1"
+#define PHP_SUNDOWN_EXTVER "0.3.6-dev"
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
@@ -12,8 +12,13 @@
 #include "php.h"
 #include "markdown.h"
 #include "html.h"
-#include "ext/spl/spl_exceptions.h"
+
 #include "zend_interfaces.h"
+#include "zend_exceptions.h"
+
+#ifndef SUNDOWN_VERSION
+#define SUNDOWN_VERSION UPSKIRT_VERSION
+#endif
 
 /* Define the entry point symbol
  * Zend will use when loading this module
@@ -21,7 +26,7 @@
 extern zend_module_entry sundown_module_entry;
 #define phpext_sundown_ptr &sundown_module_entry;
 
-extern zend_class_entry *sundown_class_entry, *sundown_buffer_class_entry, *php_sundown_buffer_class_entry;
+extern zend_class_entry *sundown_class_entry, *php_sundown_buffer_class_entry;
 
 typedef enum
 {
@@ -47,11 +52,6 @@ typedef struct{
 
 typedef struct{
 	zend_object zo;
-	struct buf *buffer;
-} php_sundown_buffer_t;
-
-typedef struct{
-	zend_object zo;
 	struct html_renderopt html;
 	struct sd_callbacks cb;
 } php_sundown_render_html_t;
@@ -74,7 +74,6 @@ typedef struct{
 } php_sundown_render_base_t;
 
 #define SPAN_CALLBACK_EX(buffer,method_name, ...) {\
-	TSRMLS_FETCH();\
 	struct php_sundown_renderopt_ex *opt = (struct php_sundown_renderopt_ex*)opaque;\
 	zval func, *ret;\
 \
@@ -95,7 +94,6 @@ typedef struct{
 
 
 #define BLOCK_CALLBACK_EX(buffer,method_name, ...) {\
-	TSRMLS_FETCH();\
 	struct php_sundown_renderopt_ex *opt = (struct php_sundown_renderopt_ex*)opaque;\
 	zval func, *ret;\
 \
@@ -115,7 +113,6 @@ typedef struct{
 static int php_sundown_has_ext(HashTable *table, const char *name)
 {
 	zval **data = NULL;
-	zval *ret = NULL;
 	int length = strlen(name) + 1;
 	
 	if (zend_hash_find(table, name, length, (void **)&data) == SUCCESS) {
@@ -139,7 +136,6 @@ static int call_user_function_v(HashTable *function_table, zval **object_pp, zva
 	size_t i;
 	int ret;
 	zval **params;
-	zval *tmp;
 	TSRMLS_FETCH();
 
 	if (param_count > 0) {
@@ -213,7 +209,6 @@ static inline struct buf* str2buf(const char *text, size_t length)
 
 static void php_sundown__get_render_flags(HashTable *table, unsigned int *render_flags_p)
 {
-	TSRMLS_FETCH();
 	unsigned int render_flags = HTML_EXPAND_TABS;
 
 	/* filter_html */
@@ -258,7 +253,6 @@ static void php_sundown__get_render_flags(HashTable *table, unsigned int *render
 
 static void php_sundown__get_extensions(HashTable *table, unsigned int *enabled_extensions_p)
 {
-	TSRMLS_FETCH();
 	unsigned int extensions = 0;
 
 	/**
@@ -301,7 +295,6 @@ static void php_sundown__get_extensions(HashTable *table, unsigned int *enabled_
 
 static void php_sundown__get_flags(HashTable *table, unsigned int *enabled_extensions_p, unsigned int *render_flags_p)
 {
-	TSRMLS_FETCH();
 	unsigned int extensions = 0;
 	unsigned int render_flags = HTML_EXPAND_TABS;
 
