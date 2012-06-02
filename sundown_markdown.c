@@ -342,11 +342,16 @@ PHP_METHOD(sundown_markdown, __construct)
 			zval_ptr_dtor(&ret);
 			render = obj;
 		}
-	} else {
+	} else if (Z_TYPE_P(render) == IS_OBJECT) {
+		// nothing todo.
 		Z_ADDREF_P(render);	
+	} else {
+		zend_throw_exception_ex(spl_ce_InvalidArgumentException, 0 TSRMLS_CC,"Render class must extend Sundown\\Render\\Base");
+		return;
 	}
 
 	if (!instanceof_function_ex(Z_OBJCE_P(render), sundown_render_base_class_entry, 0 TSRMLS_CC)) {
+		Z_DELREF_P(render);
 		zend_throw_exception_ex(spl_ce_InvalidArgumentException, 0 TSRMLS_CC,"Render class must extend Sundown\\Render\\Base");
 		return;
 	}
