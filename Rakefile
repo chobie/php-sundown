@@ -1,4 +1,3 @@
-
 desc "compile php-sundown"
 task :compile => ['sundown/src/markdown.h'] do
 	sh "phpize"
@@ -19,6 +18,7 @@ desc "run php test cases"
 task :test do
 	ENV["TESTS"] = "--show-diff -q"
 	sh "make test"
+	sh "cat tests/*.diff; if [ $? -eq 0 ];then exit 1; fi"
 end
 
 desc "Run conformance tests"
