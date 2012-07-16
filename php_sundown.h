@@ -24,7 +24,7 @@
  * Zend will use when loading this module
  */
 extern zend_module_entry sundown_module_entry;
-#define phpext_sundown_ptr &sundown_module_entry;
+#define phpext_sundown_ptr &sundown_module_entry
 
 extern zend_class_entry *sundown_class_entry, *php_sundown_buffer_class_entry;
 
