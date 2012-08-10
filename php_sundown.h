@@ -170,7 +170,7 @@ static inline zval* buf2str(const struct buf *text)
 	if (text == NULL || text->size == 0) {
 		ZVAL_NULL(str);
 	} else {
-		ZVAL_STRINGL(str, text->data, text->size,1);
+		ZVAL_STRINGL(str, (char *)text->data, text->size, 1);
 	}
 	return str;
 }

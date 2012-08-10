@@ -387,7 +387,6 @@ PHP_METHOD(sundown_markdown, __destruct)
 */
 PHP_METHOD(sundown_markdown, render)
 {
-	php_sundown_markdown_t *object = (php_sundown_markdown_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
 	php_sundown_render_base_t *render_base;
 	zval preprocess, postprocess, *params[1], *ret, *render, *m_retval;
 	struct buf input_buf, *output_buf;
@@ -411,23 +410,19 @@ PHP_METHOD(sundown_markdown, render)
 	output_buf = bufnew(128);
 	bufgrow(output_buf, buffer_len * 1.2f);
 	
-	if (zend_call_method_with_0_params(&this_ptr, Z_OBJCE_P(getThis()), NULL, "getrender", &render) == FAILURE) {
-		return;
-	}
+	zend_call_method_with_0_params(&this_ptr, Z_OBJCE_P(getThis()), NULL, "getrender", &render);
 
-	if (zend_call_method_with_0_params(&render, Z_OBJCE_P(render), NULL, "getrenderflags", &m_retval)) {
-		table = Z_ARRVAL_P(m_retval);
-		php_sundown__get_render_flags(table, &render_flags);
-		table = NULL;
-		zval_ptr_dtor(&m_retval);
-	}
+	zend_call_method_with_0_params(&render, Z_OBJCE_P(render), NULL, "getrenderflags", &m_retval);
+	table = Z_ARRVAL_P(m_retval);
+	php_sundown__get_render_flags(table, &render_flags);
+	table = NULL;
+	zval_ptr_dtor(&m_retval);
 
-	if (zend_call_method_with_0_params(&this_ptr, Z_OBJCE_P(getThis()), NULL, "getextensions", &m_retval)) {
-		table = Z_ARRVAL_P(m_retval);
-		php_sundown__get_extensions(table, &enabled_extensions);
-		table = NULL;
-		zval_ptr_dtor(&m_retval);
-	}
+	zend_call_method_with_0_params(&this_ptr, Z_OBJCE_P(getThis()), NULL, "getextensions", &m_retval);
+	table = Z_ARRVAL_P(m_retval);
+	php_sundown__get_extensions(table, &enabled_extensions);
+	table = NULL;
+	zval_ptr_dtor(&m_retval);
 	
 	/* @todo: setup render */
 	switch (SUNDOWN_RENDER_HTML) {
@@ -465,10 +460,10 @@ PHP_METHOD(sundown_markdown, render)
 	
 	memset(&input_buf, 0x0, sizeof(struct buf));
 	if (ret != NULL && Z_TYPE_P(ret) == IS_STRING) {
-		input_buf.data = Z_STRVAL_P(ret);
+		input_buf.data = (uint8_t *)Z_STRVAL_P(ret);
 		input_buf.size = Z_STRLEN_P(ret);
 	} else {
-		input_buf.data = buffer;
+		input_buf.data = (uint8_t *)buffer;
 		input_buf.size = strlen(buffer);
 	}
 	zval_ptr_dtor(&params[0]);
@@ -482,15 +477,15 @@ PHP_METHOD(sundown_markdown, render)
 	/* postprocess */
 	MAKE_STD_ZVAL(ret);
 	MAKE_STD_ZVAL(params[0]);
-	ZVAL_STRINGL(params[0], output_buf->data,output_buf->size, 1);
+	ZVAL_STRINGL(params[0], (char *)output_buf->data, output_buf->size, 1);
 	ZVAL_STRING(&postprocess,"postprocess",1);
 	if (call_user_function(NULL, &render, &postprocess, ret, 1, params TSRMLS_CC) == FAILURE) {
 	}
 	
 	if (ret != NULL && Z_TYPE_P(ret) == IS_STRING) {
-		RETVAL_STRINGL(Z_STRVAL_P(ret), Z_STRLEN_P(ret),1);
+		RETVAL_STRINGL(Z_STRVAL_P(ret), Z_STRLEN_P(ret), 1);
 	} else {
-		RETVAL_STRINGL(output_buf->data,output_buf->size,1);
+		RETVAL_STRINGL((char *)output_buf->data, output_buf->size, 1);
 	}
 	zval_ptr_dtor(&ret);
 	zval_ptr_dtor(&params[0]);
@@ -536,13 +531,8 @@ PHP_METHOD(sundown_markdown, hasRenderFlag)
 		return;
 	}
 
-	if (zend_call_method_with_0_params(&this_ptr, Z_OBJCE_P(getThis()), NULL, "getrender", &render) == FAILURE) {
-		return;
-	}
-
-	if (zend_call_method_with_0_params(&render, Z_OBJCE_P(render), NULL, "getrenderflags", &render_flags) == FAILURE) {
-		return;
-	}
+	zend_call_method_with_0_params(&this_ptr, Z_OBJCE_P(getThis()), NULL, "getrender", &render);
+	zend_call_method_with_0_params(&render, Z_OBJCE_P(render), NULL, "getrenderflags", &render_flags);
 
 	table = Z_ARRVAL_P(render_flags);
 	RETVAL_BOOL(php_sundown_has_ext(table, name));

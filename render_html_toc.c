@@ -213,10 +213,10 @@ PHP_METHOD(sundown_render_html_toc, header)
 	html = (php_sundown_render_html_toc_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
 	base = (php_sundown_render_base_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
 	input = str2buf(htext, htext_len);
-        output = bufnew(128);
-	html->cb.header(output,input,header_level, &base->html);
+	output = bufnew(128);
+	html->cb.header(output, input, header_level, &base->html);
 	bufrelease(input);
-	RETVAL_STRINGL(output->data, output->size,1);
+	RETVAL_STRINGL((char *)output->data, output->size, 1);
 	bufrelease(output);
 }
 /* }}} */
@@ -302,9 +302,9 @@ PHP_METHOD(sundown_render_html_toc, codespan)
 	input = str2buf(code, code_len);
 	output = bufnew(128);
 	html = (php_sundown_render_html_toc_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
-	html->cb.codespan(output,input, &html->html);
+	html->cb.codespan(output, input, &html->html);
 	bufrelease(input);
-	RETVAL_STRINGL(output->data, output->size,1);
+	RETVAL_STRINGL((char *)output->data, output->size, 1);
 	bufrelease(output);
 }
 /* }}} */
@@ -329,7 +329,7 @@ PHP_METHOD(sundown_render_html_toc, doubleEmphasis)
 	output = bufnew(128);
 	html->cb.double_emphasis(output,input, &base->html);
 	bufrelease(input);
-	RETVAL_STRINGL(output->data, output->size,1);
+	RETVAL_STRINGL((char *)output->data, output->size, 1);
 	bufrelease(output);
 }
 /* }}} */
@@ -355,7 +355,7 @@ PHP_METHOD(sundown_render_html_toc, emphasis)
 	output = bufnew(128);
 	html->cb.emphasis(output,input, &base->html);
 	bufrelease(input);
-	RETVAL_STRINGL(output->data, output->size,1);
+	RETVAL_STRINGL((char *)output->data, output->size, 1);
 	bufrelease(output);
 }
 /* }}} */
@@ -399,7 +399,7 @@ PHP_METHOD(sundown_render_html_toc, link)
 	bufrelease(m_link);
 	bufrelease(m_title);
 	bufrelease(m_content);
-	RETVAL_STRINGL(output->data, output->size,1);
+	RETVAL_STRINGL((char *)output->data, output->size, 1);
 	bufrelease(output);
 }
 /* }}} */
@@ -431,7 +431,7 @@ PHP_METHOD(sundown_render_html_toc, tripleEmphasis)
 	output = bufnew(128);
 	html->cb.triple_emphasis(output,input, &html->html);
 	bufrelease(input);
-	RETVAL_STRINGL(output->data, output->size,1);
+	RETVAL_STRINGL((char *)output->data, output->size, 1);
 	bufrelease(output);
 }
 /* }}} */
@@ -453,9 +453,9 @@ PHP_METHOD(sundown_render_html_toc, strikethrough)
 	html = (php_sundown_render_html_toc_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
 	input = str2buf(text, text_len);
 	output = bufnew(128);
-	html->cb.strikethrough(output,input, &html->html);
+	html->cb.strikethrough(output, input, &html->html);
 	bufrelease(input);
-	RETVAL_STRINGL(output->data, output->size,1);
+	RETVAL_STRINGL((char *)output->data, output->size, 1);
 	bufrelease(output);
 }
 /* }}} */
@@ -479,7 +479,7 @@ PHP_METHOD(sundown_render_html_toc, superscript)
 	output = bufnew(128);
 	html->cb.superscript(output,input, &html->html);
 	bufrelease(input);
-	RETVAL_STRINGL(output->data, output->size,1);
+	RETVAL_STRINGL((char *)output->data, output->size, 1);
 	bufrelease(output);
 }
 /* }}} */
@@ -500,11 +500,11 @@ PHP_METHOD(sundown_render_html_toc, normalText)
 	int text_len;
 	
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
-		"s",&text, &text_len) == FAILURE) {
+		"s", &text, &text_len) == FAILURE) {
 		return;
 	}
 	
-	RETVAL_STRINGL(text,text_len,1);
+	RETVAL_STRINGL(text, text_len, 1);
 }
 /* }}} */
 
@@ -525,8 +525,8 @@ PHP_METHOD(sundown_render_html_toc, docFooter)
 
 	html = (php_sundown_render_html_toc_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
 	output = bufnew(128);
-	html->cb.doc_footer(output,&html->html);
-	RETVAL_STRINGL(output->data, output->size,1);
+	html->cb.doc_footer(output, &html->html);
+	RETVAL_STRINGL((char *)output->data, output->size, 1);
 	bufrelease(output);
 }
 /* }}} */

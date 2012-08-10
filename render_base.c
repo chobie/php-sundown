@@ -574,8 +574,8 @@ PHP_METHOD(sundown_render_base, postprocess)
 
 	if (Z_BVAL_P(zend_read_property(Z_OBJCE_P(getThis()), getThis(),"enable_pants",sizeof("enable_pants")-1, 1 TSRMLS_CC))) {
 		struct buf *smart_buf = bufnew(128);
-		sdhtml_smartypants(smart_buf, text,text_len);
-		RETVAL_STRINGL(smart_buf->data, smart_buf->size,1);
+		sdhtml_smartypants(smart_buf, (uint8_t *)text, text_len);
+		RETVAL_STRINGL((char*)smart_buf->data, smart_buf->size, 1);
 		bufrelease(smart_buf);
 	} else {
 		RETVAL_STRINGL(text,text_len, 1);

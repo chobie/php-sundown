@@ -60,7 +60,7 @@ static void sundown__render(SundownRendererType render_type, INTERNAL_FUNCTION_P
 	buffer_len = strlen(buffer);
 	
 	memset(&input_buf, 0x0, sizeof(struct buf));
-	input_buf.data = buffer;
+	input_buf.data = (uint8_t *)buffer;
 	input_buf.size = strlen(buffer);
 	
 	output_buf = bufnew(128);
@@ -90,11 +90,11 @@ static void sundown__render(SundownRendererType render_type, INTERNAL_FUNCTION_P
 
 	if (Z_BVAL_P(zend_read_property(sundown_class_entry, getThis(),"enable_pants",sizeof("enable_pants")-1, 0 TSRMLS_CC))) {
 		struct buf *smart_buf = bufnew(128);
-		sdhtml_smartypants(smart_buf, output_buf->data,output_buf->size);
-		RETVAL_STRINGL(smart_buf->data, smart_buf->size,1);
+		sdhtml_smartypants(smart_buf, output_buf->data, output_buf->size);
+		RETVAL_STRINGL((char*)smart_buf->data, smart_buf->size, 1);
 		bufrelease(smart_buf);
 	} else {
-		RETVAL_STRINGL(output_buf->data, output_buf->size,1);
+		RETVAL_STRINGL((char*)output_buf->data, output_buf->size, 1);
 	}
 }
 
