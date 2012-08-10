@@ -194,7 +194,7 @@ PHP_METHOD(sundown_render_html_toc, blockHtml)
 }
 /* }}} */
 
-/* {{{ proto string Sundown\Render\HTML_TOC::header($htext,$header_level)
+/* {{{ proto string Sundown\Render\HTML_TOC::header($htext, $header_level)
 */
 PHP_METHOD(sundown_render_html_toc, header)
 {
@@ -206,7 +206,7 @@ PHP_METHOD(sundown_render_html_toc, header)
 	php_sundown_render_base_t *base;
 	
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
-		"sl",&htext, &htext_len, &header_level) == FAILURE) {
+		"sl", &htext, &htext_len, &header_level) == FAILURE) {
 		return;
 	}
 
@@ -319,7 +319,7 @@ PHP_METHOD(sundown_render_html_toc, doubleEmphasis)
 	php_sundown_render_html_toc_t *html;
 	php_sundown_render_base_t *base;
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
-		"s",&text, &text_len) == FAILURE) {
+		"s", &text, &text_len) == FAILURE) {
 		return;
 	}
 
@@ -327,7 +327,7 @@ PHP_METHOD(sundown_render_html_toc, doubleEmphasis)
 	base = (php_sundown_render_base_t *) zend_object_store_get_object(getThis() TSRMLS_CC);\
 	input = str2buf(text, text_len);
 	output = bufnew(128);
-	html->cb.double_emphasis(output,input, &base->html);
+	html->cb.double_emphasis(output, input, &base->html);
 	bufrelease(input);
 	RETVAL_STRINGL((char *)output->data, output->size, 1);
 	bufrelease(output);
@@ -353,7 +353,7 @@ PHP_METHOD(sundown_render_html_toc, emphasis)
 	base = (php_sundown_render_base_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
 	input = str2buf(text, text_len);
 	output = bufnew(128);
-	html->cb.emphasis(output,input, &base->html);
+	html->cb.emphasis(output, input, &base->html);
 	bufrelease(input);
 	RETVAL_STRINGL((char *)output->data, output->size, 1);
 	bufrelease(output);
@@ -376,7 +376,7 @@ PHP_METHOD(sundown_render_html_toc, linebreak)
 }
 /* }}} */
 
-/* {{{ proto string Sundown\Render\HTML_TOC::link($link,$title,$content)
+/* {{{ proto string Sundown\Render\HTML_TOC::link($link, $title, $content)
 */
 PHP_METHOD(sundown_render_html_toc, link)
 {
@@ -386,7 +386,7 @@ PHP_METHOD(sundown_render_html_toc, link)
 	php_sundown_render_html_toc_t *html;
 	
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
-		"sss",&link, &link_len, &title, &title_len, &content, &content_len) == FAILURE) {
+		"sss", &link, &link_len, &title, &title_len, &content, &content_len) == FAILURE) {
 		return;
 	}
 
@@ -395,7 +395,7 @@ PHP_METHOD(sundown_render_html_toc, link)
 	m_title = str2buf(title, title_len);
 	m_content = str2buf(content, content_len);
 	output = bufnew(128);
-	html->cb.link(output,m_link, m_title, m_content, &html->html);
+	html->cb.link(output, m_link, m_title, m_content, &html->html);
 	bufrelease(m_link);
 	bufrelease(m_title);
 	bufrelease(m_content);
@@ -429,7 +429,7 @@ PHP_METHOD(sundown_render_html_toc, tripleEmphasis)
 	html = (php_sundown_render_html_toc_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
 	input = str2buf(text, text_len);
 	output = bufnew(128);
-	html->cb.triple_emphasis(output,input, &html->html);
+	html->cb.triple_emphasis(output, input, &html->html);
 	bufrelease(input);
 	RETVAL_STRINGL((char *)output->data, output->size, 1);
 	bufrelease(output);
@@ -470,14 +470,14 @@ PHP_METHOD(sundown_render_html_toc, superscript)
 	php_sundown_render_html_toc_t *html;
 	
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
-		"s",&text, &text_len) == FAILURE) {
+		"s", &text, &text_len) == FAILURE) {
 		return;
 	}
 
 	html = (php_sundown_render_html_toc_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
 	input = str2buf(text, text_len);
 	output = bufnew(128);
-	html->cb.superscript(output,input, &html->html);
+	html->cb.superscript(output, input, &html->html);
 	bufrelease(input);
 	RETVAL_STRINGL((char *)output->data, output->size, 1);
 	bufrelease(output);
@@ -551,7 +551,7 @@ PHP_METHOD(sundown_render_html_toc, __construct)
 		MAKE_STD_ZVAL(c_flags);
 		array_init(c_flags);
 	}
-	add_property_zval_ex(getThis(),"render_flags",sizeof("render_flags"),c_flags TSRMLS_CC);
+	add_property_zval_ex(getThis(), "render_flags", sizeof("render_flags"), c_flags TSRMLS_CC);
 
 	object = (php_sundown_render_html_toc_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
 	sdhtml_toc_renderer(&object->cb, &opt.html);
@@ -587,14 +587,14 @@ static zend_function_entry php_sundown_render_html_toc_methods[] = {
 	PHP_ME(sundown_render_html_toc, normalText,      arginfo_sundown_render_html_toc_normal_text,     ZEND_ACC_PUBLIC)
 	PHP_ME(sundown_render_html_toc, docHeader,       arginfo_sundown_render_html_toc_doc_header,      ZEND_ACC_PUBLIC)
 	PHP_ME(sundown_render_html_toc, docFooter,       arginfo_sundown_render_html_toc_doc_footer,      ZEND_ACC_PUBLIC)
-	{NULL,NULL,NULL}
+	{NULL, NULL, NULL}
 };
 
 void php_sundown_render_html_toc_init(TSRMLS_D)
 {
 	zend_class_entry ce;
 
-	INIT_NS_CLASS_ENTRY(ce, ZEND_NS_NAME("Sundown","Render"),"HTML_TOC", php_sundown_render_html_toc_methods);
+	INIT_NS_CLASS_ENTRY(ce, ZEND_NS_NAME("Sundown", "Render"), "HTML_TOC", php_sundown_render_html_toc_methods);
 	sundown_render_html_toc_class_entry = zend_register_internal_class_ex(&ce, sundown_render_base_class_entry, NULL TSRMLS_CC);
 	sundown_render_html_toc_class_entry->create_object = php_sundown_render_html_toc_new;
 	zend_declare_property_null(sundown_render_html_toc_class_entry, "render_flags", sizeof("render_flags")-1,  ZEND_ACC_PUBLIC TSRMLS_CC);

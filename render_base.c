@@ -48,11 +48,11 @@ zend_object_value php_sundown_render_base_new(zend_class_entry *ce TSRMLS_DC)
 	return retval;
 }
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render___construct,0,0,1)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render___construct, 0, 0, 1)
 	ZEND_ARG_INFO(0, render_flags)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render_base_set_render_flags,0,0,1)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_render_base_set_render_flags, 0, 0, 1)
 	ZEND_ARG_INFO(0, render_flags)
 ZEND_END_ARG_INFO()
 
@@ -186,7 +186,7 @@ PHP_METHOD(sundown_render_base, blockCode)
 		"ss", &code, &code_len, &block_code, &block_code_len) == FAILURE) {
 		return;
 	}
-	RETVAL_STRINGL(code,code_len,1);
+	RETVAL_STRINGL(code, code_len, 1);
 }
 /* }}} */
 
@@ -201,7 +201,7 @@ PHP_METHOD(sundown_render_base, blockQuote)
 		"s", &quote, &quote_len) == FAILURE) {
 		return;
 	}
-	RETVAL_STRINGL(quote,quote_len,1);
+	RETVAL_STRINGL(quote, quote_len,1);
 }
 /* }}} */
 
@@ -216,11 +216,11 @@ PHP_METHOD(sundown_render_base, blockHtml)
 		"s", &raw, &raw_len) == FAILURE) {
 		return;
 	}
-	RETVAL_STRINGL(raw,raw_len,1);
+	RETVAL_STRINGL(raw, raw_len, 1);
 }
 /* }}} */
 
-/* {{{ proto string Sundown\Render\Base::header($htext,$header_level)
+/* {{{ proto string Sundown\Render\Base::header($htext, $header_level)
 */
 PHP_METHOD(sundown_render_base, header)
 {
@@ -228,10 +228,10 @@ PHP_METHOD(sundown_render_base, header)
 	int htext_len, header_level;
 	
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
-		"sl",&htext, &htext_len, &header_level) == FAILURE) {
+		"sl", &htext, &htext_len, &header_level) == FAILURE) {
 		return;
 	}
-	RETVAL_STRINGL(htext,htext_len,1);
+	RETVAL_STRINGL(htext, htext_len, 1);
 }
 /* }}} */
 
@@ -257,7 +257,7 @@ PHP_METHOD(sundown_render_base, listBox)
 		"sl", &contents, &contents_len, &list_type) == FAILURE) {
 		return;
 	}
-	RETVAL_STRINGL(contents,contents_len,1);
+	RETVAL_STRINGL(contents, contents_len, 1);
 }
 /* }}} */
 
@@ -270,10 +270,10 @@ PHP_METHOD(sundown_render_base, listItem)
 	long list_type;
 	
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
-		"sl",&text, &text_len, &list_type) == FAILURE) {
+		"sl", &text, &text_len, &list_type) == FAILURE) {
 		return;
 	}
-	RETVAL_STRINGL(text,text_len,1);
+	RETVAL_STRINGL(text, text_len, 1);
 }
 /* }}} */
 
@@ -288,7 +288,7 @@ PHP_METHOD(sundown_render_base, paragraph)
 		"s", &text, &text_len) == FAILURE) {
 		return;
 	}
-	RETVAL_STRINGL(text,text_len,1);
+	RETVAL_STRINGL(text, text_len, 1);
 }
 /* }}} */
 
@@ -303,7 +303,7 @@ PHP_METHOD(sundown_render_base, table)
 		"ss", &header, &header_len, &body, &body_len) == FAILURE) {
 		return;
 	}
-	RETVAL_STRINGL(body,body_len,1);
+	RETVAL_STRINGL(body, body_len, 1);
 }
 /* }}} */
 
@@ -318,7 +318,7 @@ PHP_METHOD(sundown_render_base, tableRow)
 		"s", &contents, &contents_len) == FAILURE) {
 		return;
 	}
-	RETVAL_STRINGL(contents,contents_len,1);	
+	RETVAL_STRINGL(contents, contents_len, 1);	
 }
 /* }}} */
 
@@ -333,7 +333,7 @@ PHP_METHOD(sundown_render_base, tableCell)
 		"ss", &content, &content_len, &alignment, &alignment_len) == FAILURE) {
 		return;
 	}
-	RETVAL_STRINGL(content,content_len,1);
+	RETVAL_STRINGL(content, content_len, 1);
 }
 /* }}} */
 
@@ -346,10 +346,10 @@ PHP_METHOD(sundown_render_base, autolink)
 	long link_type;
 	
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
-		"sl",&link, &link_len, &link_type) == FAILURE) {
+		"sl", &link, &link_len, &link_type) == FAILURE) {
 		return;
 	}
-	RETVAL_STRINGL(link,link_len,1);
+	RETVAL_STRINGL(link, link_len, 1);
 }
 /* }}} */
 
@@ -364,7 +364,7 @@ PHP_METHOD(sundown_render_base, codespan)
 		"s", &code, &code_len) == FAILURE) {
 		return;
 	}
-	RETVAL_STRINGL(code,code_len,1);
+	RETVAL_STRINGL(code, code_len, 1);
 }
 /* }}} */
 
@@ -379,7 +379,7 @@ PHP_METHOD(sundown_render_base, doubleEmphasis)
 		"s", &text, &text_len) == FAILURE) {
 		return;
 	}
-	RETVAL_STRINGL(text,text_len,1);
+	RETVAL_STRINGL(text, text_len, 1);
 }
 /* }}} */
 
@@ -394,7 +394,7 @@ PHP_METHOD(sundown_render_base, emphasis)
 		"s", &text, &text_len) == FAILURE) {
 		return;
 	}
-	RETVAL_STRINGL(text,text_len,1);
+	RETVAL_STRINGL(text, text_len, 1);
 }
 /* }}} */
 
@@ -406,10 +406,10 @@ PHP_METHOD(sundown_render_base, image)
 	int link_len, title_len, alt_text_len;
 	
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
-		"sss",&link, &link_len, &title, &title_len, &alt_text, &alt_text_len) == FAILURE) {
+		"sss", &link, &link_len, &title, &title_len, &alt_text, &alt_text_len) == FAILURE) {
 		return;
 	}
-	RETVAL_STRINGL(link,link_len,1);
+	RETVAL_STRINGL(link, link_len, 1);
 }
 /* }}} */
 
@@ -423,7 +423,7 @@ PHP_METHOD(sundown_render_base, linebreak)
 }
 /* }}} */
 
-/* {{{ proto string Sundown\Render\Base::link($link,$title,$content)
+/* {{{ proto string Sundown\Render\Base::link($link, $title, $content)
 */
 PHP_METHOD(sundown_render_base, link)
 {
@@ -431,10 +431,10 @@ PHP_METHOD(sundown_render_base, link)
 	int link_len, title_len, content_len;
 	
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
-		"sss",&link, &link_len, &title, &title_len, &content, &content_len) == FAILURE) {
+		"sss", &link, &link_len, &title, &title_len, &content, &content_len) == FAILURE) {
 		return;
 	}
-	RETVAL_STRINGL(link,link_len,1);
+	RETVAL_STRINGL(link, link_len, 1);
 }
 /* }}} */
 
@@ -449,7 +449,7 @@ PHP_METHOD(sundown_render_base, rawHtml)
 		"s", &raw, &raw_len) == FAILURE) {
 		return;
 	}
-	RETVAL_STRINGL(raw,raw_len,1);
+	RETVAL_STRINGL(raw, raw_len, 1);
 }
 /* }}} */
 
@@ -464,7 +464,7 @@ PHP_METHOD(sundown_render_base, tripleEmphasis)
 		"s", &text, &text_len) == FAILURE) {
 		return;
 	}
-	RETVAL_STRINGL(text,text_len,1);	
+	RETVAL_STRINGL(text, text_len, 1);	
 }
 /* }}} */
 
@@ -479,7 +479,7 @@ PHP_METHOD(sundown_render_base, strikethrough)
 		"s", &text, &text_len) == FAILURE) {
 		return;
 	}
-	RETVAL_STRINGL(text,text_len,1);
+	RETVAL_STRINGL(text, text_len, 1);
 }
 /* }}} */
 
@@ -494,7 +494,7 @@ PHP_METHOD(sundown_render_base, superscript)
 		"s", &text, &text_len) == FAILURE) {
 		return;
 	}
-	RETVAL_STRINGL(text,text_len,1);
+	RETVAL_STRINGL(text, text_len, 1);
 }
 /* }}} */
 
@@ -509,7 +509,7 @@ PHP_METHOD(sundown_render_base, entity)
 		"s", &text, &text_len) == FAILURE) {
 		return;
 	}
-	RETVAL_STRINGL(text,text_len,1);
+	RETVAL_STRINGL(text, text_len, 1);
 }
 /* }}} */
 
@@ -521,10 +521,10 @@ PHP_METHOD(sundown_render_base, normalText)
 	int text_len;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
-		"s",&text, &text_len) == FAILURE) {
+		"s", &text, &text_len) == FAILURE) {
 		return;
 	}
-	RETVAL_STRINGL(text,text_len,1);
+	RETVAL_STRINGL(text, text_len, 1);
 }
 /* }}} */
 
@@ -556,7 +556,7 @@ PHP_METHOD(sundown_render_base, preprocess)
 		return;
 	}
 	
-	RETVAL_STRINGL(text,text_len, 1);
+	RETVAL_STRINGL(text, text_len, 1);
 }
 /* }}} */
 
@@ -572,13 +572,13 @@ PHP_METHOD(sundown_render_base, postprocess)
 		return;
 	}
 
-	if (Z_BVAL_P(zend_read_property(Z_OBJCE_P(getThis()), getThis(),"enable_pants",sizeof("enable_pants")-1, 1 TSRMLS_CC))) {
+	if (Z_BVAL_P(zend_read_property(Z_OBJCE_P(getThis()), getThis(), "enable_pants", sizeof("enable_pants")-1, 1 TSRMLS_CC))) {
 		struct buf *smart_buf = bufnew(128);
 		sdhtml_smartypants(smart_buf, (uint8_t *)text, text_len);
 		RETVAL_STRINGL((char*)smart_buf->data, smart_buf->size, 1);
 		bufrelease(smart_buf);
 	} else {
-		RETVAL_STRINGL(text,text_len, 1);
+		RETVAL_STRINGL(text, text_len, 1);
 	}
 }
 /* }}} */
@@ -601,7 +601,7 @@ PHP_METHOD(sundown_render_base, __construct)
 		MAKE_STD_ZVAL(c_flags);
 		array_init(c_flags);
 	}
-	add_property_zval_ex(getThis(),"render_flags",sizeof("render_flags"),c_flags TSRMLS_CC);
+	add_property_zval_ex(getThis(), "render_flags", sizeof("render_flags"), c_flags TSRMLS_CC);
 
 }
 /* }}} */
@@ -612,10 +612,10 @@ PHP_METHOD(sundown_render_base, __construct)
 */
 PHP_METHOD(sundown_render_base, getRenderFlags)
 {
-	if (Z_TYPE_P(zend_read_property(sundown_render_base_class_entry, getThis(),"render_flags",sizeof("render_flags")-1, 0 TSRMLS_CC)) != IS_NULL) {
+	if (Z_TYPE_P(zend_read_property(sundown_render_base_class_entry, getThis(), "render_flags", sizeof("render_flags")-1, 0 TSRMLS_CC)) != IS_NULL) {
 		zval *tmp = NULL;
 
-		tmp = zend_read_property(sundown_render_base_class_entry, getThis(),"render_flags",sizeof("render_flags")-1, 0 TSRMLS_CC);
+		tmp = zend_read_property(sundown_render_base_class_entry, getThis(), "render_flags", sizeof("render_flags")-1, 0 TSRMLS_CC);
 		RETVAL_ZVAL(tmp, 1, 0);
 	}
 }
@@ -632,11 +632,11 @@ PHP_METHOD(sundown_render_base, setRenderFlags)
 		return;
 	}
 	MAKE_STD_ZVAL(c_render_flags);
-	ZVAL_ZVAL(c_render_flags,render_flags,1,0);
+	ZVAL_ZVAL(c_render_flags, render_flags, 1, 0);
 	tmp = zend_read_property(sundown_render_base_class_entry, getThis(), "render_flags", sizeof("render_flags")-1, 0 TSRMLS_CC);
 	zval_ptr_dtor(&tmp);
 	
-	add_property_zval_ex(getThis(),"render_flags",sizeof("render_flags"),c_render_flags TSRMLS_CC);
+	add_property_zval_ex(getThis(), "render_flags", sizeof("render_flags"), c_render_flags TSRMLS_CC);
 }
 /* }}} */
 
@@ -646,7 +646,7 @@ PHP_METHOD(sundown_render_base, setRenderFlags)
 PHP_METHOD(sundown_render_base, __destruct)
 {
 	zval *render_flags;
-	render_flags = zend_read_property(sundown_render_base_class_entry, getThis(),"render_flags",sizeof("render_flags")-1, 0 TSRMLS_CC);
+	render_flags = zend_read_property(sundown_render_base_class_entry, getThis(), "render_flags", sizeof("render_flags")-1, 0 TSRMLS_CC);
 	if (Z_TYPE_P(render_flags) == IS_ARRAY) {
 		zval_ptr_dtor(&render_flags);
 	}
@@ -691,7 +691,7 @@ static zend_function_entry php_sundown_render_base_methods[] = {
 void php_sundown_render_base_init(TSRMLS_D)
 {
 	zend_class_entry ce;
-	INIT_NS_CLASS_ENTRY(ce, ZEND_NS_NAME("Sundown","Render"),"Base", php_sundown_render_base_methods);
+	INIT_NS_CLASS_ENTRY(ce, ZEND_NS_NAME("Sundown", "Render"), "Base", php_sundown_render_base_methods);
 	sundown_render_base_class_entry = zend_register_internal_class(&ce TSRMLS_CC);
 	sundown_render_base_class_entry->create_object = php_sundown_render_base_new;
 	zend_declare_property_null(sundown_render_base_class_entry, "render_flags", sizeof("render_flags")-1,  ZEND_ACC_PUBLIC TSRMLS_CC);
