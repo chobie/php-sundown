@@ -1,7 +1,7 @@
 PHP + Sundown
 ===========================
 
-php-sundown is just simple wrapper of <https://github.com/tanoku/sundown>.
+php-sundown is just simple wrapper of <https://github.com/vmg/sundown>.
 
 [![Build Status](https://secure.travis-ci.org/chobie/php-sundown.png)](http://travis-ci.org/chobie/php-sundown)
 
@@ -32,9 +32,8 @@ PHP5.3 higher
 Install for developpers
 -----------------------
 
-    git clone https://github.com/chobie/php-sundown.git php-sundown -b development
+    git clone https://github.com/chobie/php-sundown.git php-sundown --recursive
     cd php-sundown
-    git submodule init && git submodule update
     phpze
     ./configure
     make
