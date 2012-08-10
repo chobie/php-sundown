@@ -20,7 +20,7 @@ sundown/html/houdini_html_e.c
 "
 
   PHP_NEW_EXTENSION(sundown,$SUNDOWN_SOURCES, $ext_shared)
-  CFLAGS=" -Wunused-variable -Wpointer-sign -Wimplicit-function-declaration"
+  CFLAGS="-Wunused-variable -Wpointer-sign -Wimplicit-function-declaration -Winline -Wunused-macros -Wredundant-decls -Wstrict-aliasing=2 -Wswitch-enum -Wdeclaration-after-statement"
   PHP_SUBST([CFLAGS])
 
   PHP_ADD_BUILD_DIR([$ext_builddir/sundown/src])
