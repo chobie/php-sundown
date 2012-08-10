@@ -264,6 +264,8 @@ documented at [ExtensionsAndRenderFlags.md](https://github.com/chobie/php-sundow
 
 Contributors
 ------------
+
 * Dominic Scheirlinck
-* stealth35
+* Reeze Xia
 * Shuhei Tanuma
+* stealth35
