@@ -278,8 +278,13 @@ static void php_sundown__get_extensions(HashTable *table, unsigned int *enabled_
 		extensions |= MKDEXT_STRIKETHROUGH;
 	}
 
+	/* obsoleted? */
 	if (SUNDOWN_HAS_EXTENSION("lax_html_blocks")) {
-		extensions |= MKDEXT_LAX_HTML_BLOCKS;
+		extensions |= MKDEXT_LAX_SPACING;
+	}
+
+	if (SUNDOWN_HAS_EXTENSION("lax_spacing")) {
+		extensions |= MKDEXT_LAX_SPACING;
 	}
 
 	if (SUNDOWN_HAS_EXTENSION("space_after_headers")) {
