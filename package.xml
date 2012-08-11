@@ -15,10 +15,10 @@ PECL Sundown provides straight forward object oriented Markdown API and customiz
   <email>chobieeee@php.net</email>
   <active>yes</active>
  </lead>
- <date>2012-06-02</date>
+ <date>2012-08-11</date>
  <version>
-  <release>0.3.6</release>
-  <api>0.3.6</api>
+  <release>0.3.7</release>
+  <api>0.3.7</api>
  </version>
  <stability>
   <release>beta</release>
@@ -26,24 +26,21 @@ PECL Sundown provides straight forward object oriented Markdown API and customiz
  </stability>
  <license uri="http://www.php.net/license">PHP</license>
  <notes>
-	* bumped up 0.3.6
+	* bumped up 0.3.7
 
-now, php-sundown is able to use under windows box.
-Thank you stealth35!
+fixed SEGV when processing tableCell and prettify source codes.
 
-* prettify phpinfo, add ext and sundown version
-* windows support
-* fix several compile warnings
-
-[removed constants]:
-Sundown\Render\LIST_ORDERED
-Sundown\Render\MKDA_NORMAL
-Sundown\Render\MKDA_EMAIL
-
-[added constants]:
-Sundown\Render\Base::LIST_ORDERED
-Sundown\Render\Base::MKDA_NORMAL
-Sundown\Render\Base::MKDA_EMAIL
+9582b04 update contributors
+1f11ace update README
+497d0a4 add a space after comma.
+7bc4703 fix several compile warnings
+a11eb98 update CFLAGS for fix compile warnings
+9a86d00 fixes #26:prevent SEGV when calling Sundwon\Base\tableCell
+26b77d6 change submodule to vmg/sundown from tanoku/sundown
+ee8a132 Merge pull request #24 from reeze/patch-2
+0a08969 Fix build in php-src
+b0adcc7 Merge pull request #23 from reeze/patch-1
+ebae34b Make travis report test failure since make test didn't report exit code
 </notes>
  <contents>
   <dir name="/">
@@ -91,6 +88,7 @@ Sundown\Render\Base::MKDA_EMAIL
      <file role="test" name="006-render-custom-codeblock.phpt" />
      <file role="test" name="999-regression-no12.phpt" />
      <file role="test" name="999-regression-no19.phpt" />
+     <file role="test" name="999-regression-no26.phpt" />
     </dir>
    <dir name="docs">
     <file role="doc" name="ExtensionsAndRenderFlags.md" />
@@ -135,6 +133,37 @@ Sundown\Render\Base::MKDA_EMAIL
  <providesextension>sundown</providesextension>
  <extsrcrelease/>
  <changelog>
+  <release>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <version>
+    <release>0.3.6</release>
+    <api>0.3.6</api>
+   </version>
+   <date>2012-06-02</date>
+   <notes>
+	* bumped up 0.3.6
+
+now, php-sundown is able to use under windows box.
+Thank you stealth35!
+
+* prettify phpinfo, add ext and sundown version
+* windows support
+* fix several compile warnings
+
+[removed constants]:
+Sundown\Render\LIST_ORDERED
+Sundown\Render\MKDA_NORMAL
+Sundown\Render\MKDA_EMAIL
+
+[added constants]:
+Sundown\Render\Base::LIST_ORDERED
+Sundown\Render\Base::MKDA_NORMAL
+Sundown\Render\Base::MKDA_EMAIL
+   </notes>
+  </release>
   <release>
    <stability>
     <release>beta</release>
