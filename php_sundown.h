@@ -3,7 +3,7 @@
 #define PHP_SUNDOWN_H
 
 #define PHP_SUNDOWN_EXTNAME "sundown"
-#define PHP_SUNDOWN_EXTVER "0.3.6"
+#define PHP_SUNDOWN_EXTVER "0.4.0-beta"
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
@@ -24,7 +24,7 @@
  * Zend will use when loading this module
  */
 extern zend_module_entry sundown_module_entry;
-#define phpext_sundown_ptr &sundown_module_entry;
+#define phpext_sundown_ptr &sundown_module_entry
 
 extern zend_class_entry *sundown_class_entry, *php_sundown_buffer_class_entry;
 
@@ -73,15 +73,15 @@ typedef struct{
 	struct html_renderopt html;
 } php_sundown_render_base_t;
 
-#define SPAN_CALLBACK_EX(buffer,method_name, ...) {\
+#define SPAN_CALLBACK_EX(buffer, method_name, ...) {\
 	struct php_sundown_renderopt_ex *opt = (struct php_sundown_renderopt_ex*)opaque;\
 	zval func, *ret;\
 \
 	MAKE_STD_ZVAL(ret);\
-	ZVAL_STRING(&func,method_name,1);\
+	ZVAL_STRING(&func, method_name, 1);\
 	\
-	if(call_user_function_v(NULL,&opt->self,&func,ret,__VA_ARGS__) == FAILURE){\
-		fprintf(stderr,"Can't call method %s\n", method_name);\
+	if(call_user_function_v(NULL, &opt->self, &func, ret, __VA_ARGS__) == FAILURE){\
+		fprintf(stderr, "Can't call method %s\n", method_name);\
 		return 0;\
 	}\
 	if (ret != NULL) {\
@@ -93,15 +93,15 @@ typedef struct{
 }
 
 
-#define BLOCK_CALLBACK_EX(buffer,method_name, ...) {\
+#define BLOCK_CALLBACK_EX(buffer, method_name, ...) {\
 	struct php_sundown_renderopt_ex *opt = (struct php_sundown_renderopt_ex*)opaque;\
 	zval func, *ret;\
 \
 	MAKE_STD_ZVAL(ret);\
-	ZVAL_STRING(&func,method_name,1);\
+	ZVAL_STRING(&func, method_name, 1);\
 	\
-	if(call_user_function_v(NULL,&opt->self,&func,ret,__VA_ARGS__) == FAILURE){\
-		fprintf(stderr,"Can't call method %s\n", method_name);\
+	if(call_user_function_v(NULL, &opt->self, &func, ret, __VA_ARGS__) == FAILURE){\
+		fprintf(stderr, "Can't call method %s\n", method_name);\
 	}\
 	if (ret != NULL) {\
 		bufput(buffer, Z_STRVAL_P(ret), Z_STRLEN_P(ret));\
@@ -149,7 +149,7 @@ static int call_user_function_v(HashTable *function_table, zval **object_pp, zva
 		params = NULL;
 	}
 
-	ret = call_user_function(function_table, object_pp, function_name, retval_ptr, param_count,params TSRMLS_CC);
+	ret = call_user_function(function_table, object_pp, function_name, retval_ptr, param_count, params TSRMLS_CC);
 
 	if (param_count > 0) {
 		for (i=0; i<param_count;i++) {
@@ -170,7 +170,7 @@ static inline zval* buf2str(const struct buf *text)
 	if (text == NULL || text->size == 0) {
 		ZVAL_NULL(str);
 	} else {
-		ZVAL_STRINGL(str, text->data, text->size,1);
+		ZVAL_STRINGL(str, (char *)text->data, text->size, 1);
 	}
 	return str;
 }
@@ -180,7 +180,7 @@ static inline zval* char2str(char *text)
 	zval *str;
 	
 	MAKE_STD_ZVAL(str);
-	ZVAL_STRING(str, text ,1);
+	ZVAL_STRING(str, text, 1);
 	return str;
 }
 
@@ -189,7 +189,7 @@ static inline zval* buf2long(long value)
 	zval *data;
 	
 	MAKE_STD_ZVAL(data);
-	ZVAL_LONG(data,value);
+	ZVAL_LONG(data, value);
 	return data;
 }
 
