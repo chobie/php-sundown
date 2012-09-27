@@ -27,7 +27,6 @@ extern void php_sundown_render_xhtml_init(TSRMLS_D);
 extern void php_sundown_markdown_init(TSRMLS_D);
 
 zend_class_entry *sundown_class_entry;
-
 JMP_BUF php_sundown_jmpbuf;
 
 void php_sundown_init(TSRMLS_D);

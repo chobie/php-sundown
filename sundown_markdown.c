@@ -472,13 +472,14 @@ PHP_METHOD(sundown_markdown, render)
 	markdown = sd_markdown_new(enabled_extensions, 16, &sundown_render, &opt);
 	if (SETJMP(php_sundown_jmpbuf) == 0) {
 		sd_markdown_render(output_buf, input_buf.data, input_buf.size, markdown);
+		zval_ptr_dtor(&ret);
 		sd_markdown_free(markdown);
 	} else {
+		zval_ptr_dtor(&ret);
 		sd_markdown_free(markdown);
 		return;
 	}
 	
-	zval_ptr_dtor(&ret);
 	/* postprocess */
 	MAKE_STD_ZVAL(ret);
 	MAKE_STD_ZVAL(params[0]);

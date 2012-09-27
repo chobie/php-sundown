@@ -82,17 +82,12 @@ typedef struct{
 	TSRMLS_FETCH();\
 	MAKE_STD_ZVAL(ret);\
 	ZVAL_STRING(&func, method_name, 1);\
-	\
-	zend_first_try { \
 	if(call_user_function_v(NULL, &opt->self, &func, ret, __VA_ARGS__) == FAILURE){\
-		fprintf(stderr, "Can't call method %s\n", method_name);\
+		php_error_docref(NULL TSRMLS_CC, E_NOTICE, "can not call method %s", method_name); \
 		zval_ptr_dtor(&ret);\
 		zval_dtor(&func);\
 		LONGJMP(php_sundown_jmpbuf, 1);\
 	}\
-	} zend_catch { \
-		LONGJMP(php_sundown_jmpbuf, 1);\
-	} zend_end_try(); \
  	if (ret != NULL) {\
 		bufput(buffer, Z_STRVAL_P(ret), Z_STRLEN_P(ret));\
 	}\
@@ -110,16 +105,12 @@ typedef struct{
 	MAKE_STD_ZVAL(ret);\
 	ZVAL_STRING(&func, method_name, 1);\
 	\
-	zend_first_try { \
-		if(call_user_function_v(NULL, &opt->self, &func, ret, __VA_ARGS__) == FAILURE){\
-			fprintf(stderr, "Can't call method %s\n", method_name);\
-			zval_ptr_dtor(&ret);\
-			zval_dtor(&func);\
-			LONGJMP(php_sundown_jmpbuf, 1);\
-		}\
-	} zend_catch { \
+	if(call_user_function_v(NULL, &opt->self, &func, ret, __VA_ARGS__) == FAILURE){\
+		php_error_docref(NULL TSRMLS_CC, E_NOTICE, "can not call method %s", method_name);\
+		zval_ptr_dtor(&ret);\
+		zval_dtor(&func);\
 		LONGJMP(php_sundown_jmpbuf, 1);\
-	} zend_end_try(); \
+	}\
 	if (ret != NULL) {\
 		bufput(buffer, Z_STRVAL_P(ret), Z_STRLEN_P(ret));\
 	}\
