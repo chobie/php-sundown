@@ -28,6 +28,8 @@ extern void php_sundown_markdown_init(TSRMLS_D);
 
 zend_class_entry *sundown_class_entry;
 
+JMP_BUF php_sundown_jmpbuf;
+
 void php_sundown_init(TSRMLS_D);
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown__construct, 0, 0, 2)

@@ -28,6 +28,8 @@ extern zend_module_entry sundown_module_entry;
 
 extern zend_class_entry *sundown_class_entry, *php_sundown_buffer_class_entry;
 
+extern JMP_BUF php_sundown_jmpbuf;
+
 typedef enum
 {
 	SUNDOWN_RENDER_HTML,
@@ -77,14 +79,21 @@ typedef struct{
 	struct php_sundown_renderopt_ex *opt = (struct php_sundown_renderopt_ex*)opaque;\
 	zval func, *ret;\
 \
+	TSRMLS_FETCH();\
 	MAKE_STD_ZVAL(ret);\
 	ZVAL_STRING(&func, method_name, 1);\
 	\
+	zend_first_try { \
 	if(call_user_function_v(NULL, &opt->self, &func, ret, __VA_ARGS__) == FAILURE){\
 		fprintf(stderr, "Can't call method %s\n", method_name);\
-		return 0;\
+		zval_ptr_dtor(&ret);\
+		zval_dtor(&func);\
+		LONGJMP(php_sundown_jmpbuf, 1);\
 	}\
-	if (ret != NULL) {\
+	} zend_catch { \
+		LONGJMP(php_sundown_jmpbuf, 1);\
+	} zend_end_try(); \
+ 	if (ret != NULL) {\
 		bufput(buffer, Z_STRVAL_P(ret), Z_STRLEN_P(ret));\
 	}\
 	zval_ptr_dtor(&ret);\
@@ -95,14 +104,22 @@ typedef struct{
 
 #define BLOCK_CALLBACK_EX(buffer, method_name, ...) {\
 	struct php_sundown_renderopt_ex *opt = (struct php_sundown_renderopt_ex*)opaque;\
+	TSRMLS_FETCH();\
 	zval func, *ret;\
 \
 	MAKE_STD_ZVAL(ret);\
 	ZVAL_STRING(&func, method_name, 1);\
 	\
-	if(call_user_function_v(NULL, &opt->self, &func, ret, __VA_ARGS__) == FAILURE){\
-		fprintf(stderr, "Can't call method %s\n", method_name);\
-	}\
+	zend_first_try { \
+		if(call_user_function_v(NULL, &opt->self, &func, ret, __VA_ARGS__) == FAILURE){\
+			fprintf(stderr, "Can't call method %s\n", method_name);\
+			zval_ptr_dtor(&ret);\
+			zval_dtor(&func);\
+			LONGJMP(php_sundown_jmpbuf, 1);\
+		}\
+	} zend_catch { \
+		LONGJMP(php_sundown_jmpbuf, 1);\
+	} zend_end_try(); \
 	if (ret != NULL) {\
 		bufput(buffer, Z_STRVAL_P(ret), Z_STRLEN_P(ret));\
 	}\
