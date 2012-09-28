@@ -100,7 +100,6 @@ typedef struct{
 	MAKE_STD_ZVAL(ret);\
 	ZVAL_STRING(&func, method_name, 1);\
 	if(call_user_function_v(NULL, &opt->self, &func, ret, __VA_ARGS__) == FAILURE){\
-		php_error_docref(NULL TSRMLS_CC, E_NOTICE, "can not call method %s", method_name); \
 		zval_ptr_dtor(&ret);\
 		zval_dtor(&func);\
 		LONGJMP(SUNDOWN_G(jump), 1);\
@@ -121,9 +120,7 @@ typedef struct{
 \
 	MAKE_STD_ZVAL(ret);\
 	ZVAL_STRING(&func, method_name, 1);\
-	\
 	if(call_user_function_v(NULL, &opt->self, &func, ret, __VA_ARGS__) == FAILURE){\
-		php_error_docref(NULL TSRMLS_CC, E_NOTICE, "can not call method %s", method_name);\
 		zval_ptr_dtor(&ret);\
 		zval_dtor(&func);\
 		LONGJMP(SUNDOWN_G(jump), 1);\

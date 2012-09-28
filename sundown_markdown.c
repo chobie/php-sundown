@@ -472,10 +472,13 @@ PHP_METHOD(sundown_markdown, render)
 	markdown = sd_markdown_new(enabled_extensions, 16, &sundown_render, &opt);
 	if (SETJMP(SUNDOWN_G(jump)) == 0) {
 		sd_markdown_render(output_buf, input_buf.data, input_buf.size, markdown);
+		zval_dtor(&preprocess);
 		zval_ptr_dtor(&ret);
 		sd_markdown_free(markdown);
 	} else {
+		zval_dtor(&preprocess);
 		zval_ptr_dtor(&ret);
+		zval_ptr_dtor(&render);
 		sd_markdown_free(markdown);
 		return;
 	}
@@ -496,7 +499,6 @@ PHP_METHOD(sundown_markdown, render)
 	zval_ptr_dtor(&ret);
 	zval_ptr_dtor(&params[0]);
 	zval_dtor(&postprocess);
-	zval_dtor(&preprocess);
 	zval_ptr_dtor(&render);
 }
 /* }}} */
