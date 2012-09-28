@@ -219,7 +219,7 @@ PHP_MINIT_FUNCTION(sundown) {
 #ifdef ZTS
 	ts_allocate_id(&sundown_globals_id, sizeof(zend_sundown_globals), NULL, NULL); 
 #else
-	php_sundown_globals_ctor(&sundown_globals TSRMLS_CC);
+	sundown_globals_ctor(&sundown_globals TSRMLS_CC);
 #endif
 
 	php_sundown_init(TSRMLS_C);
@@ -235,7 +235,7 @@ PHP_MINIT_FUNCTION(sundown) {
 
 PHP_MSHUTDOWN_FUNCTION(sundown) {
 #ifndef ZTS
-	php_sundown_globals_dtor(&sundown_globals TSRMLS_DC);
+	sundown_globals_dtor(&sundown_globals TSRMLS_DC);
 #endif
 	return SUCCESS;
 }
