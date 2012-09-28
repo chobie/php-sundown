@@ -26,6 +26,23 @@
 extern zend_module_entry sundown_module_entry;
 #define phpext_sundown_ptr &sundown_module_entry
 
+#ifdef ZTS
+#include "TSRM.h"
+#endif
+
+ZEND_BEGIN_MODULE_GLOBALS(sundown)
+        JMP_BUF jump
+ZEND_END_MODULE_GLOBALS(sundown)
+
+/* Macro to access request-wide global variables. */
+#ifdef ZTS
+#define SUNDOWN_G(v) TSRMG(sundown_globals_id, zend_sundown_globals *, v)
+#else
+#define SUNDOWN_G(v) (sundown_globals.v)
+#endif
+
+ZEND_EXTERN_MODULE_GLOBALS(sundown)
+
 extern zend_class_entry *sundown_class_entry, *php_sundown_buffer_class_entry;
 
 extern JMP_BUF php_sundown_jmpbuf;
@@ -78,15 +95,15 @@ typedef struct{
 #define SPAN_CALLBACK_EX(buffer, method_name, ...) {\
 	struct php_sundown_renderopt_ex *opt = (struct php_sundown_renderopt_ex*)opaque;\
 	zval func, *ret;\
-\
 	TSRMLS_FETCH();\
+	\
 	MAKE_STD_ZVAL(ret);\
 	ZVAL_STRING(&func, method_name, 1);\
 	if(call_user_function_v(NULL, &opt->self, &func, ret, __VA_ARGS__) == FAILURE){\
 		php_error_docref(NULL TSRMLS_CC, E_NOTICE, "can not call method %s", method_name); \
 		zval_ptr_dtor(&ret);\
 		zval_dtor(&func);\
-		LONGJMP(php_sundown_jmpbuf, 1);\
+		LONGJMP(SUNDOWN_G(jump), 1);\
 	}\
  	if (ret != NULL) {\
 		bufput(buffer, Z_STRVAL_P(ret), Z_STRLEN_P(ret));\
@@ -109,7 +126,7 @@ typedef struct{
 		php_error_docref(NULL TSRMLS_CC, E_NOTICE, "can not call method %s", method_name);\
 		zval_ptr_dtor(&ret);\
 		zval_dtor(&func);\
-		LONGJMP(php_sundown_jmpbuf, 1);\
+		LONGJMP(SUNDOWN_G(jump), 1);\
 	}\
 	if (ret != NULL) {\
 		bufput(buffer, Z_STRVAL_P(ret), Z_STRLEN_P(ret));\
