@@ -18,6 +18,8 @@
 
 
 #include "php_sundown.h"
+ZEND_DECLARE_MODULE_GLOBALS(sundown)
+
 #include "ext/standard/info.h"
 
 extern void php_sundown_render_base_init(TSRMLS_D);
@@ -212,8 +214,12 @@ static zend_function_entry php_sundown_methods[] = {
 };
 /* }}} */
 
-
 PHP_MINIT_FUNCTION(sundown) {
+
+#ifdef ZTS
+	ts_allocate_id(&sundown_globals_id, sizeof(zend_sundown_globals), NULL, NULL); 
+#endif
+
 	php_sundown_init(TSRMLS_C);
 	php_sundown_render_base_init(TSRMLS_C);
 	php_sundown_render_html_init(TSRMLS_C);
@@ -224,6 +230,11 @@ PHP_MINIT_FUNCTION(sundown) {
 	REGISTER_NS_STRING_CONSTANT(ZEND_NS_NAME("Sundown", "Render"), "HTML", "Sundown\\Render\\HTML", CONST_CS | CONST_PERSISTENT);
 	return SUCCESS;
 }
+
+PHP_MSHUTDOWN_FUNCTION(sundown) {
+	return SUCCESS;
+}
+
 
 
 PHP_MINFO_FUNCTION(sundown)
@@ -242,7 +253,7 @@ zend_module_entry sundown_module_entry = {
 	"sundown",
 	NULL,					/* Functions */
 	PHP_MINIT(sundown),	/* MINIT */
-	NULL,					/* MSHUTDOWN */
+	PHP_MSHUTDOWN(sundown),	/* MSHUTDOWN */
 	NULL,					/* RINIT */
 	NULL,					/* RSHUTDOWN */
 	PHP_MINFO(sundown),	/* MINFO */
