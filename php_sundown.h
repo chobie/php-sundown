@@ -113,8 +113,8 @@ typedef struct{
 
 #define BLOCK_CALLBACK_EX(buffer, method_name, ...) {\
 	struct php_sundown_renderopt_ex *opt = (struct php_sundown_renderopt_ex*)opaque;\
-	TSRMLS_FETCH();\
 	zval func, *ret;\
+	TSRMLS_FETCH();\
 \
 	MAKE_STD_ZVAL(ret);\
 	ZVAL_STRING(&func, method_name, 1);\
