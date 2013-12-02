@@ -257,8 +257,8 @@ $md->setRender($render2);
 
 ### \Sundown\Render\Base
 
-documented at [Render.md](https://github.com/chobie/php-sundown/blob/development/docs/Render.md)
+documented at [Render.md](https://github.com/chobie/php-sundown/blob/master/docs/Render.md)
 
 ### Extensions and Render flags
 
-documented at [ExtensionsAndRenderFlags.md](https://github.com/chobie/php-sundown/blob/development/docs/ExtensionsAndRenderFlags.md)
+documented at [ExtensionsAndRenderFlags.md](https://github.com/chobie/php-sundown/blob/master/docs/ExtensionsAndRenderFlags.md)
