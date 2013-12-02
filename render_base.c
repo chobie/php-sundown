@@ -655,38 +655,38 @@ PHP_METHOD(sundown_render_base, __destruct)
 }
 
 static zend_function_entry php_sundown_render_base_methods[] = {
-	PHP_ME(sundown_render_base, __construct,     arginfo_sundown_render___construct,          ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
-	PHP_ME(sundown_render_base, getRenderFlags,  NULL,                                        ZEND_ACC_PUBLIC)
-	PHP_ME(sundown_render_base, setRenderFlags,  arginfo_sundown_render_base_set_render_flags,ZEND_ACC_PUBLIC)
-	PHP_ME(sundown_render_base, blockCode,       arginfo_sundown_render_base_block_code,      ZEND_ACC_PUBLIC)
-	PHP_ME(sundown_render_base, blockQuote,      arginfo_sundown_render_base_block_quote,     ZEND_ACC_PUBLIC)
-	PHP_ME(sundown_render_base, blockHtml,       arginfo_sundown_render_base_block_html,      ZEND_ACC_PUBLIC)
-	PHP_ME(sundown_render_base, header,          arginfo_sundown_render_base_header,          ZEND_ACC_PUBLIC)
-	PHP_ME(sundown_render_base, hrule,           arginfo_sundown_render_base_hrule,           ZEND_ACC_PUBLIC)
-	PHP_ME(sundown_render_base, listBox,         arginfo_sundown_render_base_list_box,        ZEND_ACC_PUBLIC)
-	PHP_ME(sundown_render_base, listItem,        arginfo_sundown_render_base_list_item,       ZEND_ACC_PUBLIC)
-	PHP_ME(sundown_render_base, paragraph,       arginfo_sundown_render_base_paragraph,       ZEND_ACC_PUBLIC)
-	PHP_ME(sundown_render_base, table,           arginfo_sundown_render_base_table,           ZEND_ACC_PUBLIC)
-	PHP_ME(sundown_render_base, tableRow,        arginfo_sundown_render_base_table_row,       ZEND_ACC_PUBLIC)
-	PHP_ME(sundown_render_base, tableCell,       arginfo_sundown_render_base_table_cell,      ZEND_ACC_PUBLIC)
-	PHP_ME(sundown_render_base, autolink,        arginfo_sundown_render_base_autolink,        ZEND_ACC_PUBLIC)
-	PHP_ME(sundown_render_base, codespan,        arginfo_sundown_render_base_codespan,        ZEND_ACC_PUBLIC)
-	PHP_ME(sundown_render_base, doubleEmphasis,  arginfo_sundown_render_base_double_emphasis, ZEND_ACC_PUBLIC)
-	PHP_ME(sundown_render_base, emphasis,        arginfo_sundown_render_base_emphasis,        ZEND_ACC_PUBLIC)
-	PHP_ME(sundown_render_base, image,           arginfo_sundown_render_base_image,           ZEND_ACC_PUBLIC)
-	PHP_ME(sundown_render_base, linebreak,       arginfo_sundown_render_base_linebreak,       ZEND_ACC_PUBLIC)
-	PHP_ME(sundown_render_base, link,            arginfo_sundown_render_base_link,            ZEND_ACC_PUBLIC)
-	PHP_ME(sundown_render_base, rawHtml,         arginfo_sundown_render_base_raw_html,        ZEND_ACC_PUBLIC)
-	PHP_ME(sundown_render_base, tripleEmphasis,  arginfo_sundown_render_base_triple_emphasis, ZEND_ACC_PUBLIC)
-	PHP_ME(sundown_render_base, strikethrough,   arginfo_sundown_render_base_strikethrough,   ZEND_ACC_PUBLIC)
-	PHP_ME(sundown_render_base, superscript,     arginfo_sundown_render_base_superscript,     ZEND_ACC_PUBLIC)
-	PHP_ME(sundown_render_base, entity,          arginfo_sundown_render_base_entity,          ZEND_ACC_PUBLIC)
-	PHP_ME(sundown_render_base, normalText,      arginfo_sundown_render_base_normal_text,     ZEND_ACC_PUBLIC)
-	PHP_ME(sundown_render_base, docHeader,       arginfo_sundown_render_base_doc_header,      ZEND_ACC_PUBLIC)
-	PHP_ME(sundown_render_base, docFooter,       arginfo_sundown_render_base_doc_footer,      ZEND_ACC_PUBLIC)
-	PHP_ME(sundown_render_base, preprocess,      arginfo_sundown_render_base_preprocess,      ZEND_ACC_PUBLIC)
-	PHP_ME(sundown_render_base, postprocess,     arginfo_sundown_render_base_postprocess,     ZEND_ACC_PUBLIC)
-	PHP_ME(sundown_render_base, __destruct,      NULL,                                        ZEND_ACC_PUBLIC)
+	PHP_ME(sundown_render_base, __construct,    arginfo_sundown_render___construct,          ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
+	PHP_ME(sundown_render_base, getRenderFlags, NULL,                                        ZEND_ACC_PUBLIC)
+	PHP_ME(sundown_render_base, setRenderFlags, arginfo_sundown_render_base_set_render_flags,ZEND_ACC_PUBLIC)
+	PHP_ME(sundown_render_base, blockCode,      arginfo_sundown_render_base_block_code,      ZEND_ACC_PUBLIC)
+	PHP_ME(sundown_render_base, blockQuote,     arginfo_sundown_render_base_block_quote,     ZEND_ACC_PUBLIC)
+	PHP_ME(sundown_render_base, blockHtml,      arginfo_sundown_render_base_block_html,      ZEND_ACC_PUBLIC)
+	PHP_ME(sundown_render_base, header,         arginfo_sundown_render_base_header,          ZEND_ACC_PUBLIC)
+	PHP_ME(sundown_render_base, hrule,          arginfo_sundown_render_base_hrule,           ZEND_ACC_PUBLIC)
+	PHP_ME(sundown_render_base, listBox,        arginfo_sundown_render_base_list_box,        ZEND_ACC_PUBLIC)
+	PHP_ME(sundown_render_base, listItem,       arginfo_sundown_render_base_list_item,       ZEND_ACC_PUBLIC)
+	PHP_ME(sundown_render_base, paragraph,      arginfo_sundown_render_base_paragraph,       ZEND_ACC_PUBLIC)
+	PHP_ME(sundown_render_base, table,          arginfo_sundown_render_base_table,           ZEND_ACC_PUBLIC)
+	PHP_ME(sundown_render_base, tableRow,       arginfo_sundown_render_base_table_row,       ZEND_ACC_PUBLIC)
+	PHP_ME(sundown_render_base, tableCell,      arginfo_sundown_render_base_table_cell,      ZEND_ACC_PUBLIC)
+	PHP_ME(sundown_render_base, autolink,       arginfo_sundown_render_base_autolink,        ZEND_ACC_PUBLIC)
+	PHP_ME(sundown_render_base, codespan,       arginfo_sundown_render_base_codespan,        ZEND_ACC_PUBLIC)
+	PHP_ME(sundown_render_base, doubleEmphasis, arginfo_sundown_render_base_double_emphasis, ZEND_ACC_PUBLIC)
+	PHP_ME(sundown_render_base, emphasis,       arginfo_sundown_render_base_emphasis,        ZEND_ACC_PUBLIC)
+	PHP_ME(sundown_render_base, image,          arginfo_sundown_render_base_image,           ZEND_ACC_PUBLIC)
+	PHP_ME(sundown_render_base, linebreak,      arginfo_sundown_render_base_linebreak,       ZEND_ACC_PUBLIC)
+	PHP_ME(sundown_render_base, link,           arginfo_sundown_render_base_link,            ZEND_ACC_PUBLIC)
+	PHP_ME(sundown_render_base, rawHtml,        arginfo_sundown_render_base_raw_html,        ZEND_ACC_PUBLIC)
+	PHP_ME(sundown_render_base, tripleEmphasis, arginfo_sundown_render_base_triple_emphasis, ZEND_ACC_PUBLIC)
+	PHP_ME(sundown_render_base, strikethrough,  arginfo_sundown_render_base_strikethrough,   ZEND_ACC_PUBLIC)
+	PHP_ME(sundown_render_base, superscript,    arginfo_sundown_render_base_superscript,     ZEND_ACC_PUBLIC)
+	PHP_ME(sundown_render_base, entity,         arginfo_sundown_render_base_entity,          ZEND_ACC_PUBLIC)
+	PHP_ME(sundown_render_base, normalText,     arginfo_sundown_render_base_normal_text,     ZEND_ACC_PUBLIC)
+	PHP_ME(sundown_render_base, docHeader,      arginfo_sundown_render_base_doc_header,      ZEND_ACC_PUBLIC)
+	PHP_ME(sundown_render_base, docFooter,      arginfo_sundown_render_base_doc_footer,      ZEND_ACC_PUBLIC)
+	PHP_ME(sundown_render_base, preprocess,     arginfo_sundown_render_base_preprocess,      ZEND_ACC_PUBLIC)
+	PHP_ME(sundown_render_base, postprocess,    arginfo_sundown_render_base_postprocess,     ZEND_ACC_PUBLIC)
+	PHP_ME(sundown_render_base, __destruct,     NULL,                                        ZEND_ACC_PUBLIC)
 	{NULL,NULL,NULL}
 };
 
@@ -696,9 +696,9 @@ void php_sundown_render_base_init(TSRMLS_D)
 	INIT_NS_CLASS_ENTRY(ce, ZEND_NS_NAME("Sundown", "Render"), "Base", php_sundown_render_base_methods);
 	sundown_render_base_class_entry = zend_register_internal_class(&ce TSRMLS_CC);
 	sundown_render_base_class_entry->create_object = php_sundown_render_base_new;
-	zend_declare_property_null(sundown_render_base_class_entry, "render_flags", sizeof("render_flags")-1,  ZEND_ACC_PUBLIC TSRMLS_CC);
+	zend_declare_property_null(sundown_render_base_class_entry, ZEND_STRS("render_flags")-1,  ZEND_ACC_PUBLIC TSRMLS_CC);
 
-	zend_declare_class_constant_long(sundown_render_base_class_entry, "LIST_ORDERED", sizeof("LIST_ORDERED")-1, 1 TSRMLS_CC);
-	zend_declare_class_constant_long(sundown_render_base_class_entry, "MKDA_EMAIL", sizeof("MKDA_EMAIL")-1, MKDA_EMAIL TSRMLS_CC);
-	zend_declare_class_constant_long(sundown_render_base_class_entry, "MKDA_NORMAL", sizeof("MKDA_NORMAL")-1, MKDA_NORMAL TSRMLS_CC);
+	zend_declare_class_constant_long(sundown_render_base_class_entry, ZEND_STRS("LIST_ORDERED")-1, 1 TSRMLS_CC);
+	zend_declare_class_constant_long(sundown_render_base_class_entry, ZEND_STRS("MKDA_EMAIL")-1, MKDA_EMAIL TSRMLS_CC);
+	zend_declare_class_constant_long(sundown_render_base_class_entry, ZEND_STRS("MKDA_NORMAL")-1,MKDA_NORMAL TSRMLS_CC);
 }

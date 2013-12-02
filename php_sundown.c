@@ -168,7 +168,6 @@ PHP_METHOD(sundown, hasExtension)
 	int name_len = 0;
 	HashTable *table;
 
-	
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
 		"s", &name, &name_len) == FAILURE) {
 		return;
@@ -270,8 +269,8 @@ void php_sundown_init(TSRMLS_D)
 	
 	INIT_CLASS_ENTRY(ce, "Sundown", php_sundown_methods);
 	sundown_class_entry = zend_register_internal_class(&ce TSRMLS_CC);
-	zend_declare_property_null(sundown_class_entry, "extensions", sizeof("extensions")-1,  ZEND_ACC_PUBLIC TSRMLS_CC);
-	zend_declare_property_null(sundown_class_entry, "enable_pants", sizeof("enable_pants")-1,  ZEND_ACC_PUBLIC TSRMLS_CC);
+	zend_declare_property_null(sundown_class_entry, ZEND_STRS("extensions")-1,  ZEND_ACC_PUBLIC TSRMLS_CC);
+	zend_declare_property_null(sundown_class_entry, ZEND_STRS("enable_pants")-1,  ZEND_ACC_PUBLIC TSRMLS_CC);
 }
 
 

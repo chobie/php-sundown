@@ -320,6 +320,7 @@ PHP_METHOD(sundown_render_html_toc, doubleEmphasis)
 	struct buf *input, *output;
 	php_sundown_render_html_toc_t *html;
 	php_sundown_render_base_t *base;
+
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
 		"s", &text, &text_len) == FAILURE) {
 		return;
@@ -562,33 +563,33 @@ PHP_METHOD(sundown_render_html_toc, __construct)
 /* }}} */
 
 static zend_function_entry php_sundown_render_html_toc_methods[] = {
-	PHP_ME(sundown_render_html_toc, __construct,     arginfo_sundown_render_html_toc___construct,     ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
-	PHP_ME(sundown_render_html_toc, blockCode,       arginfo_sundown_render_html_toc_block_code,      ZEND_ACC_PUBLIC)
-	PHP_ME(sundown_render_html_toc, blockQuote,      arginfo_sundown_render_html_toc_block_quote,     ZEND_ACC_PUBLIC)
-	PHP_ME(sundown_render_html_toc, blockHtml,       arginfo_sundown_render_html_toc_block_html,      ZEND_ACC_PUBLIC)
-	PHP_ME(sundown_render_html_toc, header,          arginfo_sundown_render_html_toc_header,          ZEND_ACC_PUBLIC)
-	PHP_ME(sundown_render_html_toc, hrule,           arginfo_sundown_render_html_toc_hrule,           ZEND_ACC_PUBLIC)
-	PHP_ME(sundown_render_html_toc, listBox,         arginfo_sundown_render_html_toc_list_box,        ZEND_ACC_PUBLIC)
-	PHP_ME(sundown_render_html_toc, listItem,        arginfo_sundown_render_html_toc_list_item,       ZEND_ACC_PUBLIC)
-	PHP_ME(sundown_render_html_toc, paragraph,       arginfo_sundown_render_html_toc_paragraph,       ZEND_ACC_PUBLIC)
-	PHP_ME(sundown_render_html_toc, table,           arginfo_sundown_render_html_toc_table,           ZEND_ACC_PUBLIC)
-	PHP_ME(sundown_render_html_toc, tableRow,        arginfo_sundown_render_html_toc_table_row,       ZEND_ACC_PUBLIC)
-	PHP_ME(sundown_render_html_toc, tableCell,       arginfo_sundown_render_html_toc_table_cell,      ZEND_ACC_PUBLIC)
-	PHP_ME(sundown_render_html_toc, autolink,        arginfo_sundown_render_html_toc_autolink,        ZEND_ACC_PUBLIC)
-	PHP_ME(sundown_render_html_toc, codespan,        arginfo_sundown_render_html_toc_codespan,        ZEND_ACC_PUBLIC)
-	PHP_ME(sundown_render_html_toc, doubleEmphasis,  arginfo_sundown_render_html_toc_double_emphasis, ZEND_ACC_PUBLIC)
-	PHP_ME(sundown_render_html_toc, emphasis,        arginfo_sundown_render_html_toc_emphasis,        ZEND_ACC_PUBLIC)
-	PHP_ME(sundown_render_html_toc, image,           arginfo_sundown_render_html_toc_image,           ZEND_ACC_PUBLIC)
-	PHP_ME(sundown_render_html_toc, linebreak,       arginfo_sundown_render_html_toc_linebreak,       ZEND_ACC_PUBLIC)
-	PHP_ME(sundown_render_html_toc, link,            arginfo_sundown_render_html_toc_link,            ZEND_ACC_PUBLIC)
-	PHP_ME(sundown_render_html_toc, rawHtml,         arginfo_sundown_render_html_toc_raw_html,        ZEND_ACC_PUBLIC)
-	PHP_ME(sundown_render_html_toc, tripleEmphasis,  arginfo_sundown_render_html_toc_triple_emphasis, ZEND_ACC_PUBLIC)
-	PHP_ME(sundown_render_html_toc, strikethrough,   arginfo_sundown_render_html_toc_strikethrough,   ZEND_ACC_PUBLIC)
-	PHP_ME(sundown_render_html_toc, superscript,     arginfo_sundown_render_html_toc_superscript,     ZEND_ACC_PUBLIC)
-	PHP_ME(sundown_render_html_toc, entity,          arginfo_sundown_render_html_toc_entity,          ZEND_ACC_PUBLIC)
-	PHP_ME(sundown_render_html_toc, normalText,      arginfo_sundown_render_html_toc_normal_text,     ZEND_ACC_PUBLIC)
-	PHP_ME(sundown_render_html_toc, docHeader,       arginfo_sundown_render_html_toc_doc_header,      ZEND_ACC_PUBLIC)
-	PHP_ME(sundown_render_html_toc, docFooter,       arginfo_sundown_render_html_toc_doc_footer,      ZEND_ACC_PUBLIC)
+	PHP_ME(sundown_render_html_toc, __construct,    arginfo_sundown_render_html_toc___construct,     ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
+	PHP_ME(sundown_render_html_toc, blockCode,      arginfo_sundown_render_html_toc_block_code,      ZEND_ACC_PUBLIC)
+	PHP_ME(sundown_render_html_toc, blockQuote,     arginfo_sundown_render_html_toc_block_quote,     ZEND_ACC_PUBLIC)
+	PHP_ME(sundown_render_html_toc, blockHtml,      arginfo_sundown_render_html_toc_block_html,      ZEND_ACC_PUBLIC)
+	PHP_ME(sundown_render_html_toc, header,         arginfo_sundown_render_html_toc_header,          ZEND_ACC_PUBLIC)
+	PHP_ME(sundown_render_html_toc, hrule,          arginfo_sundown_render_html_toc_hrule,           ZEND_ACC_PUBLIC)
+	PHP_ME(sundown_render_html_toc, listBox,        arginfo_sundown_render_html_toc_list_box,        ZEND_ACC_PUBLIC)
+	PHP_ME(sundown_render_html_toc, listItem,       arginfo_sundown_render_html_toc_list_item,       ZEND_ACC_PUBLIC)
+	PHP_ME(sundown_render_html_toc, paragraph,      arginfo_sundown_render_html_toc_paragraph,       ZEND_ACC_PUBLIC)
+	PHP_ME(sundown_render_html_toc, table,          arginfo_sundown_render_html_toc_table,           ZEND_ACC_PUBLIC)
+	PHP_ME(sundown_render_html_toc, tableRow,       arginfo_sundown_render_html_toc_table_row,       ZEND_ACC_PUBLIC)
+	PHP_ME(sundown_render_html_toc, tableCell,      arginfo_sundown_render_html_toc_table_cell,      ZEND_ACC_PUBLIC)
+	PHP_ME(sundown_render_html_toc, autolink,       arginfo_sundown_render_html_toc_autolink,        ZEND_ACC_PUBLIC)
+	PHP_ME(sundown_render_html_toc, codespan,       arginfo_sundown_render_html_toc_codespan,        ZEND_ACC_PUBLIC)
+	PHP_ME(sundown_render_html_toc, doubleEmphasis, arginfo_sundown_render_html_toc_double_emphasis, ZEND_ACC_PUBLIC)
+	PHP_ME(sundown_render_html_toc, emphasis,       arginfo_sundown_render_html_toc_emphasis,        ZEND_ACC_PUBLIC)
+	PHP_ME(sundown_render_html_toc, image,          arginfo_sundown_render_html_toc_image,           ZEND_ACC_PUBLIC)
+	PHP_ME(sundown_render_html_toc, linebreak,      arginfo_sundown_render_html_toc_linebreak,       ZEND_ACC_PUBLIC)
+	PHP_ME(sundown_render_html_toc, link,           arginfo_sundown_render_html_toc_link,            ZEND_ACC_PUBLIC)
+	PHP_ME(sundown_render_html_toc, rawHtml,        arginfo_sundown_render_html_toc_raw_html,        ZEND_ACC_PUBLIC)
+	PHP_ME(sundown_render_html_toc, tripleEmphasis, arginfo_sundown_render_html_toc_triple_emphasis, ZEND_ACC_PUBLIC)
+	PHP_ME(sundown_render_html_toc, strikethrough,  arginfo_sundown_render_html_toc_strikethrough,   ZEND_ACC_PUBLIC)
+	PHP_ME(sundown_render_html_toc, superscript,    arginfo_sundown_render_html_toc_superscript,     ZEND_ACC_PUBLIC)
+	PHP_ME(sundown_render_html_toc, entity,         arginfo_sundown_render_html_toc_entity,          ZEND_ACC_PUBLIC)
+	PHP_ME(sundown_render_html_toc, normalText,     arginfo_sundown_render_html_toc_normal_text,     ZEND_ACC_PUBLIC)
+	PHP_ME(sundown_render_html_toc, docHeader,      arginfo_sundown_render_html_toc_doc_header,      ZEND_ACC_PUBLIC)
+	PHP_ME(sundown_render_html_toc, docFooter,      arginfo_sundown_render_html_toc_doc_footer,      ZEND_ACC_PUBLIC)
 	{NULL, NULL, NULL}
 };
 
@@ -599,5 +600,5 @@ void php_sundown_render_html_toc_init(TSRMLS_D)
 	INIT_NS_CLASS_ENTRY(ce, ZEND_NS_NAME("Sundown", "Render"), "HTML_TOC", php_sundown_render_html_toc_methods);
 	sundown_render_html_toc_class_entry = zend_register_internal_class_ex(&ce, sundown_render_base_class_entry, NULL TSRMLS_CC);
 	sundown_render_html_toc_class_entry->create_object = php_sundown_render_html_toc_new;
-	zend_declare_property_null(sundown_render_html_toc_class_entry, "render_flags", sizeof("render_flags")-1,  ZEND_ACC_PUBLIC TSRMLS_CC);
+	zend_declare_property_null(sundown_render_html_toc_class_entry, ZEND_STRS("render_flags")-1, ZEND_ACC_PUBLIC TSRMLS_CC);
 }
