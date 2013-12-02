@@ -329,27 +329,24 @@ PHP_METHOD(sundown_markdown, __construct)
 	}
 
 	if (Z_TYPE_P(render) == IS_STRING) {
+		zval *obj, *retval;
+
 		if (zend_lookup_class(Z_STRVAL_P(render), strlen(Z_STRVAL_P(render)), &ce TSRMLS_CC) == FAILURE) {
 			zend_throw_exception_ex(spl_ce_InvalidArgumentException, 0 TSRMLS_CC, "class %s does not find.", Z_STRVAL_P(render));
 		    return;
-		} else {
-			zval *func, *ret, *obj;
-			
-			MAKE_STD_ZVAL(func);
-			MAKE_STD_ZVAL(ret);
-			MAKE_STD_ZVAL(obj);
-			ZVAL_STRING(func, "__construct", 1);
-			object_init_ex(obj, *ce);
-			call_user_function(NULL, &obj, func, ret, 0, NULL TSRMLS_CC);
-			zval_ptr_dtor(&func);
-			zval_ptr_dtor(&ret);
-			render = obj;
 		}
+
+		MAKE_STD_ZVAL(obj);
+		object_init_ex(obj, *ce);
+		zend_call_method_with_0_params(&obj, Z_OBJCE_P(obj), NULL, "__construct", &retval);
+		zval_ptr_dtor(&retval);
+
+		render = obj;
 	} else if (Z_TYPE_P(render) == IS_OBJECT) {
-		// nothing todo.
-		Z_ADDREF_P(render);	
+		/* nothing to do */
+		Z_ADDREF_P(render);
 	} else {
-		zend_throw_exception_ex(spl_ce_InvalidArgumentException, 0 TSRMLS_CC, "Render class must extend Sundown\\Render\\Base");
+		zend_throw_exception_ex(spl_ce_InvalidArgumentException, 0 TSRMLS_CC, "passed unexpected value. Sundown\\Markdown::__construct expects string or object");
 		return;
 	}
 
