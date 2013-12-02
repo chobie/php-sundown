@@ -1,0 +1,24 @@
+diff --git a/sundown/src/buffer.h b/sundown/src/buffer.h
+index 221d142..ca7523b 100644
+--- a/sundown/src/buffer.h
++++ b/sundown/src/buffer.h
+@@ -20,7 +20,11 @@
+ 
+ #include <stddef.h>
+ #include <stdarg.h>
++#ifdef PHP_WIN32
++# include "win32/php_stdint.h"
++$else
+ #include <stdint.h>
++#endif
+ 
+ #ifdef __cplusplus
+ extern "C" {
+@@ -28,7 +32,6 @@ extern "C" {
+ 
+ #if defined(_MSC_VER)
+ #define __attribute__(x)
+-#define inline
+ #endif
+ 
+ typedef enum {

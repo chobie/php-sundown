@@ -18,7 +18,7 @@ sundown/html/html_smartypants.c
 sundown/html/houdini_href_e.c
 sundown/html/houdini_html_e.c
 "
-
+  patch -p1 -N -b < buffer_win32_compat.patch
   PHP_NEW_EXTENSION(sundown,$SUNDOWN_SOURCES, $ext_shared)
   CFLAGS="-Wunused-variable -Wpointer-sign -Wimplicit-function-declaration -Winline -Wunused-macros -Wredundant-decls -Wstrict-aliasing=2 -Wswitch-enum -Wdeclaration-after-statement"
   PHP_SUBST([CFLAGS])
@@ -30,4 +30,5 @@ sundown/html/houdini_html_e.c
   PHP_ADD_INCLUDE([$ext_srcdir/sundown/html])
   PHP_ADD_INCLUDE([$ext_builddir/sundown/src])
   PHP_ADD_INCLUDE([$ext_builddir/sundown/html])
+  PHP_ADD_MAKEFILE_FRAGMENT
 fi
