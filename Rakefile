@@ -5,6 +5,11 @@ task :compile => ['sundown/src/markdown.h'] do
 	sh "make"
 end
 
+desc "update contributors"
+task :contributors do
+	sh "git shortlog -s -n | php -R 'list($d, $c)=explode(\"\t\", $argn, 2);echo $c .PHP_EOL;' > CONTRIBUTORS"
+end
+
 desc "install php-sundown to your php"
 task :install => [:compile] do
 	sh "make install"
