@@ -41,6 +41,8 @@ Install for developpers
     # please add following line to your php.ini
     # extension=sundown.so
 
+Note for Windows users: sundown/src/buffer.h conflicts declarations. please apply `buffer_win32_compat.patch` by hand.
+
 Conformance Testing
 -------------------
 
