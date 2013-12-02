@@ -3,7 +3,7 @@
 #define PHP_SUNDOWN_H
 
 #define PHP_SUNDOWN_EXTNAME "sundown"
-#define PHP_SUNDOWN_EXTVER "0.4.0-beta"
+#define PHP_SUNDOWN_EXTVER "0.3.9"
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
