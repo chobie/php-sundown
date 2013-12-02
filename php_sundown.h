@@ -235,6 +235,11 @@ static void php_sundown__get_render_flags(HashTable *table, unsigned int *render
 {
 	unsigned int render_flags = HTML_EXPAND_TABS;
 
+	/* escape_html */
+	if (SUNDOWN_HAS_EXTENSION("escape_html")) {
+		render_flags |= HTML_ESCAPE;
+	}
+
 	/* filter_html */
 	if (SUNDOWN_HAS_EXTENSION("filter_html")) {
 		render_flags |= HTML_SKIP_HTML;
@@ -249,6 +254,11 @@ static void php_sundown__get_render_flags(HashTable *table, unsigned int *render
 	if (SUNDOWN_HAS_EXTENSION("no_links")) {
 		render_flags |= HTML_SKIP_LINKS;
 	}
+
+	/* prettify */
+//	if (SUNDOWN_HAS_EXTENSION("prettify")) {
+//		render_flags |= HTML_PRETTIFY;
+//	}
 
 	/* filter_style */
 	if (SUNDOWN_HAS_EXTENSION("no_styles")) {
@@ -271,6 +281,11 @@ static void php_sundown__get_render_flags(HashTable *table, unsigned int *render
 	if (SUNDOWN_HAS_EXTENSION("xhtml")) {
 		render_flags |= HTML_USE_XHTML;
 	}
+
+	// TODO:
+	//link_attr = rb_hash_aref(hash, CSTR2SYM("link_attributes"));
+	//rndr->options.link_attributes = link_attr;
+	//rndr->options.html.link_attributes = &rndr_link_attributes;
 
 	*render_flags_p = render_flags;
 }
