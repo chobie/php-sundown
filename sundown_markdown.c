@@ -367,7 +367,7 @@ PHP_METHOD(sundown_markdown, __construct)
 		ALLOC_INIT_ZVAL(c_extensions);
 		ZVAL_ZVAL(c_extensions, extensions, 1, 0);
 	}
-	add_property_zval_ex(getThis(), "extensions", sizeof("extensions"), c_extensions TSRMLS_CC);
+	add_property_zval_ex(getThis(), ZEND_STRS("extensions"), c_extensions TSRMLS_CC);
 }
 /* }}} */
 
@@ -378,7 +378,7 @@ PHP_METHOD(sundown_markdown, __destruct)
 {
 	zval *extensions;
 	
-	extensions = zend_read_property(sundown_markdown_class_entry, getThis(), "extensions", sizeof("extensions")-1, 0 TSRMLS_CC);
+	extensions = zend_read_property(sundown_markdown_class_entry, getThis(), ZEND_STRS("extensions")-1, 0 TSRMLS_CC);
 	zval_ptr_dtor(&extensions);
 }
 /* }}} */
@@ -533,8 +533,8 @@ PHP_METHOD(sundown_markdown, hasExtension)
 		return;
 	}
 	
-	if (Z_TYPE_P(zend_read_property(sundown_class_entry, getThis(), "extensions", sizeof("extensions")-1, 0 TSRMLS_CC)) != IS_NULL) {
-		table = Z_ARRVAL_P(zend_read_property(sundown_class_entry, getThis(), "extensions", sizeof("extensions")-1, 0 TSRMLS_CC));
+	if (Z_TYPE_P(zend_read_property(sundown_class_entry, getThis(), ZEND_STRS("extensions")-1, 0 TSRMLS_CC)) != IS_NULL) {
+		table = Z_ARRVAL_P(zend_read_property(sundown_class_entry, getThis(), ZEND_STRS("extensions")-1, 0 TSRMLS_CC));
 		RETVAL_BOOL(php_sundown_has_ext(table, name));
 	}
 }
@@ -576,10 +576,10 @@ PHP_METHOD(sundown_markdown, setExtensions)
 		return;
 	}
 
-	tmp = zend_read_property(sundown_class_entry, getThis(), "extensions", sizeof("extensions")-1, 0 TSRMLS_CC);
+	tmp = zend_read_property(sundown_class_entry, getThis(), ZEND_STRS("extensions")-1, 0 TSRMLS_CC);
 	zval_ptr_dtor(&tmp);
 
-	add_property_zval_ex(getThis(), "extensions", sizeof("extensions"), extensions TSRMLS_CC);
+	add_property_zval_ex(getThis(), ZEND_STRS("extensions"), extensions TSRMLS_CC);
 }
 /* }}} */
 
@@ -587,10 +587,10 @@ PHP_METHOD(sundown_markdown, setExtensions)
 */
 PHP_METHOD(sundown_markdown, getExtensions)
 {
-	if (Z_TYPE_P(zend_read_property(sundown_class_entry, getThis(), "extensions", sizeof("extensions")-1, 0 TSRMLS_CC)) != IS_NULL) {
+	if (Z_TYPE_P(zend_read_property(sundown_class_entry, getThis(), ZEND_STRS("extensions")-1, 0 TSRMLS_CC)) != IS_NULL) {
 		zval *result;
 
-		result = zend_read_property(sundown_class_entry, getThis(), "extensions", sizeof("extensions")-1, 0 TSRMLS_CC);
+		result = zend_read_property(sundown_class_entry, getThis(), ZEND_STRS("extensions")-1, 0 TSRMLS_CC);
 		RETVAL_ZVAL(result, 1, 0);
 	}
 }
@@ -648,13 +648,13 @@ void php_sundown_markdown_init(TSRMLS_D)
 	INIT_NS_CLASS_ENTRY(ce, "Sundown", "Markdown", php_sundown_markdown_methods);
 	sundown_markdown_class_entry = zend_register_internal_class(&ce TSRMLS_CC);
 	sundown_markdown_class_entry->create_object = php_sundown_markdown_new;
-	zend_declare_property_null(sundown_markdown_class_entry, "extensions", sizeof("extensions")-1,  ZEND_ACC_PUBLIC TSRMLS_CC);
+	zend_declare_property_null(sundown_markdown_class_entry, ZEND_STRS("extensions")-1,  ZEND_ACC_PUBLIC TSRMLS_CC);
 
 	if (!spl_ce_InvalidArgumentException) {
 		/* when I'm building this extension on windows box. I can't fix redefintion macro error. for now lookup the class */
 		zend_class_entry **pce;
 		
-		if (zend_hash_find(CG(class_table), "invalidargumentexception", sizeof("InvalidArgumentException"), (void **)&pce) == SUCCESS) {
+		if (zend_hash_find(CG(class_table), ZEND_STRS("invalidargumentexception")-1, (void **)&pce) == SUCCESS) {
 			spl_ce_InvalidArgumentException = *pce;
 		}
 	}

@@ -58,7 +58,7 @@ static void sundown__render(SundownRendererType render_type, INTERNAL_FUNCTION_P
 	HashTable *table;
 	
 	object = getThis();
-	buffer = Z_STRVAL_P(zend_read_property(sundown_class_entry, getThis(), "data", sizeof("data")-1, 0 TSRMLS_CC));
+	buffer = Z_STRVAL_P(zend_read_property(sundown_class_entry, getThis(), ZEND_STRS("data")-1, 0 TSRMLS_CC));
 	buffer_len = strlen(buffer);
 	
 	memset(&input_buf, 0x0, sizeof(struct buf));
@@ -68,8 +68,8 @@ static void sundown__render(SundownRendererType render_type, INTERNAL_FUNCTION_P
 	output_buf = bufnew(128);
 	bufgrow(output_buf, strlen(buffer) * 1.2f);
 
-	if (Z_TYPE_P(zend_read_property(sundown_class_entry, getThis(), "extensions", sizeof("extensions")-1, 0 TSRMLS_CC)) != IS_NULL) {
-		table = Z_ARRVAL_P(zend_read_property(sundown_class_entry, getThis(), "extensions", sizeof("extensions")-1, 0 TSRMLS_CC));
+	if (Z_TYPE_P(zend_read_property(sundown_class_entry, getThis(), ZEND_STRS("extensions")-1, 0 TSRMLS_CC)) != IS_NULL) {
+		table = Z_ARRVAL_P(zend_read_property(sundown_class_entry, getThis(), ZEND_STRS("extensions")-1, 0 TSRMLS_CC));
 	}
 	php_sundown__get_flags(table, &enabled_extensions, &render_flags);
 
@@ -90,7 +90,7 @@ static void sundown__render(SundownRendererType render_type, INTERNAL_FUNCTION_P
 	sd_markdown_render(output_buf, input_buf.data, input_buf.size, markdown);
 	sd_markdown_free(markdown);
 
-	if (Z_BVAL_P(zend_read_property(sundown_class_entry, getThis(), "enable_pants", sizeof("enable_pants")-1, 0 TSRMLS_CC))) {
+	if (Z_BVAL_P(zend_read_property(sundown_class_entry, getThis(), ZEND_STRS("enable_pants")-1, 0 TSRMLS_CC))) {
 		struct buf *smart_buf = bufnew(128);
 		sdhtml_smartypants(smart_buf, output_buf->data, output_buf->size);
 		RETVAL_STRINGL((char*)smart_buf->data, smart_buf->size, 1);
@@ -112,7 +112,7 @@ PHP_METHOD(sundown, __construct)
 		return;
 	}
 
-	add_property_string_ex(getThis(), "data", sizeof("data"), buffer, 1 TSRMLS_CC);
+	add_property_string_ex(getThis(), ZEND_STRS("data"), buffer, 1 TSRMLS_CC);
 
 	if (extensions == NULL) {
 		MAKE_STD_ZVAL(c_extensions);
@@ -121,7 +121,7 @@ PHP_METHOD(sundown, __construct)
 		ALLOC_INIT_ZVAL(c_extensions);
 		ZVAL_ZVAL(c_extensions, extensions, 1, 0);
 	}
-	add_property_zval_ex(getThis(), "extensions", sizeof("extensions"), c_extensions TSRMLS_CC);
+	add_property_zval_ex(getThis(), ZEND_STRS("extensions"), c_extensions TSRMLS_CC);
 }
 /* }}} */
 
@@ -131,7 +131,7 @@ PHP_METHOD(sundown, __destruct)
 {
 	zval *extensions;
 	
-	extensions = zend_read_property(sundown_class_entry, getThis(), "extensions", sizeof("extensions")-1, 0 TSRMLS_CC);
+	extensions = zend_read_property(sundown_class_entry, getThis(), ZEND_STRS("extensions")-1, 0 TSRMLS_CC);
 	zval_ptr_dtor(&extensions);
 }
 /* }}} */
@@ -173,8 +173,8 @@ PHP_METHOD(sundown, hasExtension)
 		return;
 	}
 	
-	if (Z_TYPE_P(zend_read_property(sundown_class_entry, getThis(), "extensions", sizeof("extensions")-1, 0 TSRMLS_CC)) != IS_NULL) {
-		table = Z_ARRVAL_P(zend_read_property(sundown_class_entry, getThis(), "extensions", sizeof("extensions")-1, 0 TSRMLS_CC));
+	if (Z_TYPE_P(zend_read_property(sundown_class_entry, getThis(), ZEND_STRS("extensions")-1, 0 TSRMLS_CC)) != IS_NULL) {
+		table = Z_ARRVAL_P(zend_read_property(sundown_class_entry, getThis(), ZEND_STRS("extensions")-1, 0 TSRMLS_CC));
 		RETVAL_BOOL(php_sundown_has_ext(table, name));
 	}
 }
@@ -192,8 +192,8 @@ PHP_METHOD(sundown, hasRenderFlag)
 		return;
 	}
 	
-	if (Z_TYPE_P(zend_read_property(sundown_class_entry, getThis(), "extensions", sizeof("extensions")-1, 0 TSRMLS_CC)) != IS_NULL) {
-		table = Z_ARRVAL_P(zend_read_property(sundown_class_entry, getThis(), "extensions", sizeof("extensions")-1, 0 TSRMLS_CC));
+	if (Z_TYPE_P(zend_read_property(sundown_class_entry, getThis(), ZEND_STRS("extensions")-1, 0 TSRMLS_CC)) != IS_NULL) {
+		table = Z_ARRVAL_P(zend_read_property(sundown_class_entry, getThis(), ZEND_STRS("extensions")-1, 0 TSRMLS_CC));
 		RETVAL_BOOL(php_sundown_has_ext(table, name));
 	}
 }

@@ -574,7 +574,7 @@ PHP_METHOD(sundown_render_base, postprocess)
 		return;
 	}
 
-	if (Z_BVAL_P(zend_read_property(Z_OBJCE_P(getThis()), getThis(), "enable_pants", sizeof("enable_pants")-1, 1 TSRMLS_CC))) {
+	if (Z_BVAL_P(zend_read_property(Z_OBJCE_P(getThis()), getThis(), ZEND_STRS("enable_pants")-1, 1 TSRMLS_CC))) {
 		struct buf *smart_buf = bufnew(128);
 		sdhtml_smartypants(smart_buf, (uint8_t *)text, text_len);
 		RETVAL_STRINGL((char*)smart_buf->data, smart_buf->size, 1);
@@ -603,7 +603,7 @@ PHP_METHOD(sundown_render_base, __construct)
 		MAKE_STD_ZVAL(c_flags);
 		array_init(c_flags);
 	}
-	add_property_zval_ex(getThis(), "render_flags", sizeof("render_flags"), c_flags TSRMLS_CC);
+	add_property_zval_ex(getThis(), ZEND_STRS("render_flags"), c_flags TSRMLS_CC);
 
 }
 /* }}} */
@@ -614,10 +614,10 @@ PHP_METHOD(sundown_render_base, __construct)
 */
 PHP_METHOD(sundown_render_base, getRenderFlags)
 {
-	if (Z_TYPE_P(zend_read_property(sundown_render_base_class_entry, getThis(), "render_flags", sizeof("render_flags")-1, 0 TSRMLS_CC)) != IS_NULL) {
+	if (Z_TYPE_P(zend_read_property(sundown_render_base_class_entry, getThis(), ZEND_STRS("render_flags")-1, 0 TSRMLS_CC)) != IS_NULL) {
 		zval *tmp = NULL;
 
-		tmp = zend_read_property(sundown_render_base_class_entry, getThis(), "render_flags", sizeof("render_flags")-1, 0 TSRMLS_CC);
+		tmp = zend_read_property(sundown_render_base_class_entry, getThis(), ZEND_STRS("render_flags")-1, 0 TSRMLS_CC);
 		RETVAL_ZVAL(tmp, 1, 0);
 	}
 }
@@ -635,10 +635,10 @@ PHP_METHOD(sundown_render_base, setRenderFlags)
 	}
 	MAKE_STD_ZVAL(c_render_flags);
 	ZVAL_ZVAL(c_render_flags, render_flags, 1, 0);
-	tmp = zend_read_property(sundown_render_base_class_entry, getThis(), "render_flags", sizeof("render_flags")-1, 0 TSRMLS_CC);
+	tmp = zend_read_property(sundown_render_base_class_entry, getThis(), ZEND_STRS("render_flags")-1, 0 TSRMLS_CC);
 	zval_ptr_dtor(&tmp);
 	
-	add_property_zval_ex(getThis(), "render_flags", sizeof("render_flags"), c_render_flags TSRMLS_CC);
+	add_property_zval_ex(getThis(), ZEND_STRS("render_flags"), c_render_flags TSRMLS_CC);
 }
 /* }}} */
 
@@ -648,7 +648,7 @@ PHP_METHOD(sundown_render_base, setRenderFlags)
 PHP_METHOD(sundown_render_base, __destruct)
 {
 	zval *render_flags;
-	render_flags = zend_read_property(sundown_render_base_class_entry, getThis(), "render_flags", sizeof("render_flags")-1, 0 TSRMLS_CC);
+	render_flags = zend_read_property(sundown_render_base_class_entry, getThis(), ZEND_STRS("render_flags")-1, 0 TSRMLS_CC);
 	if (Z_TYPE_P(render_flags) == IS_ARRAY) {
 		zval_ptr_dtor(&render_flags);
 	}

@@ -554,7 +554,7 @@ PHP_METHOD(sundown_render_html_toc, __construct)
 		MAKE_STD_ZVAL(c_flags);
 		array_init(c_flags);
 	}
-	add_property_zval_ex(getThis(), "render_flags", sizeof("render_flags"), c_flags TSRMLS_CC);
+	add_property_zval_ex(getThis(), ZEND_STRS("render_flags"), c_flags TSRMLS_CC);
 
 	object = (php_sundown_render_html_toc_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
 	sdhtml_toc_renderer(&object->cb, &opt.html);

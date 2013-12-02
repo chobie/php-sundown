@@ -103,7 +103,7 @@ PHP_METHOD(sundown_render_xhtml, __construct)
 		}
 	}
 	
-	add_property_zval_ex(getThis(), "render_flags", sizeof("render_flags"), c_flags TSRMLS_CC);
+	add_property_zval_ex(getThis(), ZEND_STRS("render_flags"), c_flags TSRMLS_CC);
 
 	object = (php_sundown_render_html_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
 	sdhtml_renderer(&object->cb, &opt.html, 0);
