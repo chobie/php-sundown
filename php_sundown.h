@@ -46,7 +46,7 @@ ZEND_EXTERN_MODULE_GLOBALS(sundown)
 extern zend_class_entry *sundown_class_entry;
 extern zend_class_entry *php_sundown_buffer_class_entry;
 extern zend_class_entry *sundown_render_html_class_entry;
-extern zend_class_entry *sundown_render_html_class_entry;
+extern zend_class_entry *sundown_render_xhtml_class_entry;
 extern zend_class_entry *sundown_render_base_class_entry;
 
 typedef enum

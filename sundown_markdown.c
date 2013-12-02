@@ -450,6 +450,19 @@ PHP_METHOD(sundown_markdown, render)
 		}
 	}
 
+	if (instanceof_function_ex(ce, sundown_render_html_class_entry, 0 TSRMLS_CC)) {
+		if (render_flags & HTML_SKIP_IMAGES) {
+			sundown_render.image = NULL;
+		}
+		if (render_flags & HTML_SKIP_LINKS) {
+			sundown_render.link = NULL;
+			sundown_render.autolink = NULL;
+		}
+		if (render_flags & HTML_SKIP_HTML || render_flags & HTML_ESCAPE) {
+			sundown_render.blockhtml = NULL;
+		}
+	}
+
 	/* preprocess */
 	MAKE_STD_ZVAL(ret);
 	MAKE_STD_ZVAL(params[0]);
