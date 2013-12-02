@@ -29,7 +29,7 @@ Requirements
 
 PHP5.3 higher
 
-Install for developpers
+Install for developers
 -----------------------
 
     git clone https://github.com/chobie/php-sundown.git php-sundown --recursive
@@ -51,7 +51,7 @@ Conformance Testing
 Overview
 -------
 
-php-sudown has two styles: basic and advance.
+php-sundown has two styles: basic and advance.
 
 *basic*: simple, fast rendering.
 *advance*: customize your own markdown render, little bit slower than basic.
