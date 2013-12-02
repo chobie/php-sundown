@@ -34,7 +34,7 @@ Install for developpers
 
     git clone https://github.com/chobie/php-sundown.git php-sundown --recursive
     cd php-sundown
-    phpze
+    phpize
     ./configure
     make
     make install

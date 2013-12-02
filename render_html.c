@@ -30,7 +30,6 @@ zend_object_value php_sundown_render_html_new(zend_class_entry *ce TSRMLS_DC)
 {
 	zend_object_value retval;
 	php_sundown_render_html_t *obj;
-	zval *tmp;
 
 	obj = ecalloc(1, sizeof(*obj));
 	zend_object_std_init( &obj->zo, ce TSRMLS_CC);
