@@ -16,6 +16,7 @@
    +----------------------------------------------------------------------+
  */
 #include "php_sundown.h"
+#include "ext/standard/php_array.h"
 
 zend_class_entry *sundown_render_xhtml_class_entry;
 
@@ -57,53 +58,35 @@ ZEND_END_ARG_INFO()
 */
 PHP_METHOD(sundown_render_xhtml, __construct)
 {
-	zval **data = NULL, *render_flags = NULL, *c_flags = NULL;
-	HashTable *hash;
+	zval *render_flags = NULL, *enable_xhtml, *t;
 	char *key = "xhtml";
-	long length = sizeof("xhtml");
+	uint length = sizeof("xhtml");
 	php_sundown_render_html_t *object;
 	struct php_sundown_renderopt_ex opt;
 	
 	if(zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
-		"|z", &render_flags) == FAILURE){
+		"|a", &render_flags) == FAILURE){
 		return;
 	}
 
-	if (render_flags != NULL && Z_TYPE_P(render_flags) == IS_ARRAY) {
-		ALLOC_INIT_ZVAL(c_flags);
-		ZVAL_ZVAL(c_flags, render_flags, 1, 0);
-	} else {
-		zval *t;
-		MAKE_STD_ZVAL(t);
-		ZVAL_TRUE(t);
-		MAKE_STD_ZVAL(c_flags);
-		array_init(c_flags);
-		hash = Z_ARRVAL_P(c_flags);
-		zend_hash_add(hash, key, length, &t, sizeof(zval *), NULL);
-		Z_ADDREF_P(t);
-		zval_ptr_dtor(&t);
-		t = NULL;
+	if (render_flags == NULL) {
+		MAKE_STD_ZVAL(render_flags);
+		array_init(render_flags);
 	}
 
-	hash = Z_ARRVAL_P(c_flags);
-	if (zend_hash_find(hash, key, length, (void **)&data) != SUCCESS) {
-		zval *t;
-		MAKE_STD_ZVAL(t);
-		ZVAL_TRUE(t);
-		zend_hash_add(hash, key, length, &t, sizeof(zval *),NULL);
-		Z_ADDREF_P(t);
-	} else {
-		if (!Z_BVAL_P(*data)) {
-			zval *t;
-			MAKE_STD_ZVAL(t);
-			ZVAL_TRUE(t);
-			zend_hash_update(hash, key, length, &t, sizeof(zval *), NULL);
-			Z_ADDREF_P(t);
-			zval_ptr_dtor(&t);
-		}
-	}
-	
-	add_property_zval_ex(getThis(), ZEND_STRS("render_flags"), c_flags TSRMLS_CC);
+	MAKE_STD_ZVAL(enable_xhtml);
+	MAKE_STD_ZVAL(t);
+	ZVAL_TRUE(t);
+
+	array_init(enable_xhtml);
+	zend_hash_add(Z_ARRVAL_P(enable_xhtml), key, length, &t, sizeof(zval *), NULL);
+	Z_ADDREF_P(t);
+
+	/* NOTE: XHTML Render always override `xhtml` value to `true`. */
+	zend_hash_merge(Z_ARRVAL_P(render_flags), Z_ARRVAL_P(enable_xhtml), (copy_ctor_func_t)zval_add_ref, NULL, sizeof(zval *), 1);
+	add_property_zval_ex(getThis(), ZEND_STRS("render_flags"), render_flags TSRMLS_CC);
+	zval_ptr_dtor(&enable_xhtml);
+	zval_ptr_dtor(&t);
 
 	object = (php_sundown_render_html_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
 	sdhtml_renderer(&object->cb, &opt.html, 0);

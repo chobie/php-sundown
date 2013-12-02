@@ -403,12 +403,11 @@ PHP_METHOD(sundown_markdown, render)
 	void **source, **dest;
 	size_t i;
 
-	
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
 		"s", &buffer, &buffer_len) == FAILURE) {
 		return;
 	}
-		
+
 	output_buf = bufnew(128);
 	bufgrow(output_buf, buffer_len * 1.2f);
 	
