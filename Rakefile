@@ -36,11 +36,6 @@ task "test:conformance" do
 	end
 end
 
-desc 'Gather required Sundown sources into extension directory'
-task :gather do
-  abort "gather task become deprecated. now you don't need call this task."
-end
-
 file 'sundown/src/markdown.h' do |t|
   abort "The Sundown submodule is required."
 end
