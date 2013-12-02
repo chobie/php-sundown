@@ -804,7 +804,7 @@ PHP_METHOD(sundown_render_html, __construct)
 	zval *render_flags = NULL, *c_flags = NULL;
 	
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
-		"|z", &render_flags) == FAILURE) {
+		"|a", &render_flags) == FAILURE) {
 		return;
 	}
 
