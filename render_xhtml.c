@@ -18,7 +18,6 @@
 
 
 #include "php_sundown.h"
-extern zend_class_entry *sundown_render_html_class_entry;
 zend_class_entry *sundown_render_xhtml_class_entry;
 
 static void php_sundown_render_xhtml_free_storage(php_sundown_render_xhtml_t *obj TSRMLS_DC)
