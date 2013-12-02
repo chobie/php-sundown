@@ -8,7 +8,7 @@ index 221d142..ca7523b 100644
  #include <stdarg.h>
 +#ifdef PHP_WIN32
 +# include "win32/php_stdint.h"
-+$else
++#else
  #include <stdint.h>
 +#endif
  
