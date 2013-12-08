@@ -1,5 +1,5 @@
 --TEST--
-Check for Sundown\Render\HTML::list_box() feature
+Check for Sundown\Render\HTML::setRenderFlags() feature
 --SKIPIF--
 <?php if (!extension_loaded("sundown")) print "skip"; ?>
 --FILE--

@@ -1,5 +1,5 @@
 --TEST--
-Check for determine enabled extensions.
+Check for getRender behavior.
 --SKIPIF--
 <?php if (!extension_loaded("sundown")) print "skip"; ?>
 --FILE--

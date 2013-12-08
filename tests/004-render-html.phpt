@@ -1,5 +1,5 @@
 --TEST--
-Check for Sundown::to_html() feature
+Check for Sundown\Markdown\render() feature
 --SKIPIF--
 <?php if (!extension_loaded("sundown")) print "skip"; ?>
 --FILE--
