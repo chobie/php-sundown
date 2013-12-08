@@ -140,7 +140,7 @@ PHP_METHOD(sundown, __destruct)
 	Returns converted HTML string */
 PHP_METHOD(sundown, toHtml)
 {
-	sundown__render(SUNDOWN_RENDER_HTML, INTERNAL_FUNCTION_PARAM_PASSTHRU);
+	php_sundown_markdon_render(SUNDOWN_RENDER_HTML, INTERNAL_FUNCTION_PARAM_PASSTHRU);
 }
 /* }}} */
 
@@ -148,7 +148,7 @@ PHP_METHOD(sundown, toHtml)
 	Returns converted HTML string */
 PHP_METHOD(sundown, __toString)
 {
-	sundown__render(SUNDOWN_RENDER_HTML, INTERNAL_FUNCTION_PARAM_PASSTHRU);
+	php_sundown_markdon_render(SUNDOWN_RENDER_HTML, INTERNAL_FUNCTION_PARAM_PASSTHRU);
 }
 /* }}} */
 
@@ -156,7 +156,7 @@ PHP_METHOD(sundown, __toString)
 	Returns table of contents*/
 PHP_METHOD(sundown, toToc)
 {
-	sundown__render(SUNDOWN_RENDER_TOC, INTERNAL_FUNCTION_PARAM_PASSTHRU);
+	php_sundown_markdon_render(SUNDOWN_RENDER_TOC, INTERNAL_FUNCTION_PARAM_PASSTHRU);
 }
 
 

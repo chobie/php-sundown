@@ -349,5 +349,6 @@ static void php_sundown__get_flags(HashTable *table, unsigned int *enabled_exten
 	*render_flags_p = render_flags;
 }
 
+extern void php_sundown_markdon_render(SundownRendererType render_type, INTERNAL_FUNCTION_PARAMETERS);
 
 #endif /* PHP_SUNDOWN_H */
