@@ -309,6 +309,10 @@ static void php_sundown__get_extensions(HashTable *table, unsigned int *enabled_
 		extensions |= MKDEXT_FENCED_CODE;
 	}
 
+//	if (SUNDOWN_HAS_EXTENSION("disable_indented_code_blocks")) {
+//		extensions |= MKDEXT_DISABLE_INDENTED_CODE;
+//	}
+
 	if (SUNDOWN_HAS_EXTENSION("autolink")) {
 		extensions |= MKDEXT_AUTOLINK;
 	}
@@ -317,7 +321,19 @@ static void php_sundown__get_extensions(HashTable *table, unsigned int *enabled_
 		extensions |= MKDEXT_STRIKETHROUGH;
 	}
 
-	/* obsoleted? */
+//	if (SUNDOWN_HAS_EXTENSION("underline")) {
+//		extensions |= MKDEXT_UNDERLINE;
+//	}
+
+//	if (SUNDOWN_HAS_EXTENSION("highlight")) {
+//		extensions |= MKDEXT_HIGHLIGHT;
+//	}
+
+//	if (SUNDOWN_HAS_EXTENSION("quote")) {
+//		extensions |= MKDEXT_QUOTE;
+//	}
+
+	/* obsoleted.  */
 	if (SUNDOWN_HAS_EXTENSION("lax_html_blocks")) {
 		extensions |= MKDEXT_LAX_SPACING;
 	}
@@ -333,6 +349,10 @@ static void php_sundown__get_extensions(HashTable *table, unsigned int *enabled_
 	if (SUNDOWN_HAS_EXTENSION("superscript")) {
 		extensions |= MKDEXT_SUPERSCRIPT;
 	}
+
+//	if (SUNDOWN_HAS_EXTENSION("footnotes")) {
+//		extensions |= MKDEXT_FOOTNOTES;
+//	}
 
 	*enabled_extensions_p = extensions;
 }
