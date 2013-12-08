@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<package packagerversion="1.8.2" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0 http://pear.php.net/dtd/tasks-1.0.xsd http://pear.php.net/dtd/package-2.0 http://pear.php.net/dtd/package-2.0.xsd">
+<package version="2.1" xmlns="http://pear.php.net/dtd/package-2.1" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0     http://pear.php.net/dtd/tasks-1.0.xsd     http://pear.php.net/dtd/package-2.1     http://pear.php.net/dtd/package-2.1.xsd">
  <name>sundown</name>
  <channel>pecl.php.net</channel>
  <summary>Sundown is a fast, robust Markdown parsing library for PHP5</summary>
@@ -15,25 +15,317 @@ PECL Sundown provides straight forward object oriented Markdown API and customiz
   <email>chobieeee@php.net</email>
   <active>yes</active>
  </lead>
- <date>2012-09-30</date>
+ <date>2013-12-08</date>
+ <time>18:23:58</time>
  <version>
-  <release>0.3.8</release>
-  <api>0.3.7</api>
+  <release>0.3.9</release>
+  <api>0.3.9</api>
  </version>
  <stability>
   <release>beta</release>
   <api>beta</api>
  </stability>
  <license uri="http://www.php.net/license">PHP</license>
- <notes>
-	* bumped up 0.3.8
+ <notes>bumped up 0.3.9.
 
-- fixes #28 Wired memory limit error with autolink set.
-Sundown\Render\Base callbacks are able to throw exceptions.
+next 0.4.x release will change sundown library to hoedown as sundown has been deprecated.
+0.3.x releases are bug fixes only.
 
+[improvements]
+* improve readability
+* use common internal `php_sundown_markdon_render` for rendering markdown.
+* add various markdown test case from karlcow/markdown-testsuite
+* add --enable-sundown-debug configure flag for configure option.
+* add escape_html render flag
+* xhtml render always overrides `xhtml` flag
+
+[bug fix]
+fix incorrect render_html flags
+
+* filter_html
+* no_images
+* no_links
 </notes>
  <contents>
   <dir name="/">
+   <dir name="examples">
+    <file role="doc" name="Man.php"/>
+   </dir>
+   <dir name="sundown">
+    <dir name="examples">
+     <file role="src" name="smartypants.c"/>
+     <file role="src" name="sundown.c"/>
+    </dir>
+    <dir name="html">
+     <file role="src" name="houdini.h"/>
+     <file role="src" name="houdini_href_e.c"/>
+     <file role="src" name="houdini_html_e.c"/>
+     <file role="src" name="html.c"/>
+     <file role="src" name="html.h"/>
+     <file role="src" name="html_smartypants.c"/>
+    </dir>
+    <dir name="src">
+     <file role="src" name="autolink.c"/>
+     <file role="src" name="autolink.h"/>
+     <file role="src" name="buffer.c"/>
+     <file role="src" name="buffer.h"/>
+     <file role="src" name="html_blocks.h"/>
+     <file role="src" name="markdown.c"/>
+     <file role="src" name="markdown.h"/>
+     <file role="src" name="stack.c"/>
+     <file role="src" name="stack.h"/>
+    </dir>
+   </dir>
+   <dir name="tests">
+    <dir name="markdown-testsuite">
+     <dir name="advanced">
+      <file role="test" name="2-paragraphs-hard-return-spaces.phpt"/>
+      <file role="test" name="2-paragraphs-hard-return.phpt"/>
+      <file role="test" name="2-paragraphs-line-returns.phpt"/>
+      <file role="test" name="2-paragraphs-line-spaces.phpt"/>
+      <file role="test" name="2-paragraphs-line-tab.phpt"/>
+      <file role="test" name="2-paragraphs-line.phpt"/>
+      <file role="test" name="ampersand-text-flow.phpt"/>
+      <file role="test" name="ampersand-uri.phpt"/>
+      <file role="test" name="asterisk-near-text.phpt"/>
+      <file role="test" name="asterisk.phpt"/>
+      <file role="test" name="backslash-escape.phpt"/>
+      <file role="test" name="blockquote-added-markup.phpt"/>
+      <file role="test" name="blockquote-line-2-paragraphs.phpt"/>
+      <file role="test" name="blockquote-line.phpt"/>
+      <file role="test" name="blockquote-multiline-1-space-begin.phpt"/>
+      <file role="test" name="blockquote-multiline-1-space-end.php"/>
+      <file role="test" name="blockquote-multiline-1-space-end.phpt"/>
+      <file role="test" name="blockquote-multiline-1-space-end.sh"/>
+      <file role="test" name="blockquote-multiline-2-paragraphs.phpt"/>
+      <file role="test" name="blockquote-multiline.phpt"/>
+      <file role="test" name="blockquote-nested-multiplereturn-level1.phpt"/>
+      <file role="test" name="blockquote-nested-multiplereturn.phpt"/>
+      <file role="test" name="blockquote-nested-return-level1.phpt"/>
+      <file role="test" name="blockquote-nested.phpt"/>
+      <file role="test" name="code-1-tab.phpt"/>
+      <file role="test" name="code-4-spaces-escaping.phpt"/>
+      <file role="test" name="code-4-spaces.phpt"/>
+      <file role="test" name="em-middle-word.phpt"/>
+      <file role="test" name="em-star.phpt"/>
+      <file role="test" name="em-underscore.phpt"/>
+      <file role="test" name="entities-text-flow.phpt"/>
+      <file role="test" name="EOL-CR+LF.phpt"/>
+      <file role="test" name="EOL-CR.phpt"/>
+      <file role="test" name="EOL-LF.phpt"/>
+      <file role="test" name="header-level1-equal-underlined.phpt"/>
+      <file role="test" name="header-level1-hash-sign-closed.phpt"/>
+      <file role="test" name="header-level1-hash-sign-trailing-1-space.phpt"/>
+      <file role="test" name="header-level1-hash-sign-trailing-2-spaces.phpt"/>
+      <file role="test" name="header-level1-hash-sign.phpt"/>
+      <file role="test" name="header-level2-dash-underlined.phpt"/>
+      <file role="test" name="header-level2-hash-sign-closed.phpt"/>
+      <file role="test" name="header-level2-hash-sign.phpt"/>
+      <file role="test" name="header-level3-hash-sign-closed.phpt"/>
+      <file role="test" name="header-level3-hash-sign.phpt"/>
+      <file role="test" name="header-level4-hash-sign-closed.phpt"/>
+      <file role="test" name="header-level4-hash-sign.phpt"/>
+      <file role="test" name="header-level5-hash-sign-closed.phpt"/>
+      <file role="test" name="header-level5-hash-sign.phpt"/>
+      <file role="test" name="header-level6-hash-sign-closed.phpt"/>
+      <file role="test" name="header-level6-hash-sign.phpt"/>
+      <file role="test" name="horizontal-rule-3-dashes-spaces.phpt"/>
+      <file role="test" name="horizontal-rule-3-dashes.phpt"/>
+      <file role="test" name="horizontal-rule-3-stars.phpt"/>
+      <file role="test" name="horizontal-rule-3-underscores.phpt"/>
+      <file role="test" name="horizontal-rule-7-dashes.phpt"/>
+      <file role="test" name="img-idref-title.phpt"/>
+      <file role="test" name="img-idref.phpt"/>
+      <file role="test" name="img-title.phpt"/>
+      <file role="test" name="img.phpt"/>
+      <file role="test" name="inline-code-escaping-entities.phpt"/>
+      <file role="test" name="inline-code-with-visible-backtick.phpt"/>
+      <file role="test" name="inline-code.phpt"/>
+      <file role="test" name="line-break-2-spaces.phpt"/>
+      <file role="test" name="line-break-5-spaces.phpt"/>
+      <file role="test" name="link-automatic-email.phpt"/>
+      <file role="test" name="link-automatic.phpt"/>
+      <file role="test" name="link-bracket-paranthesis-title.phpt"/>
+      <file role="test" name="link-bracket-paranthesis.phpt"/>
+      <file role="test" name="link-idref-angle-bracket.phpt"/>
+      <file role="test" name="link-idref-implicit-spaces.phpt"/>
+      <file role="test" name="link-idref-implicit.phpt"/>
+      <file role="test" name="link-idref-space.phpt"/>
+      <file role="test" name="link-idref-title-next-line.phpt"/>
+      <file role="test" name="link-idref-title-paranthesis.phpt"/>
+      <file role="test" name="link-idref-title-single-quote.phpt"/>
+      <file role="test" name="link-idref-title.phpt"/>
+      <file role="test" name="link-idref.phpt"/>
+      <file role="test" name="list-blockquote.phpt"/>
+      <file role="test" name="list-code.phpt"/>
+      <file role="test" name="list-multiparagraphs-tab.phpt"/>
+      <file role="test" name="list-multiparagraphs.phpt"/>
+      <file role="test" name="ordered-list-escaped.phpt"/>
+      <file role="test" name="ordered-list-items-random-number.phpt"/>
+      <file role="test" name="ordered-list-items.phpt"/>
+      <file role="test" name="paragraph-hard-return.phpt"/>
+      <file role="test" name="paragraph-line.phpt"/>
+      <file role="test" name="paragraph-trailing-leading-spaces.phpt"/>
+      <file role="test" name="paragraph-trailing-tab.phpt"/>
+      <file role="test" name="paragraphs-2-leading-spaces.phpt"/>
+      <file role="test" name="paragraphs-3-leading-spaces.phpt"/>
+      <file role="test" name="paragraphs-leading-space.phpt"/>
+      <file role="test" name="paragraphs-trailing-spaces.phpt"/>
+      <file role="test" name="strong-middle-word.phpt"/>
+      <file role="test" name="strong-star.phpt"/>
+      <file role="test" name="strong-underscore.phpt"/>
+      <file role="test" name="unordered-list-items-dashsign.phpt"/>
+      <file role="test" name="unordered-list-items-leading-1space.phpt"/>
+      <file role="test" name="unordered-list-items-leading-2spaces.phpt"/>
+      <file role="test" name="unordered-list-items-leading-3spaces.phpt"/>
+      <file role="test" name="unordered-list-items-plussign.phpt"/>
+      <file role="test" name="unordered-list-items.phpt"/>
+      <file role="test" name="unordered-list-paragraphs.phpt"/>
+      <file role="test" name="unordered-list-unindented-content.phpt"/>
+      <file role="test" name="unordered-list-with-indented-content.phpt"/>
+     </dir>
+     <dir name="basic">
+      <file role="test" name="2-paragraphs-hard-return-spaces.phpt"/>
+      <file role="test" name="2-paragraphs-hard-return.phpt"/>
+      <file role="test" name="2-paragraphs-line-returns.phpt"/>
+      <file role="test" name="2-paragraphs-line-spaces.phpt"/>
+      <file role="test" name="2-paragraphs-line-tab.phpt"/>
+      <file role="test" name="2-paragraphs-line.phpt"/>
+      <file role="test" name="ampersand-text-flow.phpt"/>
+      <file role="test" name="ampersand-uri.phpt"/>
+      <file role="test" name="asterisk-near-text.phpt"/>
+      <file role="test" name="asterisk.phpt"/>
+      <file role="test" name="backslash-escape.phpt"/>
+      <file role="test" name="blockquote-added-markup.phpt"/>
+      <file role="test" name="blockquote-line-2-paragraphs.phpt"/>
+      <file role="test" name="blockquote-line.phpt"/>
+      <file role="test" name="blockquote-multiline-1-space-begin.phpt"/>
+      <file role="test" name="blockquote-multiline-1-space-end.php"/>
+      <file role="test" name="blockquote-multiline-1-space-end.phpt"/>
+      <file role="test" name="blockquote-multiline-1-space-end.sh"/>
+      <file role="test" name="blockquote-multiline-2-paragraphs.phpt"/>
+      <file role="test" name="blockquote-multiline.phpt"/>
+      <file role="test" name="blockquote-nested-multiplereturn-level1.phpt"/>
+      <file role="test" name="blockquote-nested-multiplereturn.phpt"/>
+      <file role="test" name="blockquote-nested-return-level1.phpt"/>
+      <file role="test" name="blockquote-nested.phpt"/>
+      <file role="test" name="code-1-tab.phpt"/>
+      <file role="test" name="code-4-spaces-escaping.phpt"/>
+      <file role="test" name="code-4-spaces.phpt"/>
+      <file role="test" name="em-middle-word.phpt"/>
+      <file role="test" name="em-star.phpt"/>
+      <file role="test" name="em-underscore.phpt"/>
+      <file role="test" name="entities-text-flow.phpt"/>
+      <file role="test" name="EOL-CR+LF.phpt"/>
+      <file role="test" name="EOL-CR.phpt"/>
+      <file role="test" name="EOL-LF.phpt"/>
+      <file role="test" name="header-level1-equal-underlined.phpt"/>
+      <file role="test" name="header-level1-hash-sign-closed.phpt"/>
+      <file role="test" name="header-level1-hash-sign-trailing-1-space.phpt"/>
+      <file role="test" name="header-level1-hash-sign-trailing-2-spaces.phpt"/>
+      <file role="test" name="header-level1-hash-sign.phpt"/>
+      <file role="test" name="header-level2-dash-underlined.phpt"/>
+      <file role="test" name="header-level2-hash-sign-closed.phpt"/>
+      <file role="test" name="header-level2-hash-sign.phpt"/>
+      <file role="test" name="header-level3-hash-sign-closed.phpt"/>
+      <file role="test" name="header-level3-hash-sign.phpt"/>
+      <file role="test" name="header-level4-hash-sign-closed.phpt"/>
+      <file role="test" name="header-level4-hash-sign.phpt"/>
+      <file role="test" name="header-level5-hash-sign-closed.phpt"/>
+      <file role="test" name="header-level5-hash-sign.phpt"/>
+      <file role="test" name="header-level6-hash-sign-closed.phpt"/>
+      <file role="test" name="header-level6-hash-sign.phpt"/>
+      <file role="test" name="horizontal-rule-3-dashes-spaces.phpt"/>
+      <file role="test" name="horizontal-rule-3-dashes.phpt"/>
+      <file role="test" name="horizontal-rule-3-stars.phpt"/>
+      <file role="test" name="horizontal-rule-3-underscores.phpt"/>
+      <file role="test" name="horizontal-rule-7-dashes.phpt"/>
+      <file role="test" name="img-idref-title.phpt"/>
+      <file role="test" name="img-idref.phpt"/>
+      <file role="test" name="img-title.phpt"/>
+      <file role="test" name="img.phpt"/>
+      <file role="test" name="inline-code-escaping-entities.phpt"/>
+      <file role="test" name="inline-code-with-visible-backtick.phpt"/>
+      <file role="test" name="inline-code.phpt"/>
+      <file role="test" name="line-break-2-spaces.phpt"/>
+      <file role="test" name="line-break-5-spaces.phpt"/>
+      <file role="test" name="link-automatic-email.phpt"/>
+      <file role="test" name="link-automatic.phpt"/>
+      <file role="test" name="link-bracket-paranthesis-title.phpt"/>
+      <file role="test" name="link-bracket-paranthesis.phpt"/>
+      <file role="test" name="link-idref-angle-bracket.phpt"/>
+      <file role="test" name="link-idref-implicit-spaces.phpt"/>
+      <file role="test" name="link-idref-implicit.phpt"/>
+      <file role="test" name="link-idref-space.phpt"/>
+      <file role="test" name="link-idref-title-next-line.phpt"/>
+      <file role="test" name="link-idref-title-paranthesis.phpt"/>
+      <file role="test" name="link-idref-title-single-quote.phpt"/>
+      <file role="test" name="link-idref-title.phpt"/>
+      <file role="test" name="link-idref.phpt"/>
+      <file role="test" name="list-blockquote.phpt"/>
+      <file role="test" name="list-code.phpt"/>
+      <file role="test" name="list-multiparagraphs-tab.phpt"/>
+      <file role="test" name="list-multiparagraphs.phpt"/>
+      <file role="test" name="ordered-list-escaped.phpt"/>
+      <file role="test" name="ordered-list-items-random-number.phpt"/>
+      <file role="test" name="ordered-list-items.phpt"/>
+      <file role="test" name="paragraph-hard-return.phpt"/>
+      <file role="test" name="paragraph-line.phpt"/>
+      <file role="test" name="paragraph-trailing-leading-spaces.phpt"/>
+      <file role="test" name="paragraph-trailing-tab.phpt"/>
+      <file role="test" name="paragraphs-2-leading-spaces.phpt"/>
+      <file role="test" name="paragraphs-3-leading-spaces.phpt"/>
+      <file role="test" name="paragraphs-leading-space.phpt"/>
+      <file role="test" name="paragraphs-trailing-spaces.phpt"/>
+      <file role="test" name="strong-middle-word.phpt"/>
+      <file role="test" name="strong-star.phpt"/>
+      <file role="test" name="strong-underscore.phpt"/>
+      <file role="test" name="unordered-list-items-dashsign.phpt"/>
+      <file role="test" name="unordered-list-items-leading-1space.phpt"/>
+      <file role="test" name="unordered-list-items-leading-2spaces.phpt"/>
+      <file role="test" name="unordered-list-items-leading-3spaces.phpt"/>
+      <file role="test" name="unordered-list-items-plussign.phpt"/>
+      <file role="test" name="unordered-list-items.phpt"/>
+      <file role="test" name="unordered-list-paragraphs.phpt"/>
+      <file role="test" name="unordered-list-unindented-content.phpt"/>
+      <file role="test" name="unordered-list-with-indented-content.phpt"/>
+     </dir>
+     <file role="doc" name="LICENSE"/>
+     <file role="doc" name="README.md"/>
+    </dir>
+    <file role="test" name="001.phpt"/>
+    <file role="test" name="002-basic-constructor-arguments.phpt"/>
+    <file role="test" name="002-basic-enabled-extensions.phpt"/>
+    <file role="test" name="002-basic-enabled-render-flags.phpt"/>
+    <file role="test" name="002-basic-to_html.phpt"/>
+    <file role="test" name="002-constructor-arguments.phpt"/>
+    <file role="test" name="003-advanced-constructor.phpt"/>
+    <file role="test" name="003-advanced-enabled-extensions.phpt"/>
+    <file role="test" name="003-advanced-enabled-render-flags.phpt"/>
+    <file role="test" name="003-advanced-get-extensions.phpt"/>
+    <file role="test" name="003-advanced-get-render.phpt"/>
+    <file role="test" name="003-advanced-render-base-get_render_flags.phpt"/>
+    <file role="test" name="003-advanced-render-base-set_render_flags.phpt"/>
+    <file role="test" name="003-advanced-render-html-block_code.phpt"/>
+    <file role="test" name="003-advanced-render-html-block_html.phpt"/>
+    <file role="test" name="003-advanced-render-html-block_quote.phpt"/>
+    <file role="test" name="003-advanced-render-html-header.phpt"/>
+    <file role="test" name="003-advanced-render-html-list.phpt"/>
+    <file role="test" name="003-advanced-render-html-paragraph.phpt"/>
+    <file role="test" name="003-advanced-set-extensions.phpt"/>
+    <file role="test" name="003-advanced-set-render.phpt"/>
+    <file role="test" name="003-to_html.phpt"/>
+    <file role="test" name="004-render-extensions-fenced_code_blocks.phpt"/>
+    <file role="test" name="004-render-extensions-space_after_headers.phpt"/>
+    <file role="test" name="004-render-html.phpt"/>
+    <file role="test" name="005-render-xhtml.phpt"/>
+    <file role="test" name="006-render-custom-codeblock.phpt"/>
+    <file role="test" name="999-regression-no12.phpt"/>
+    <file role="test" name="999-regression-no19.phpt"/>
+    <file role="test" name="999-regression-no26.phpt"/>
+    <file role="test" name="999-regression-no28.phpt"/>
+    <file role="test" name="999-regression_no34.phpt"/>
+   </dir>
    <file role="doc" name="CREDITS" />
    <file role="doc" name="EXPERIMENTAL" />
    <file role="doc" name="LICENSE" />
@@ -48,65 +340,6 @@ Sundown\Render\Base callbacks are able to throw exceptions.
    <file role="src" name="render_html.c" />
    <file role="src" name="render_html_toc.c" />
    <file role="src" name="render_xhtml.c" />
-   <dir name="tests">
-     <file role="test" name="001.phpt" />
-     <file role="test" name="002-basic-constructor-arguments.phpt" />
-     <file role="test" name="002-basic-enabled-extensions.phpt" />
-     <file role="test" name="002-basic-enabled-render-flags.phpt" />
-     <file role="test" name="002-basic-to_html.phpt" />
-     <file role="test" name="002-constructor-arguments.phpt" />
-     <file role="test" name="003-advanced-constructor.phpt" />
-     <file role="test" name="003-advanced-enabled-extensions.phpt" />
-     <file role="test" name="003-advanced-enabled-render-flags.phpt" />
-     <file role="test" name="003-advanced-get-extensions.phpt" />
-     <file role="test" name="003-advanced-get-render.phpt" />
-     <file role="test" name="003-advanced-render-base-get_render_flags.phpt" />
-     <file role="test" name="003-advanced-render-base-set_render_flags.phpt" />
-     <file role="test" name="003-advanced-render-html-block_code.phpt" />
-     <file role="test" name="003-advanced-render-html-block_html.phpt" />
-     <file role="test" name="003-advanced-render-html-block_quote.phpt" />
-     <file role="test" name="003-advanced-render-html-header.phpt" />
-     <file role="test" name="003-advanced-render-html-list.phpt" />
-     <file role="test" name="003-advanced-render-html-paragraph.phpt" />
-     <file role="test" name="003-advanced-set-extensions.phpt" />
-     <file role="test" name="003-advanced-set-render.phpt" />
-     <file role="test" name="003-to_html.phpt" />
-     <file role="test" name="004-render-extensions-fenced_code_blocks.phpt" />
-     <file role="test" name="004-render-extensions-space_after_headers.phpt" />
-     <file role="test" name="004-render-html.phpt" />
-     <file role="test" name="005-render-xhtml.phpt" />
-     <file role="test" name="006-render-custom-codeblock.phpt" />
-     <file role="test" name="999-regression-no12.phpt" />
-     <file role="test" name="999-regression-no19.phpt" />
-     <file role="test" name="999-regression-no26.phpt" />
-     <file role="test" name="999-regression-no28.phpt" />
-    </dir>
-   <dir name="docs">
-    <file role="doc" name="ExtensionsAndRenderFlags.md" />
-    <file role="doc" name="Render.md" />
-   </dir>
-   <dir name="sundown">
-     <file role="doc" name="README.markdown" />
-     <dir name="src">
-       <file role="src" name="autolink.c" />
-       <file role="src" name="autolink.h" />
-       <file role="src" name="buffer.c" />
-       <file role="src" name="buffer.h" />
-       <file role="src" name="html_blocks.h" />
-       <file role="src" name="markdown.c" />
-       <file role="src" name="markdown.h" />
-       <file role="src" name="stack.c" />
-       <file role="src" name="stack.h" />
-     </dir>
-     <dir name="html">
-       <file role="src" name="houdini.h" />
-       <file role="src" name="houdini_href_e.c" />
-       <file role="src" name="houdini_html_e.c" />
-       <file role="src" name="html.h" />
-       <file role="src" name="html.c" />
-       <file role="src" name="html_smartypants.c" />
-     </dir>
-   </dir>
   </dir>
  </contents>
  <dependencies>
@@ -117,13 +350,30 @@ Sundown\Render\Base callbacks are able to throw exceptions.
     <exclude>6.0.0</exclude>
    </php>
    <pearinstaller>
-    <min>1.4.0b1</min>
+    <min>1.4.8</min>
    </pearinstaller>
   </required>
  </dependencies>
  <providesextension>sundown</providesextension>
  <extsrcrelease/>
  <changelog>
+  <release>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <version>
+    <release>0.3.8</release>
+    <api>0.3.7</api>
+   </version>
+   <date>2012-09-30</date>
+   <notes>
+             * bumped up 0.3.8
+
+             - fixes #28 Wired memory limit error with autolink set.
+             Sundown\Render\Base callbacks are able to throw exceptions.
+         </notes>
+  </release>
   <release>
    <stability>
     <release>beta</release>
@@ -152,7 +402,6 @@ b0adcc7 Merge pull request #23 from reeze/patch-1
 ebae34b Make travis report test failure since make test didn't report exit code
 </notes>
   </release>
-
   <release>
    <stability>
     <release>beta</release>
@@ -276,7 +525,7 @@ bumped up 0.3.2
 bumped up 0.3.1
 
 [summary]
-  * fixed overloading callback methods. 
+  * fixed overloading callback methods.
   * fixed segfault when calling render method more than once.
   * implement more test cases.
    </notes>

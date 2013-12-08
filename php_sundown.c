@@ -185,7 +185,7 @@ PHP_MINFO_FUNCTION(sundown)
 {
 	php_info_print_table_start();
 	php_info_print_table_header(2, "Sundown Support",  "enabled");
-	php_info_print_table_row(2, "Version", PHP_SUNDOWN_EXTVER);
+	php_info_print_table_row(2, "Version", PHP_SUNDOWN_VERSION);
 	php_info_print_table_row(2, "Sundown Version", SUNDOWN_VERSION);
 	php_info_print_table_end();
 }
@@ -202,7 +202,7 @@ zend_module_entry sundown_module_entry = {
 	NULL,					/* RSHUTDOWN */
 	PHP_MINFO(sundown),	/* MINFO */
 #if ZEND_MODULE_API_NO >= 20010901
-	PHP_SUNDOWN_EXTVER,
+	PHP_SUNDOWN_VERSION,
 #endif
 	STANDARD_MODULE_PROPERTIES
 };
