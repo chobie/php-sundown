@@ -342,9 +342,43 @@ static void php_sundown_markdown_postprocess(zval *instance, zval *render, struc
 	*result = tmp;
 }
 
-void php_sundown_markdon_render(SundownRendererType render_type, INTERNAL_FUNCTION_PARAMETERS)
+static void php_sundown_markdown_inherit_functions(zval *render, int render_flags, struct php_sundown_renderopt_ex *opt, struct sd_callbacks *sundown_render TSRMLS_DC)
 {
 	php_sundown_render_base_t *render_base;
+	zend_class_entry *ce;
+	void **source, **dest;
+	int i;
+
+	render_base = (php_sundown_render_base_t *) zend_object_store_get_object(render TSRMLS_CC);
+	render_base->html = opt->html;
+	ce = Z_OBJCE_P(render);
+
+	opt->self = render;
+
+	source = (void **)&php_sundown_callbacks;
+	dest = (void **)sundown_render;
+	for (i = 0; i < php_sundown_method_count; ++i) {
+		if (zend_hash_exists(&ce->function_table, php_sundown_method_names[i], strlen(php_sundown_method_names[i])+1)) {
+			dest[i] = source[i];
+		}
+	}
+
+	if (instanceof_function_ex(ce, sundown_render_html_class_entry, 0 TSRMLS_CC)) {
+		if (render_flags & HTML_SKIP_IMAGES) {
+			sundown_render->image = NULL;
+		}
+		if (render_flags & HTML_SKIP_LINKS) {
+			sundown_render->link = NULL;
+			sundown_render->autolink = NULL;
+		}
+		if (render_flags & HTML_SKIP_HTML || render_flags & HTML_ESCAPE) {
+			sundown_render->blockhtml = NULL;
+		}
+	}
+}
+
+void php_sundown_markdon_render(SundownRendererType render_type, INTERNAL_FUNCTION_PARAMETERS)
+{
 	zval *render, *result;
 	struct buf input_buf, *output_buf;
 	struct sd_callbacks sundown_render;
@@ -353,9 +387,6 @@ void php_sundown_markdon_render(SundownRendererType render_type, INTERNAL_FUNCTI
 	unsigned int enabled_extensions = 0, render_flags = 0;
 	char *buffer;
 	int buffer_len = 0;
-	zend_class_entry *ce;
-	void **source, **dest;
-	size_t i;
 	int is_sundown_markdown = 0;
 
 	if (Z_OBJCE_P(getThis()) == sundown_markdown_class_entry) {
@@ -401,33 +432,7 @@ void php_sundown_markdon_render(SundownRendererType render_type, INTERNAL_FUNCTI
 	}
 
 	if (is_sundown_markdown) {
-		render_base = (php_sundown_render_base_t *) zend_object_store_get_object(render TSRMLS_CC);
-		render_base->html = opt.html;
-		ce = Z_OBJCE_P(render);
-
-		opt.self = render;
-		source = (void **)&php_sundown_callbacks;
-		dest = (void **)&sundown_render;
-		for (i = 0; i < php_sundown_method_count; ++i) {
-			if (zend_hash_exists(&ce->function_table, php_sundown_method_names[i], strlen(php_sundown_method_names[i])+1)) {
-				dest[i] = source[i];
-			}
-		}
-
-		if (instanceof_function_ex(ce, sundown_render_html_class_entry, 0 TSRMLS_CC)) {
-			if (render_flags & HTML_SKIP_IMAGES) {
-				sundown_render.image = NULL;
-			}
-			if (render_flags & HTML_SKIP_LINKS) {
-				sundown_render.link = NULL;
-				sundown_render.autolink = NULL;
-			}
-			if (render_flags & HTML_SKIP_HTML || render_flags & HTML_ESCAPE) {
-				sundown_render.blockhtml = NULL;
-			}
-		}
-
-		/* proceess markdown */
+		php_sundown_markdown_inherit_functions(render, render_flags, &opt, &sundown_render TSRMLS_CC);
 		php_sundown_markdown_preprocess(getThis(), render, buffer, &input_buf TSRMLS_CC);
 	} else {
 		opt.self = getThis();
