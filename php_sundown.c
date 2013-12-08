@@ -45,61 +45,6 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_has_render_flag, 0, 0, 1)
 	ZEND_ARG_INFO(0, name)
 ZEND_END_ARG_INFO()
 
-static void sundown__render(SundownRendererType render_type, INTERNAL_FUNCTION_PARAMETERS)
-{
-	zval *object;
-	struct buf input_buf, *output_buf;
-	struct sd_callbacks sundown_render;
-	struct php_sundown_renderopt opt;
-	struct sd_markdown *markdown;
-	unsigned int enabled_extensions = 0, render_flags = 0;
-	char *buffer;
-	int buffer_len = 0;
-	HashTable *table;
-	
-	object = getThis();
-	buffer = Z_STRVAL_P(zend_read_property(sundown_class_entry, getThis(), ZEND_STRS("data")-1, 0 TSRMLS_CC));
-	buffer_len = strlen(buffer);
-	
-	memset(&input_buf, 0x0, sizeof(struct buf));
-	input_buf.data = (uint8_t *)buffer;
-	input_buf.size = strlen(buffer);
-	
-	output_buf = bufnew(128);
-	bufgrow(output_buf, strlen(buffer) * 1.2f);
-
-	if (Z_TYPE_P(zend_read_property(sundown_class_entry, getThis(), ZEND_STRS("extensions")-1, 0 TSRMLS_CC)) != IS_NULL) {
-		table = Z_ARRVAL_P(zend_read_property(sundown_class_entry, getThis(), ZEND_STRS("extensions")-1, 0 TSRMLS_CC));
-	}
-	php_sundown__get_flags(table, &enabled_extensions, &render_flags);
-
-	// setup render
-	switch (render_type) {
-		case SUNDOWN_RENDER_HTML:
-			sdhtml_renderer(&sundown_render, &opt.html, render_flags);
-			break;
-		case SUNDOWN_RENDER_TOC:
-			sdhtml_toc_renderer(&sundown_render, &opt.html);
-			break;
-		default:
-			RETURN_FALSE;
-	}
-	opt.self = object;
-
-	markdown = sd_markdown_new(enabled_extensions, 16, &sundown_render, &opt);
-	sd_markdown_render(output_buf, input_buf.data, input_buf.size, markdown);
-	sd_markdown_free(markdown);
-
-	if (Z_BVAL_P(zend_read_property(sundown_class_entry, getThis(), ZEND_STRS("enable_pants")-1, 0 TSRMLS_CC))) {
-		struct buf *smart_buf = bufnew(128);
-		sdhtml_smartypants(smart_buf, output_buf->data, output_buf->size);
-		RETVAL_STRINGL((char*)smart_buf->data, smart_buf->size, 1);
-		bufrelease(smart_buf);
-	} else {
-		RETVAL_STRINGL((char*)output_buf->data, output_buf->size, 1);
-	}
-}
-
 /* {{{ proto string Sundonw::__construct(string $string [, array $extensions])
 	setup Sundown extension */
 PHP_METHOD(sundown, __construct)
