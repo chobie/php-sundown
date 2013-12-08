@@ -1,0 +1,10 @@
+
+---- EXPECTED OUTPUT
+<blockquote>
+<p>A blockquote on multiple lines like this.</p>
+</blockquote>
+---- ACTUAL OUTPUT
+<blockquote>
+<p>A blockquote on multiple lines like this.&Acirc;&nbsp;</p>
+</blockquote>
+---- FAILED

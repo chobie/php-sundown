@@ -1,0 +1,19 @@
+--TEST--
+Check for link-bracket-paranthesis-title
+--SKIPIF--
+<?php if (!extension_loaded("sundown")) print "skip"; ?>
+<?php if (!extension_loaded("tidy")) print "skip"; ?>
+--FILE--
+<?php
+$data = <<< DATA
+[W3C](http://www.w3.org/ "Discover w3c")
+DATA;
+$md = new Sundown\Markdown(new Sundown\Render\Html());
+$result = $md->render($data);
+
+$tidy = new tidy;
+$tidy->parseString($result, array("show-body-only"=>1));
+$tidy->cleanRepair();
+echo (string)$tidy;
+--EXPECT--
+<p><a href="http://www.w3.org/" title="Discover w3c">W3C</a></p>
