@@ -45,7 +45,7 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_has_render_flag, 0, 0, 1)
 	ZEND_ARG_INFO(0, name)
 ZEND_END_ARG_INFO()
 
-/* {{{ proto string Sundonw::__construct(string $string [, array $extensions])
+/* {{{ proto string Sundown::__construct(string $string [, array $extensions])
 	setup Sundown extension */
 PHP_METHOD(sundown, __construct)
 {
@@ -70,7 +70,7 @@ PHP_METHOD(sundown, __construct)
 }
 /* }}} */
 
-/* {{{ proto void Sundonw::__destruct()
+/* {{{ proto void Sundown::__destruct()
 	cleanup variables */
 PHP_METHOD(sundown, __destruct)
 {
@@ -81,7 +81,7 @@ PHP_METHOD(sundown, __destruct)
 }
 /* }}} */
 
-/* {{{ proto string Sundonw::toHtml()
+/* {{{ proto string Sundown::toHtml()
 	Returns converted HTML string */
 PHP_METHOD(sundown, toHtml)
 {
@@ -89,7 +89,7 @@ PHP_METHOD(sundown, toHtml)
 }
 /* }}} */
 
-/* {{{ proto string Sundonw::__toString()
+/* {{{ proto string Sundown::__toString()
 	Returns converted HTML string */
 PHP_METHOD(sundown, __toString)
 {
@@ -97,7 +97,7 @@ PHP_METHOD(sundown, __toString)
 }
 /* }}} */
 
-/* {{{ proto string Sundonw::toToc()
+/* {{{ proto string Sundown::toToc()
 	Returns table of contents*/
 PHP_METHOD(sundown, toToc)
 {
