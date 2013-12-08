@@ -187,7 +187,6 @@ static void rndr_doc_footer(struct buf *ob, void *opaque)
 	BLOCK_CALLBACK_EX(ob, "docFooter", 0);
 }
 
-
 static struct sd_callbacks php_sundown_callbacks = {
 	rndr_blockcode,
 	rndr_blockquote,
@@ -253,6 +252,182 @@ static const char *php_sundown_method_names[] = {
 };
 
 static const size_t php_sundown_method_count = sizeof(php_sundown_method_names)/sizeof(char *);
+
+
+
+static void php_sundown_get_render(zval *instance, zval **result TSRMLS_DC)
+{
+	zval *render;
+
+	zend_call_method_with_0_params(&instance, Z_OBJCE_P(instance), NULL, "getrender", &render);
+	*result = render;
+}
+
+static void php_sundown_get_renderflags(zval *instance, unsigned int *result TSRMLS_DC)
+{
+	unsigned int render_flags = 0;
+	zval *flags;
+
+	zend_call_method_with_0_params(&instance, Z_OBJCE_P(instance), NULL, "getrenderflags", &flags);
+	php_sundown__get_render_flags(Z_ARRVAL_P(flags), &render_flags);
+
+	*result = render_flags;
+	zval_ptr_dtor(&flags);
+}
+
+static void php_sundown_get_extensions(zval *instance, unsigned int *result TSRMLS_DC)
+{
+	unsigned int enabled_extensions = 0;
+	zval *flags;
+
+	zend_call_method_with_0_params(&instance, Z_OBJCE_P(instance), NULL, "getextensions", &flags);
+	php_sundown__get_extensions(Z_ARRVAL_P(flags), &enabled_extensions);
+
+	*result = enabled_extensions;
+	zval_ptr_dtor(&flags);
+}
+
+static void php_sundown_markdown_preprocess(zval *instance, zval *render, const char *input, struct buf *buffer TSRMLS_DC)
+{
+	zval preprocess, *ret, *params[1];
+
+	MAKE_STD_ZVAL(ret);
+	MAKE_STD_ZVAL(params[0]);
+
+	ZVAL_STRINGL(params[0], input, strlen(input), 1);
+	ZVAL_STRING(&preprocess, "preprocess", 1);
+
+	if (call_user_function(NULL, &render, &preprocess, ret, 1, params TSRMLS_CC) == FAILURE) {
+	}
+
+	if (ret != NULL && Z_TYPE_P(ret) == IS_STRING) {
+        buffer->data = emalloc(Z_STRLEN_P(ret));
+		memcpy(buffer->data, Z_STRVAL_P(ret), Z_STRLEN_P(ret));
+		buffer->size = Z_STRLEN_P(ret);
+	} else {
+        buffer->data = emalloc(strlen(input));
+		memcpy(buffer->data, input, strlen(input));
+		buffer->size = strlen(input);
+	}
+
+	zval_ptr_dtor(&params[0]);
+	zval_ptr_dtor(&ret);
+    zval_dtor(&preprocess);
+}
+
+static void php_sundown_markdown_postprocess(zval *instance, zval *render, struct buf *input, zval **result TSRMLS_DC)
+{
+	zval postprocess, *tmp, *ret, *params[1];
+
+	MAKE_STD_ZVAL(ret);
+	MAKE_STD_ZVAL(params[0]);
+	MAKE_STD_ZVAL(tmp);
+
+	ZVAL_STRINGL(params[0], (char *)input->data, input->size, 1);
+	ZVAL_STRING(&postprocess, "postprocess", 1);
+
+	if (call_user_function(NULL, &render, &postprocess, ret, 1, params TSRMLS_CC) == FAILURE) {
+	}
+
+	if (ret != NULL && Z_TYPE_P(ret) == IS_STRING) {
+        ZVAL_ZVAL(tmp, ret, 1, 0);
+	} else {
+        ZVAL_STRINGL(tmp, (char*)input->data, input->size,  1);
+	}
+
+	zval_ptr_dtor(&params[0]);
+	zval_ptr_dtor(&ret);
+	zval_dtor(&postprocess);
+
+	*result = tmp;
+}
+
+static void php_sundown_markdon_render(INTERNAL_FUNCTION_PARAMETERS)
+{
+	php_sundown_render_base_t *render_base;
+	zval *render, *result;
+	struct buf input_buf, *output_buf;
+	struct sd_callbacks sundown_render;
+	struct php_sundown_renderopt_ex opt;
+	struct sd_markdown *markdown;
+	unsigned int enabled_extensions = 0, render_flags = 0;
+	char *buffer;
+	int buffer_len = 0;
+	zend_class_entry *ce;
+	void **source, **dest;
+	size_t i;
+
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
+		"s", &buffer, &buffer_len) == FAILURE) {
+		return;
+	}
+
+	output_buf = bufnew(128);
+	bufgrow(output_buf, buffer_len * 1.2f);
+
+	php_sundown_get_render(getThis(), &render TSRMLS_CC);
+	php_sundown_get_renderflags(render, &render_flags TSRMLS_CC);
+	php_sundown_get_extensions(getThis(), &enabled_extensions TSRMLS_CC);
+
+	/* @todo: setup render */
+	switch (SUNDOWN_RENDER_HTML) {
+		case SUNDOWN_RENDER_HTML:
+			sdhtml_renderer(&sundown_render, &opt.html, render_flags);
+			break;
+		case SUNDOWN_RENDER_TOC:
+			sdhtml_toc_renderer(&sundown_render, &opt.html);
+			break;
+		default:
+			RETURN_FALSE;
+	}
+
+	render_base = (php_sundown_render_base_t *) zend_object_store_get_object(render TSRMLS_CC);
+	render_base->html = opt.html;
+
+	ce = Z_OBJCE_P(render);
+	opt.self = render;
+
+	source = (void **)&php_sundown_callbacks;
+	dest = (void **)&sundown_render;
+	for (i = 0; i < php_sundown_method_count; ++i) {
+		if (zend_hash_exists(&ce->function_table, php_sundown_method_names[i], strlen(php_sundown_method_names[i])+1)) {
+			dest[i] = source[i];
+		}
+	}
+
+	if (instanceof_function_ex(ce, sundown_render_html_class_entry, 0 TSRMLS_CC)) {
+		if (render_flags & HTML_SKIP_IMAGES) {
+			sundown_render.image = NULL;
+		}
+		if (render_flags & HTML_SKIP_LINKS) {
+			sundown_render.link = NULL;
+			sundown_render.autolink = NULL;
+		}
+		if (render_flags & HTML_SKIP_HTML || render_flags & HTML_ESCAPE) {
+			sundown_render.blockhtml = NULL;
+		}
+	}
+
+	/* proceess markdown */
+    php_sundown_markdown_preprocess(getThis(), render, buffer, &input_buf TSRMLS_CC);
+	markdown = sd_markdown_new(enabled_extensions, 16, &sundown_render, &opt);
+
+	if (SETJMP(SUNDOWN_G(jump)) == 0) {
+		sd_markdown_render(output_buf, input_buf.data, input_buf.size, markdown);
+		efree(input_buf.data);
+		sd_markdown_free(markdown);
+	} else {
+		efree(input_buf.data);
+		zval_ptr_dtor(&render);
+		sd_markdown_free(markdown);
+		return;
+	}
+
+	php_sundown_markdown_postprocess(getThis(), render, output_buf, &result TSRMLS_CC);
+
+	zval_ptr_dtor(&render);
+	RETURN_ZVAL(result, 0, 1);
+}
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_sundown_markdown__construct, 0, 0, 2)
 	ZEND_ARG_INFO(0, render)
@@ -380,181 +555,11 @@ PHP_METHOD(sundown_markdown, __destruct)
 }
 /* }}} */
 
-
-static void php_sundown_get_render(zval *instance, zval **result TSRMLS_DC)
-{
-	zval *render;
-
-	zend_call_method_with_0_params(&instance, Z_OBJCE_P(instance), NULL, "getrender", &render);
-	*result = render;
-}
-
-static void php_sundown_get_renderflags(zval *instance, unsigned int *result TSRMLS_DC)
-{
-	unsigned int render_flags = 0;
-	zval *flags;
-
-	zend_call_method_with_0_params(&instance, Z_OBJCE_P(instance), NULL, "getrenderflags", &flags);
-	php_sundown__get_render_flags(Z_ARRVAL_P(flags), &render_flags);
-
-	*result = render_flags;
-	zval_ptr_dtor(&flags);
-}
-
-static void php_sundown_get_extensions(zval *instance, unsigned int *result TSRMLS_DC)
-{
-	unsigned int enabled_extensions = 0;
-	zval *flags;
-
-	zend_call_method_with_0_params(&instance, Z_OBJCE_P(instance), NULL, "getextensions", &flags);
-	php_sundown__get_extensions(Z_ARRVAL_P(flags), &enabled_extensions);
-
-	*result = enabled_extensions;
-	zval_ptr_dtor(&flags);
-}
-
-static void php_sundown_markdown_preprocess(zval *instance, zval *render, const char *input, struct buf *buffer TSRMLS_DC)
-{
-	zval preprocess, *ret, *params[1];
-
-	MAKE_STD_ZVAL(ret);
-	MAKE_STD_ZVAL(params[0]);
-
-	ZVAL_STRINGL(params[0], input, strlen(input), 1);
-	ZVAL_STRING(&preprocess, "preprocess", 1);
-
-	if (call_user_function(NULL, &render, &preprocess, ret, 1, params TSRMLS_CC) == FAILURE) {
-	}
-
-	if (ret != NULL && Z_TYPE_P(ret) == IS_STRING) {
-        buffer->data = emalloc(Z_STRLEN_P(ret));
-		memcpy(buffer->data, Z_STRVAL_P(ret), Z_STRLEN_P(ret));
-		buffer->size = Z_STRLEN_P(ret);
-	} else {
-        buffer->data = emalloc(strlen(input));
-		memcpy(buffer->data, input, strlen(input));
-		buffer->size = strlen(input);
-	}
-
-	zval_ptr_dtor(&params[0]);
-	zval_ptr_dtor(&ret);
-    zval_dtor(&preprocess);
-}
-
-static void php_sundown_markdown_postprocess(zval *instance, zval *render, struct buf *input, zval **result TSRMLS_DC)
-{
-	zval postprocess, *tmp, *ret, *params[1];
-
-	MAKE_STD_ZVAL(ret);
-	MAKE_STD_ZVAL(params[0]);
-	MAKE_STD_ZVAL(tmp);
-
-	ZVAL_STRINGL(params[0], (char *)input->data, input->size, 1);
-	ZVAL_STRING(&postprocess, "postprocess", 1);
-
-	if (call_user_function(NULL, &render, &postprocess, ret, 1, params TSRMLS_CC) == FAILURE) {
-	}
-
-	if (ret != NULL && Z_TYPE_P(ret) == IS_STRING) {
-        ZVAL_ZVAL(tmp, ret, 1, 0);
-	} else {
-        ZVAL_STRINGL(tmp, (char*)input->data, input->size,  1);
-	}
-
-	zval_ptr_dtor(&params[0]);
-	zval_ptr_dtor(&ret);
-	zval_dtor(&postprocess);
-
-	*result = tmp;
-}
-
 /* {{{ proto string Sundown\Markdown::render(string $body)
 */
 PHP_METHOD(sundown_markdown, render)
 {
-	php_sundown_render_base_t *render_base;
-	zval *render, *result;
-	struct buf input_buf, *output_buf;
-	struct sd_callbacks sundown_render;
-	struct php_sundown_renderopt_ex opt;
-	struct sd_markdown *markdown;
-	unsigned int enabled_extensions = 0, render_flags = 0;
-	char *buffer;
-	int buffer_len = 0;
-	zend_class_entry *ce;
-	void **source, **dest;
-	size_t i;
-
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
-		"s", &buffer, &buffer_len) == FAILURE) {
-		return;
-	}
-
-	output_buf = bufnew(128);
-	bufgrow(output_buf, buffer_len * 1.2f);
-
-	php_sundown_get_render(getThis(), &render TSRMLS_CC);
-	php_sundown_get_renderflags(render, &render_flags TSRMLS_CC);
-	php_sundown_get_extensions(getThis(), &enabled_extensions TSRMLS_CC);
-
-	/* @todo: setup render */
-	switch (SUNDOWN_RENDER_HTML) {
-		case SUNDOWN_RENDER_HTML:
-			sdhtml_renderer(&sundown_render, &opt.html, render_flags);
-			break;
-		case SUNDOWN_RENDER_TOC:
-			sdhtml_toc_renderer(&sundown_render, &opt.html);
-			break;
-		default:
-			RETURN_FALSE;
-	}
-
-	render_base = (php_sundown_render_base_t *) zend_object_store_get_object(render TSRMLS_CC);
-	render_base->html = opt.html;
-
-	ce = Z_OBJCE_P(render);
-	opt.self = render;
-
-	source = (void **)&php_sundown_callbacks;
-	dest = (void **)&sundown_render;
-	for (i = 0; i < php_sundown_method_count; ++i) {
-		if (zend_hash_exists(&ce->function_table, php_sundown_method_names[i], strlen(php_sundown_method_names[i])+1)) {
-			dest[i] = source[i];
-		}
-	}
-
-	if (instanceof_function_ex(ce, sundown_render_html_class_entry, 0 TSRMLS_CC)) {
-		if (render_flags & HTML_SKIP_IMAGES) {
-			sundown_render.image = NULL;
-		}
-		if (render_flags & HTML_SKIP_LINKS) {
-			sundown_render.link = NULL;
-			sundown_render.autolink = NULL;
-		}
-		if (render_flags & HTML_SKIP_HTML || render_flags & HTML_ESCAPE) {
-			sundown_render.blockhtml = NULL;
-		}
-	}
-
-	/* proceess markdown */
-    php_sundown_markdown_preprocess(getThis(), render, buffer, &input_buf TSRMLS_CC);
-	markdown = sd_markdown_new(enabled_extensions, 16, &sundown_render, &opt);
-
-	if (SETJMP(SUNDOWN_G(jump)) == 0) {
-		sd_markdown_render(output_buf, input_buf.data, input_buf.size, markdown);
-		efree(input_buf.data);
-		sd_markdown_free(markdown);
-	} else {
-		efree(input_buf.data);
-		zval_ptr_dtor(&render);
-		sd_markdown_free(markdown);
-		return;
-	}
-
-	php_sundown_markdown_postprocess(getThis(), render, output_buf, &result TSRMLS_CC);
-
-	zval_ptr_dtor(&render);
-	RETURN_ZVAL(result, 0, 1);
+    php_sundown_markdon_render(INTERNAL_FUNCTION_PARAM_PASSTHRU);
 }
 /* }}} */
 
