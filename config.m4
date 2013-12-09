@@ -21,7 +21,7 @@ sundown/html/html_smartypants.c
 sundown/html/houdini_href_e.c
 sundown/html/houdini_html_e.c
 "
-  patch -p1 -N -b < buffer_win32_compat.patch
+#  patch -p1 -N -b < buffer_win32_compat.patch
 
   PHP_NEW_EXTENSION(sundown,$SUNDOWN_SOURCES, $ext_shared)
   CFLAGS="-Wunused-variable -Wpointer-sign -Wimplicit-function-declaration -Winline -Wunused-macros -Wredundant-decls -Wstrict-aliasing=2 -Wswitch-enum -Wdeclaration-after-statement"
