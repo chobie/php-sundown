@@ -1,5 +1,5 @@
 diff --git a/sundown/src/buffer.h b/sundown/src/buffer.h
-index 221d142..ca7523b 100644
+index 221d142..b76ce1a 100644
 --- a/sundown/src/buffer.h
 +++ b/sundown/src/buffer.h
 @@ -20,7 +20,11 @@
@@ -22,3 +22,21 @@ index 221d142..ca7523b 100644
  #endif
  
  typedef enum {
+diff --git a/sundown/src/markdown.c b/sundown/src/markdown.c
+diff --git a/sundown/src/markdown.h b/sundown/src/markdown.h
+index 6f6553e..fc1a67c 100644
+--- a/sundown/src/markdown.h
++++ b/sundown/src/markdown.h
+@@ -26,6 +26,12 @@
+ extern "C" {
+ #endif
+ 
++#if defined(_WIN32)
++#ifndef inline
++#define inline
++#endif
++#endif
++
+ #define SUNDOWN_VERSION "1.16.0"
+ #define SUNDOWN_VER_MAJOR 1
+ #define SUNDOWN_VER_MINOR 16
