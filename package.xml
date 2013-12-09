@@ -15,10 +15,10 @@ PECL Sundown provides straight forward object oriented Markdown API and customiz
   <email>chobieeee@php.net</email>
   <active>yes</active>
  </lead>
- <date>2013-12-08</date>
- <time>18:23:58</time>
+ <date>2013-12-09</date>
+ <time>09:43:58</time>
  <version>
-  <release>0.3.9</release>
+  <release>0.3.10</release>
   <api>0.3.9</api>
  </version>
  <stability>
@@ -26,25 +26,11 @@ PECL Sundown provides straight forward object oriented Markdown API and customiz
   <api>beta</api>
  </stability>
  <license uri="http://www.php.net/license">PHP</license>
- <notes>bumped up 0.3.9.
+ <notes>bumped up 0.3.10.
+this release for imporve windows support.
 
-next 0.4.x release will change sundown library to hoedown as sundown has been deprecated.
-0.3.x releases are bug fixes only.
-
-[improvements]
-* improve readability
-* use common internal `php_sundown_markdon_render` for rendering markdown.
-* add various markdown test case from karlcow/markdown-testsuite
-* add --enable-sundown-debug configure flag for configure option.
-* add escape_html render flag
-* xhtml render always overrides `xhtml` flag
-
-[bug fix]
-fix incorrect render_html flags
-
-* filter_html
-* no_images
-* no_links
+[fix]
+ * windows compatibility
 </notes>
  <contents>
   <dir name="/">
@@ -357,6 +343,37 @@ fix incorrect render_html flags
  <providesextension>sundown</providesextension>
  <extsrcrelease/>
  <changelog>
+     <release>
+         <stability>
+             <release>beta</release>
+             <api>beta</api>
+         </stability>
+         <version>
+             <release>0.3.8</release>
+             <api>0.3.7</api>
+         </version>
+         <date>2013-12-08</date>
+         <notes>
+             bumped up 0.3.9.
+
+             next 0.4.x release will change sundown library to hoedown as sundown has been deprecated.
+             0.3.x releases are bug fixes only.
+
+             [improvements]
+             * improve readability
+             * use common internal `php_sundown_markdon_render` for rendering markdown.
+             * add various markdown test case from karlcow/markdown-testsuite
+             * add --enable-sundown-debug configure flag for configure option.
+             * add escape_html render flag
+             * xhtml render always overrides `xhtml` flag
+
+             [bug fix]
+             fix incorrect render_html flags
+
+             * filter_html
+             * no_images
+             * no_links         </notes>
+     </release>
   <release>
    <stability>
     <release>beta</release>
