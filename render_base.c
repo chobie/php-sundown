@@ -227,7 +227,8 @@ PHP_METHOD(sundown_render_base, blockHtml)
 PHP_METHOD(sundown_render_base, header)
 {
 	char *htext;
-	int htext_len, header_level;
+	int htext_len;
+	long header_level;
 	
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
 		"sl", &htext, &htext_len, &header_level) == FAILURE) {
