@@ -163,7 +163,7 @@ static int call_user_function_v(HashTable *function_table, zval **object_pp, zva
 	TSRMLS_FETCH();
 
 	if (param_count > 0) {
-		params = emalloc(sizeof(zval**) * param_count);
+		params = emalloc(sizeof(zval*) * param_count);
 		va_start(ap, param_count);
 		for (i=0; i<param_count;i++) {
 			params[i] = va_arg(ap, zval*);
