@@ -326,6 +326,7 @@ this release for imporve windows support.
    <file role="src" name="render_html.c" />
    <file role="src" name="render_html_toc.c" />
    <file role="src" name="render_xhtml.c" />
+   <file role="doc" name="LICENSE"/>
   </dir>
  </contents>
  <dependencies>
