@@ -183,10 +183,15 @@ PHP_MSHUTDOWN_FUNCTION(sundown) {
 
 PHP_MINFO_FUNCTION(sundown)
 {
+	char buffer[20] = {0};
+	int major, minor, revision;
+
+	hoedown_version(&major, &minor, &revision);
+	sprintf(buffer, "%d.%d.%d", major, minor, revision);
 	php_info_print_table_start();
 	php_info_print_table_header(2, "Sundown Support",  "enabled");
 	php_info_print_table_row(2, "Version", PHP_SUNDOWN_VERSION);
-	php_info_print_table_row(2, "Sundown Version", HOEDOWN_VERSION);
+	php_info_print_table_row(2, "Hoedown Version", buffer);
 	php_info_print_table_end();
 }
 

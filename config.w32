@@ -3,8 +3,8 @@ ARG_WITH('sundown', 'sundown extension', 'no');
 if (PHP_SUNDOWN != "no") {
 	if (CHECK_HEADER_ADD_INCLUDE("markdown.h", "CFLAGS_SUNDOWN", PHP_SUNDOWN + ";" + configure_module_dirname + "\\sundown\\src") &&
 		CHECK_HEADER_ADD_INCLUDE("html.h", "CFLAGS_SUNDOWN", PHP_SUNDOWN + ";" + configure_module_dirname + "\\sundown\\html")) {
-		ADD_SOURCES(configure_module_dirname + "\\sundown\\src","buffer.c markdown.c  hoedown_autolink.c stack.c", "sundown");
-		ADD_SOURCES(configure_module_dirname + "\\sundown\\html","html.c html_smartypants.c houdini_href_e.c houdini_html_e.c", "sundown");
+		ADD_SOURCES(configure_module_dirname + "\\sundown\\src","buffer.c markdown.c  autolink.c stack.c", "sundown");
+		ADD_SOURCES(configure_module_dirname + "\\sundown\\html","html.c html_smartypants.c", "sundown");
 
 		EXTENSION("sundown", "php_sundown.c sundown_markdown.c render_base.c render_html.c render_html_toc.c render_xhtml.c");
 	} else {

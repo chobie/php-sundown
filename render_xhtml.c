@@ -89,7 +89,7 @@ PHP_METHOD(sundown_render_xhtml, __construct)
 	zval_ptr_dtor(&t);
 
 	object = (php_sundown_render_html_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
-	hoedown_html_renderer_new(&object->cb, &opt.html);
+	object->cb = hoedown_html_renderer_new(0, 0);
 	opt.self = getThis();
 }
 /* }}} */

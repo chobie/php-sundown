@@ -80,12 +80,12 @@ static void rndr_tablerow(hoedown_buffer *ob, const hoedown_buffer *text, void *
 	BLOCK_CALLBACK_EX(ob, "tableRow", 1, buf2str(text));
 }
 
-static void rndr_tablecell(hoedown_buffer *ob, const hoedown_buffer *text, unsigned int num, void *opaque)
+static void rndr_tablecell(hoedown_buffer *ob, const hoedown_buffer *text, int flags, void *opaque)
 {
 	zval *php_align;
 
 	MAKE_STD_ZVAL(php_align);
-	switch (num) {
+	switch (flags) {
 		case HOEDOWN_TABLE_ALIGN_L:
 			ZVAL_STRING(php_align, "left", 1);
 			break;
@@ -167,9 +167,9 @@ static int rndr_superscript(hoedown_buffer *ob, const hoedown_buffer *text, void
 /**
 * direct writes
 */
-static void rndr_entity(hoedown_buffer *ob, const hoedown_buffer *text, void *opaque)
+static void rndr_entity(hoedown_buffer *ob, const hoedown_buffer *entity, void *opaque)
 {
-	BLOCK_CALLBACK_EX(ob, "entity", 1, buf2str(text));
+	BLOCK_CALLBACK_EX(ob, "entity", 1, buf2str(entity));
 }
 
 static void rndr_normal_text(hoedown_buffer *ob, const hoedown_buffer *text, void *opaque)
@@ -216,12 +216,14 @@ static struct hoedown_renderer php_sundown_callbacks = {
 	rndr_triple_emphasis,
 	rndr_strikethrough,
 	rndr_superscript,
+	NULL, // footnote_ref
 
 	rndr_entity,
 	rndr_normal_text,
 
 	rndr_doc_header,
 	rndr_doc_footer,
+	NULL, // opaque
 };
 
 static const char *php_sundown_method_names[] = {
@@ -236,11 +238,16 @@ static const char *php_sundown_method_names[] = {
 	"table",
 	"tablerow",
 	"tablecell",
+	"footnotes",
+	"footnote_def"
 
 	"autolink",
 	"codespan",
 	"doubleemphasis",
 	"emphasis",
+	"underline",
+	"highlight",
+	"quote",
 	"image",
 	"linebreak",
 	"link",
@@ -374,7 +381,7 @@ static void php_sundown_markdown_inherit_functions(zval *render, int render_flag
 		}
 		if (render_flags & HOEDOWN_HTML_SKIP_LINKS) {
 			sundown_render->link = NULL;
-			//sundown_render->_autolink = NULL;
+			sundown_render->autolink = NULL;
 		}
 		if (render_flags & HOEDOWN_HTML_SKIP_HTML || render_flags & HOEDOWN_HTML_ESCAPE) {
 			sundown_render->blockhtml = NULL;
@@ -429,7 +436,7 @@ void php_sundown_markdon_render(SundownRendererType render_type, INTERNAL_FUNCTI
 			sundown_render = hoedown_html_renderer_new(render_flags, 0);
 			break;
 		case SUNDOWN_RENDER_TOC:
-			sundown_render = hoedown_html_toc_renderer(0, 0);
+			sundown_render = hoedown_html_toc_renderer_new(0);
 			break;
 		default:
 			RETURN_FALSE;
