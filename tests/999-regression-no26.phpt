@@ -16,7 +16,7 @@ $sd = new Sundown($table, array('tables'=>true));
 echo $sd->toHTML();
 
 //sementation fault:
-$md = new \Sundown\Markdown(\Sundown\Render\HTML, array('tables'=>true)); 
+$md = new \Sundown\Markdown(\Sundown\Render\HTML, array('tables'=>true));
 echo $md->render($table);
 --EXPECT--
 <table><thead>
@@ -36,8 +36,8 @@ echo $md->render($table);
 </tbody></table>
 <table><thead>
 <tr>
-<td>First Header</td>
-<td>Second Header</td>
+<th>First Header</th>
+<th>Second Header</th>
 </tr>
 </thead><tbody>
 <tr>

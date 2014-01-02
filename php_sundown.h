@@ -74,19 +74,19 @@ typedef struct{
 
 typedef struct{
 	zend_object zo;
-	hoedown_renderer cb;
+	hoedown_renderer *cb;
 	void *html;
 } php_sundown_render_html_t;
 
 typedef struct{
 	zend_object zo;
-	hoedown_renderer cb;
+	hoedown_renderer *cb;
 	void *html;
 } php_sundown_render_html_toc_t;
 
 typedef struct{
 	zend_object zo;
-	hoedown_renderer cb;
+	hoedown_renderer *cb;
 	void *html;
 } php_sundown_render_xhtml_t;
 

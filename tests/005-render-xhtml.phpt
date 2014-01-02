@@ -21,10 +21,12 @@ echo $a->render($data);
 <ul>
 <li>Hello World</li>
 </ul>
+
 <hr/>
 
 force_enable_xhtml_flag:
 <ul>
 <li>Hello World</li>
 </ul>
+
 <hr/>

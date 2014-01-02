@@ -386,7 +386,7 @@ void php_sundown_markdon_render(SundownRendererType render_type, INTERNAL_FUNCTI
 {
 	zval *render, *result;
 	hoedown_buffer input_buf, *output_buf;
-	hoedown_renderer sundown_render;
+	hoedown_renderer *sundown_render;
 	struct php_sundown_renderopt_ex opt;
 	hoedown_markdown *markdown;
 	unsigned int enabled_extensions = 0, render_flags = 0;
@@ -412,8 +412,7 @@ void php_sundown_markdon_render(SundownRendererType render_type, INTERNAL_FUNCTI
 	}
 
 	output_buf = hoedown_buffer_new(128);
-	bufgrow(output_buf, buffer_len * 1.2f);
-
+	hoedown_buffer_grow(output_buf, buffer_len * 1.2f);
 
 	if (is_sundown_markdown) {
 		php_sundown_get_render(getThis(), &render TSRMLS_CC);
@@ -427,41 +426,41 @@ void php_sundown_markdon_render(SundownRendererType render_type, INTERNAL_FUNCTI
 
 	switch (render_type) {
 		case SUNDOWN_RENDER_HTML:
-			hoedown_html_renderer(&sundown_render, NULL/*&opt.html*/, render_flags);
+			sundown_render = hoedown_html_renderer_new(render_flags, 0);
 			break;
 		case SUNDOWN_RENDER_TOC:
-			hoedown_html_toc_renderer(&sundown_render, NULL/*&opt.html*/);
+			sundown_render = hoedown_html_toc_renderer(0, 0);
 			break;
 		default:
 			RETURN_FALSE;
 	}
 
 	if (is_sundown_markdown) {
-		php_sundown_markdown_inherit_functions(render, render_flags, &opt, &sundown_render TSRMLS_CC);
+		//php_sundown_markdown_inherit_functions(render, render_flags, &opt, &sundown_render TSRMLS_CC);
 		php_sundown_markdown_preprocess(getThis(), render, buffer, &input_buf TSRMLS_CC);
 	} else {
 		opt.self = getThis();
 	}
 
 	if (is_sundown_markdown) {
-		markdown = hoedown_markdown_new(enabled_extensions, 16, &sundown_render);
+		markdown = hoedown_markdown_new(enabled_extensions, 16, sundown_render);
 		if (SETJMP(SUNDOWN_G(jump)) == 0) {
-			sd_markdown_render(output_buf, input_buf.data, input_buf.size, markdown);
+			hoedown_markdown_render(output_buf, input_buf.data, input_buf.size, markdown);
 			efree(input_buf.data);
-			sd_markdown_free(markdown);
+			hoedown_markdown_free(markdown);
 		} else {
 			efree(input_buf.data);
 			zval_ptr_dtor(&render);
-			sd_markdown_free(markdown);
+			hoedown_markdown_free(markdown);
 			return;
 		}
 		php_sundown_markdown_postprocess(getThis(), render, output_buf, &result TSRMLS_CC);
 		zval_ptr_dtor(&render);
 		RETURN_ZVAL(result, 0, 1);
 	} else {
-		markdown = hoedown_markdown_new(enabled_extensions, 16, &sundown_render);
-		sd_markdown_render(output_buf, input_buf.data, input_buf.size, markdown);
-		sd_markdown_free(markdown);
+		markdown = hoedown_markdown_new(enabled_extensions, 16, sundown_render);
+		hoedown_markdown_render(output_buf, input_buf.data, input_buf.size, markdown);
+		hoedown_markdown_free(markdown);
 
 		if (Z_BVAL_P(zend_read_property(sundown_class_entry, getThis(), ZEND_STRS("enable_pants")-1, 0 TSRMLS_CC))) {
 			hoedown_buffer *smart_buf = hoedown_buffer_new(128);
@@ -472,6 +471,7 @@ void php_sundown_markdon_render(SundownRendererType render_type, INTERNAL_FUNCTI
 		} else {
 			RETVAL_STRINGL((char*)output_buf->data, output_buf->size, 1);
 		}
+		free(sundown_render);
 	}
 }
 
