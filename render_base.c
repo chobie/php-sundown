@@ -576,10 +576,10 @@ PHP_METHOD(sundown_render_base, postprocess)
 	}
 
 	if (Z_BVAL_P(zend_read_property(Z_OBJCE_P(getThis()), getThis(), ZEND_STRS("enable_pants")-1, 1 TSRMLS_CC))) {
-		struct buf *smart_buf = bufnew(128);
-		sdhtml_smartypants(smart_buf, (uint8_t *)text, text_len);
+		hoedown_buffer *smart_buf = hoedown_buffer_new(128);
+		hoedown_html_smartypants(smart_buf, (uint8_t *)text, text_len);
 		RETVAL_STRINGL((char*)smart_buf->data, smart_buf->size, 1);
-		bufrelease(smart_buf);
+		hoedown_buffer_free(smart_buf);
 	} else {
 		RETVAL_STRINGL(text, text_len, 1);
 	}
@@ -700,6 +700,6 @@ void php_sundown_render_base_init(TSRMLS_D)
 	zend_declare_property_null(sundown_render_base_class_entry, ZEND_STRS("render_flags")-1,  ZEND_ACC_PUBLIC TSRMLS_CC);
 
 	zend_declare_class_constant_long(sundown_render_base_class_entry, ZEND_STRS("LIST_ORDERED")-1, 1 TSRMLS_CC);
-	zend_declare_class_constant_long(sundown_render_base_class_entry, ZEND_STRS("MKDA_EMAIL")-1, MKDA_EMAIL TSRMLS_CC);
-	zend_declare_class_constant_long(sundown_render_base_class_entry, ZEND_STRS("MKDA_NORMAL")-1,MKDA_NORMAL TSRMLS_CC);
+	zend_declare_class_constant_long(sundown_render_base_class_entry, ZEND_STRS("MKDA_EMAIL")-1, HOEDOWN_AUTOLINK_EMAIL TSRMLS_CC);
+	zend_declare_class_constant_long(sundown_render_base_class_entry, ZEND_STRS("MKDA_NORMAL")-1,HOEDOWN_AUTOLINK_NORMAL TSRMLS_CC);
 }

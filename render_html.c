@@ -174,7 +174,7 @@ PHP_METHOD(sundown_render_html, blockCode)
 {
 	char *code, *block_code;
 	int code_len, block_code_len;
-	struct buf *input, *lang, *output;
+	hoedown_buffer *input, *lang, *output;
 	php_sundown_render_html_t *html;
 	php_sundown_render_base_t *base;
 
@@ -187,12 +187,12 @@ PHP_METHOD(sundown_render_html, blockCode)
 	base = (php_sundown_render_base_t *) zend_object_store_get_object(getThis() TSRMLS_CC);\
 	input = str2buf(block_code, block_code_len);
 	lang = str2buf(code, code_len);
-	output = bufnew(128);
+	output = hoedown_buffer_new(128);
 	html->cb.blockcode(output, lang, input, &base->html);
-	bufrelease(input);
-	bufrelease(lang);
+	hoedown_buffer_free(input);
+	hoedown_buffer_free(lang);
 	RETVAL_STRINGL((char *)output->data, output->size, 1);
-	bufrelease(output);
+	hoedown_buffer_free(output);
 }
 /* }}} */
 
@@ -202,7 +202,7 @@ PHP_METHOD(sundown_render_html, blockQuote)
 {
 	char *quote;
 	int quote_len;
-	struct buf *input, *output;
+	hoedown_buffer *input, *output;
 	php_sundown_render_html_t *html;
 	php_sundown_render_base_t *base;
 	
@@ -214,11 +214,11 @@ PHP_METHOD(sundown_render_html, blockQuote)
 	html = (php_sundown_render_html_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
 	base = (php_sundown_render_base_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
 	input = str2buf(quote, quote_len);
-	output = bufnew(128);
+	output = hoedown_buffer_new(128);
 	html->cb.blockquote(output, input, &base->html);
-	bufrelease(input);
+	hoedown_buffer_free(input);
 	RETVAL_STRINGL((char *)output->data, output->size, 1);
-	bufrelease(output);
+	hoedown_buffer_free(output);
 }
 /* }}} */
 
@@ -228,7 +228,7 @@ PHP_METHOD(sundown_render_html, blockHtml)
 {
 	char *raw;
 	int raw_len;
-	struct buf *input, *output;
+	hoedown_buffer *input, *output;
 	php_sundown_render_html_t *html;
 	php_sundown_render_base_t *base;
 
@@ -240,11 +240,11 @@ PHP_METHOD(sundown_render_html, blockHtml)
 	html = (php_sundown_render_html_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
 	base = (php_sundown_render_base_t *) zend_object_store_get_object(getThis() TSRMLS_CC);\
 	input = str2buf(raw, raw_len);
-	output = bufnew(128);
+	output = hoedown_buffer_new(128);
 	html->cb.blockhtml(output, input, &base->html);
-	bufrelease(input);
+	hoedown_buffer_free(input);
 	RETVAL_STRINGL((char *)output->data, output->size, 1);
-	bufrelease(output);
+	hoedown_buffer_free(output);
 }
 /* }}} */
 
@@ -255,7 +255,7 @@ PHP_METHOD(sundown_render_html, header)
 	char *htext;
 	int htext_len;
 	long header_level;
-	struct buf *input, *output;
+	hoedown_buffer *input, *output;
 	php_sundown_render_html_t *html;
 	php_sundown_render_base_t *base;
 
@@ -267,11 +267,11 @@ PHP_METHOD(sundown_render_html, header)
 	html = (php_sundown_render_html_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
 	base = (php_sundown_render_base_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
 	input = str2buf(htext, htext_len);
-        output = bufnew(128);
+        output = hoedown_buffer_new(128);
 	html->cb.header(output, input, header_level, &base->html);
-	bufrelease(input);
+	hoedown_buffer_free(input);
 	RETVAL_STRINGL((char *)output->data, output->size, 1);
-	bufrelease(output);
+	hoedown_buffer_free(output);
 }
 /* }}} */
 
@@ -280,13 +280,13 @@ PHP_METHOD(sundown_render_html, header)
 PHP_METHOD(sundown_render_html, hrule)
 {
 	php_sundown_render_html_t *html;
-	struct buf *output;
+	hoedown_buffer *output;
 
-	output = bufnew(128);
+	output = hoedown_buffer_new(128);
 	html = (php_sundown_render_html_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
 	html->cb.hrule(output, &html->html);
 	RETVAL_STRINGL((char *)output->data, output->size, 1);
-	bufrelease(output);
+	hoedown_buffer_free(output);
 
 }
 /* }}} */
@@ -298,7 +298,7 @@ PHP_METHOD(sundown_render_html, listBox)
 	char *contents;
 	int contents_len;
 	long list_type;
-	struct buf *input, *output;
+	hoedown_buffer *input, *output;
 	php_sundown_render_html_t *html;
 	php_sundown_render_base_t *base;
 
@@ -310,13 +310,13 @@ PHP_METHOD(sundown_render_html, listBox)
 	html = (php_sundown_render_html_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
 	base = (php_sundown_render_base_t *) zend_object_store_get_object(getThis() TSRMLS_CC);\
 	input = str2buf(contents, contents_len);
-	output = bufnew(128);
+	output = hoedown_buffer_new(128);
 	html->cb.list(output, input, list_type, &base->html);
 	if (input != NULL) {
-		bufrelease(input);
+		hoedown_buffer_free(input);
 	}
 	RETVAL_STRINGL((char *)output->data, output->size, 1);
-	bufrelease(output);
+	hoedown_buffer_free(output);
 }
 /* }}} */
 
@@ -327,7 +327,7 @@ PHP_METHOD(sundown_render_html, listItem)
 	char *text;
 	int text_len;
 	long list_type;
-	struct buf *input, *output;
+	hoedown_buffer *input, *output;
 	php_sundown_render_html_t *html;
 	php_sundown_render_base_t *base;
 	
@@ -339,14 +339,14 @@ PHP_METHOD(sundown_render_html, listItem)
 	html = (php_sundown_render_html_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
 	base = (php_sundown_render_base_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
 	input = str2buf(text, text_len);
-	output = bufnew(128);
+	output = hoedown_buffer_new(128);
 	html->cb.listitem(output, input, list_type, &base->html);
 	if (input != NULL) {
-		bufrelease(input);
+		hoedown_buffer_free(input);
 	}
 
 	RETVAL_STRINGL((char *)output->data, output->size, 1);
-	bufrelease(output);
+	hoedown_buffer_free(output);
 }
 /* }}} */
 
@@ -356,7 +356,7 @@ PHP_METHOD(sundown_render_html, paragraph)
 {
 	char *text;
 	int text_len;
-	struct buf *input, *output;
+	hoedown_buffer *input, *output;
 	php_sundown_render_html_t *html;
 	php_sundown_render_base_t *base;
 
@@ -368,11 +368,11 @@ PHP_METHOD(sundown_render_html, paragraph)
 	html = (php_sundown_render_html_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
 	base = (php_sundown_render_base_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
 	input = str2buf(text, text_len);
-	output = bufnew(128);
+	output = hoedown_buffer_new(128);
 	html->cb.paragraph(output, input, &base->html);
-	bufrelease(input);
+	hoedown_buffer_free(input);
 	RETVAL_STRINGL((char *)output->data, output->size, 1);
-	bufrelease(output);
+	hoedown_buffer_free(output);
 }
 /* }}} */
 
@@ -382,7 +382,7 @@ PHP_METHOD(sundown_render_html, table)
 {
 	char *header, *body;
 	int header_len, body_len;
-	struct buf *b_header, *b_body, *output;
+	hoedown_buffer *b_header, *b_body, *output;
 	php_sundown_render_html_t *html;
 	php_sundown_render_base_t *base;
 
@@ -395,12 +395,12 @@ PHP_METHOD(sundown_render_html, table)
 	base = (php_sundown_render_base_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
 	b_header = str2buf(header, header_len);
 	b_body = str2buf(body, body_len);
-	output = bufnew(128);
+	output = hoedown_buffer_new(128);
 	html->cb.table(output, b_header, b_body, &base->html);
 	RETVAL_STRINGL((char *)output->data, output->size, 1);
-	bufrelease(b_header);
-	bufrelease(b_body);
-	bufrelease(output);
+	hoedown_buffer_free(b_header);
+	hoedown_buffer_free(b_body);
+	hoedown_buffer_free(output);
 }
 /* }}} */
 
@@ -410,7 +410,7 @@ PHP_METHOD(sundown_render_html, tableRow)
 {
 	char *contents;
 	int contents_len;
-	struct buf *output, *input;
+	hoedown_buffer *output, *input;
 	php_sundown_render_html_t *html;
 	php_sundown_render_base_t *base;
 
@@ -421,11 +421,11 @@ PHP_METHOD(sundown_render_html, tableRow)
 	html = (php_sundown_render_html_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
 	base = (php_sundown_render_base_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
 	input = str2buf(contents, contents_len);
-	output = bufnew(128);
+	output = hoedown_buffer_new(128);
 	html->cb.table_row(output, input, &base->html);
 	RETVAL_STRINGL((char *)output->data, output->size, 1);
-	bufrelease(input);
-	bufrelease(output);
+	hoedown_buffer_free(input);
+	hoedown_buffer_free(output);
 }
 /* }}} */
 
@@ -436,7 +436,7 @@ PHP_METHOD(sundown_render_html, tableCell)
 	char *content;
 	int content_len;
 	long alignment;
-	struct buf *input, *output;
+	hoedown_buffer *input, *output;
 	php_sundown_render_html_t *html;
 	php_sundown_render_base_t *base;
 
@@ -448,11 +448,11 @@ PHP_METHOD(sundown_render_html, tableCell)
 	html = (php_sundown_render_html_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
 	base = (php_sundown_render_base_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
 	input = str2buf(content, content_len);
-	output = bufnew(128);
+	output = hoedown_buffer_new(128);
 	html->cb.table_cell(output, input, alignment, &base->html);
 	RETVAL_STRINGL((char *)output->data, output->size, 1);
-	bufrelease(input);
-	bufrelease(output);
+	hoedown_buffer_free(input);
+	hoedown_buffer_free(output);
 }
 /* }}} */
 
@@ -463,7 +463,7 @@ PHP_METHOD(sundown_render_html, autolink)
 	char *link;
 	int link_len = 0;
 	long link_type;
-	struct buf *m_link, *output;
+	hoedown_buffer *m_link, *output;
 	php_sundown_render_html_t *html;
 	
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
@@ -472,12 +472,12 @@ PHP_METHOD(sundown_render_html, autolink)
 	}
 	
 	m_link = str2buf(link, link_len);
-	output = bufnew(128);
+	output = hoedown_buffer_new(128);
 	html = (php_sundown_render_html_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
 	html->cb.autolink(output, m_link, link_type, &html->html);
-	bufrelease(m_link);
+	hoedown_buffer_free(m_link);
 	RETVAL_STRINGL((char *)output->data, output->size, 1);
-	bufrelease(output);
+	hoedown_buffer_free(output);
 
 }
 /* }}} */
@@ -488,7 +488,7 @@ PHP_METHOD(sundown_render_html, codespan)
 {
 	char *code;
 	int code_len;
-	struct buf *input, *output;
+	hoedown_buffer *input, *output;
 	php_sundown_render_html_t *html;
 	
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
@@ -497,12 +497,12 @@ PHP_METHOD(sundown_render_html, codespan)
 	}
 
 	input = str2buf(code, code_len);
-	output = bufnew(128);
+	output = hoedown_buffer_new(128);
 	html = (php_sundown_render_html_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
 	html->cb.codespan(output, input, &html->html);
-	bufrelease(input);
+	hoedown_buffer_free(input);
 	RETVAL_STRINGL((char *)output->data, output->size, 1);
-	bufrelease(output);
+	hoedown_buffer_free(output);
 }
 /* }}} */
 
@@ -512,7 +512,7 @@ PHP_METHOD(sundown_render_html, doubleEmphasis)
 {
 	char *text;
 	int text_len;
-	struct buf *input, *output;
+	hoedown_buffer *input, *output;
 	php_sundown_render_html_t *html;
 	php_sundown_render_base_t *base;
 
@@ -524,11 +524,11 @@ PHP_METHOD(sundown_render_html, doubleEmphasis)
 	html = (php_sundown_render_html_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
 	base = (php_sundown_render_base_t *) zend_object_store_get_object(getThis() TSRMLS_CC);\
 	input = str2buf(text, text_len);
-	output = bufnew(128);
+	output = hoedown_buffer_new(128);
 	html->cb.double_emphasis(output, input, &base->html);
-	bufrelease(input);
+	hoedown_buffer_free(input);
 	RETVAL_STRINGL((char *)output->data, output->size, 1);
-	bufrelease(output);
+	hoedown_buffer_free(output);
 }
 /* }}} */
 
@@ -538,7 +538,7 @@ PHP_METHOD(sundown_render_html, emphasis)
 {
 	char *text;
 	int text_len;
-	struct buf *input, *output;
+	hoedown_buffer *input, *output;
 	php_sundown_render_html_t *html;
 	php_sundown_render_base_t *base;
 
@@ -550,11 +550,11 @@ PHP_METHOD(sundown_render_html, emphasis)
 	html = (php_sundown_render_html_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
 	base = (php_sundown_render_base_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
 	input = str2buf(text, text_len);
-	output = bufnew(128);
+	output = hoedown_buffer_new(128);
 	html->cb.emphasis(output, input, &base->html);
-	bufrelease(input);
+	hoedown_buffer_free(input);
 	RETVAL_STRINGL((char *)output->data, output->size, 1);
-	bufrelease(output);
+	hoedown_buffer_free(output);
 }
 /* }}} */
 
@@ -564,7 +564,7 @@ PHP_METHOD(sundown_render_html, image)
 {
 	char *link, *title, *alt_text;
 	int link_len, title_len, alt_text_len;
-	struct buf *b_link, *b_title, *b_alt_text, *output;
+	hoedown_buffer *b_link, *b_title, *b_alt_text, *output;
 	php_sundown_render_html_t *html;
 	php_sundown_render_base_t *base;
 
@@ -578,13 +578,13 @@ PHP_METHOD(sundown_render_html, image)
 	b_link = str2buf(link, link_len);
 	b_title = str2buf(title, title_len);
 	b_alt_text = str2buf(alt_text, alt_text_len);
-	output = bufnew(128);
+	output = hoedown_buffer_new(128);
 	html->cb.image(output, b_link, b_title, b_alt_text, &base->html);
-	bufrelease(b_link);
-	bufrelease(b_title);
-	bufrelease(b_alt_text);
+	hoedown_buffer_free(b_link);
+	hoedown_buffer_free(b_title);
+	hoedown_buffer_free(b_alt_text);
 	RETVAL_STRINGL((char *)output->data, output->size, 1);
-	bufrelease(output);
+	hoedown_buffer_free(output);
 }
 /* }}} */
 
@@ -593,13 +593,13 @@ PHP_METHOD(sundown_render_html, image)
 PHP_METHOD(sundown_render_html, linebreak)
 {
 	php_sundown_render_html_t *html;
-	struct buf *output;
+	hoedown_buffer *output;
 
-	output = bufnew(128);
+	output = hoedown_buffer_new(128);
 	html = (php_sundown_render_html_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
 	html->cb.linebreak(output, &html->html);
 	RETVAL_STRINGL((char *)output->data, output->size, 1);
-	bufrelease(output);
+	hoedown_buffer_free(output);
 }
 /* }}} */
 
@@ -609,7 +609,7 @@ PHP_METHOD(sundown_render_html, link)
 {
 	char *link, *title, *content;
 	int link_len, title_len, content_len;
-	struct buf *m_link, *m_title, *m_content, *output;
+	hoedown_buffer *m_link, *m_title, *m_content, *output;
 	php_sundown_render_html_t *html;
 	
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
@@ -621,13 +621,13 @@ PHP_METHOD(sundown_render_html, link)
 	m_link = str2buf(link, link_len);
 	m_title = str2buf(title, title_len);
 	m_content = str2buf(content, content_len);
-	output = bufnew(128);
+	output = hoedown_buffer_new(128);
 	html->cb.link(output, m_link, m_title, m_content, &html->html);
-	bufrelease(m_link);
-	bufrelease(m_title);
-	bufrelease(m_content);
+	hoedown_buffer_free(m_link);
+	hoedown_buffer_free(m_title);
+	hoedown_buffer_free(m_content);
 	RETVAL_STRINGL((char *)output->data, output->size, 1);
-	bufrelease(output);
+	hoedown_buffer_free(output);
 }
 /* }}} */
 
@@ -637,7 +637,7 @@ PHP_METHOD(sundown_render_html, rawHtml)
 {
 	char *raw;
 	int raw_len;
-	struct buf *input, *output;
+	hoedown_buffer *input, *output;
 	php_sundown_render_html_t *html;
 	
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
@@ -646,12 +646,12 @@ PHP_METHOD(sundown_render_html, rawHtml)
 	}
 
 	input = str2buf(raw, raw_len);
-	output = bufnew(128);
+	output = hoedown_buffer_new(128);
 	html = (php_sundown_render_html_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
 	html->cb.raw_html_tag(output, input, &html->html);
-	bufrelease(input);
+	hoedown_buffer_free(input);
 	RETVAL_STRINGL((char *)output->data, output->size, 1);
-	bufrelease(output);
+	hoedown_buffer_free(output);
 }
 /* }}} */
 
@@ -661,7 +661,7 @@ PHP_METHOD(sundown_render_html, tripleEmphasis)
 {
 	char *text;
 	int text_len;
-	struct buf *input, *output;
+	hoedown_buffer *input, *output;
 	php_sundown_render_html_t *html;
 	
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
@@ -671,11 +671,11 @@ PHP_METHOD(sundown_render_html, tripleEmphasis)
 	
 	html = (php_sundown_render_html_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
 	input = str2buf(text, text_len);
-	output = bufnew(128);
+	output = hoedown_buffer_new(128);
 	html->cb.triple_emphasis(output, input, &html->html);
-	bufrelease(input);
+	hoedown_buffer_free(input);
 	RETVAL_STRINGL((char *)output->data, output->size, 1);
-	bufrelease(output);
+	hoedown_buffer_free(output);
 }
 /* }}} */
 
@@ -685,7 +685,7 @@ PHP_METHOD(sundown_render_html, strikethrough)
 {
 	char *text;
 	int text_len;
-	struct buf *input, *output;
+	hoedown_buffer *input, *output;
 	php_sundown_render_html_t *html;
 	
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
@@ -695,11 +695,11 @@ PHP_METHOD(sundown_render_html, strikethrough)
 
 	html = (php_sundown_render_html_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
 	input = str2buf(text, text_len);
-	output = bufnew(128);
+	output = hoedown_buffer_new(128);
 	html->cb.strikethrough(output, input, &html->html);
-	bufrelease(input);
+	hoedown_buffer_free(input);
 	RETVAL_STRINGL((char *)output->data, output->size, 1);
-	bufrelease(output);
+	hoedown_buffer_free(output);
 }
 /* }}} */
 
@@ -709,7 +709,7 @@ PHP_METHOD(sundown_render_html, superscript)
 {
 	char *text;
 	int text_len;
-	struct buf *input, *output;
+	hoedown_buffer *input, *output;
 	php_sundown_render_html_t *html;
 	
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
@@ -719,11 +719,11 @@ PHP_METHOD(sundown_render_html, superscript)
 
 	html = (php_sundown_render_html_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
 	input = str2buf(text, text_len);
-	output = bufnew(128);
+	output = hoedown_buffer_new(128);
 	html->cb.superscript(output, input, &html->html);
-	bufrelease(input);
+	hoedown_buffer_free(input);
 	RETVAL_STRINGL((char *)output->data, output->size, 1);
-	bufrelease(output);
+	hoedown_buffer_free(output);
 }
 /* }}} */
 
@@ -733,7 +733,7 @@ PHP_METHOD(sundown_render_html, entity)
 {
 	char *text;
 	int text_len;
-	struct buf *input, *output;
+	hoedown_buffer *input, *output;
 	php_sundown_render_html_t *html;
 	
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
@@ -744,11 +744,11 @@ PHP_METHOD(sundown_render_html, entity)
 	html = (php_sundown_render_html_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
 	if (html->cb.entity) {
 		input = str2buf(text, text_len);
-		output = bufnew(128);
+		output = hoedown_buffer_new(128);
 		html->cb.entity(output, input, &html->html);
-		bufrelease(input);
+		hoedown_buffer_free(input);
 		RETVAL_STRINGL((char *)output->data, output->size, 1);
-		bufrelease(output);
+		hoedown_buffer_free(output);
 	} else {
 		RETVAL_STRINGL((char *)text, text_len, 1);
 	}
@@ -761,7 +761,7 @@ PHP_METHOD(sundown_render_html, normalText)
 {
 	char *text;
 	int text_len;
-	struct buf *input, *output;
+	hoedown_buffer *input, *output;
 	php_sundown_render_html_t *html;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
@@ -771,11 +771,11 @@ PHP_METHOD(sundown_render_html, normalText)
 
 	html = (php_sundown_render_html_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
 	input = str2buf(text, text_len);
-	output = bufnew(128);
+	output = hoedown_buffer_new(128);
 	html->cb.normal_text(output, input, &html->html);
-	bufrelease(input);
+	hoedown_buffer_free(input);
 	RETVAL_STRINGL((char *)output->data, output->size, 1);
-	bufrelease(output);
+	hoedown_buffer_free(output);
 }
 /* }}} */
 
@@ -818,7 +818,7 @@ PHP_METHOD(sundown_render_html, __construct)
 	add_property_zval_ex(getThis(), "render_flags", sizeof("render_flags"), c_flags TSRMLS_CC);
 
 	object = (php_sundown_render_html_t *) zend_object_store_get_object(getThis() TSRMLS_CC);
-	sdhtml_renderer(&object->cb, &opt.html, 0);
+	hoedown_html_renderer_new(&object->cb, &opt.html);
 	opt.self = getThis();
 }
 /* }}} */

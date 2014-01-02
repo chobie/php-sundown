@@ -2,3 +2,6 @@
 	path = sundown
 	url = https://github.com/vmg/sundown.git
 	ignore = dirty
+[submodule "hoedown"]
+	path = hoedown
+	url = https://github.com/hoedown/hoedown.git

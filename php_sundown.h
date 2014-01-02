@@ -56,42 +56,43 @@ typedef enum
 } SundownRendererType;
 
 struct php_sundown_renderopt {
-	struct html_renderopt html;
 	zval *self;
+	void *html;
 };
 
 struct php_sundown_renderopt_ex {
-	struct html_renderopt html;
 	zval *self;
+	void *html;
 };
 
 
 typedef struct{
 	zend_object zo;
 	zval *render;
+	void *html;
 } php_sundown_markdown_t;
 
 typedef struct{
 	zend_object zo;
-	struct html_renderopt html;
-	struct sd_callbacks cb;
+	hoedown_renderer cb;
+	void *html;
 } php_sundown_render_html_t;
 
 typedef struct{
 	zend_object zo;
-	struct html_renderopt html;
-	struct sd_callbacks cb;
+	hoedown_renderer cb;
+	void *html;
 } php_sundown_render_html_toc_t;
 
 typedef struct{
 	zend_object zo;
-	struct html_renderopt html;
-	struct sd_callbacks cb;
+	hoedown_renderer cb;
+	void *html;
 } php_sundown_render_xhtml_t;
 
 typedef struct{
 	zend_object zo;
-	struct html_renderopt html;
+	void *html;
 } php_sundown_render_base_t;
 
 #define SPAN_CALLBACK_EX(buffer, method_name, ...) {\
@@ -107,7 +108,7 @@ typedef struct{
 		LONGJMP(SUNDOWN_G(jump), 1);\
 	}\
  	if (ret != NULL) {\
-		bufput(buffer, Z_STRVAL_P(ret), Z_STRLEN_P(ret));\
+		hoedown_buffer_put(buffer, Z_STRVAL_P(ret), Z_STRLEN_P(ret));\
 	}\
 	zval_ptr_dtor(&ret);\
 	zval_dtor(&func);\
@@ -128,7 +129,7 @@ typedef struct{
 		LONGJMP(SUNDOWN_G(jump), 1);\
 	}\
 	if (ret != NULL) {\
-		bufput(buffer, Z_STRVAL_P(ret), Z_STRLEN_P(ret));\
+		hoedown_buffer_put(buffer, Z_STRVAL_P(ret), Z_STRLEN_P(ret));\
 	}\
 	zval_ptr_dtor(&ret);\
 	zval_dtor(&func);\
@@ -186,7 +187,7 @@ static int call_user_function_v(HashTable *function_table, zval **object_pp, zva
 	return ret;
 }
 
-static inline zval* buf2str(const struct buf *text)
+static inline zval* buf2str(const hoedown_buffer *text)
 {
 	zval *str;
 	
@@ -217,13 +218,13 @@ static inline zval* buf2long(long value)
 	return data;
 }
 
-static inline struct buf* str2buf(const char *text, size_t length)
+static inline hoedown_buffer* str2buf(const char *text, size_t length)
 {
-	struct buf* buffer;
+	hoedown_buffer* buffer;
 	
 	if (length > 0) {
-		buffer = bufnew(length);
-		bufput(buffer, text, length);
+		buffer = hoedown_buffer_new(length);
+		hoedown_buffer_put(buffer, text, length);
 	} else {
 		buffer = NULL;
 	}
@@ -233,53 +234,53 @@ static inline struct buf* str2buf(const char *text, size_t length)
 
 static void php_sundown__get_render_flags(HashTable *table, unsigned int *render_flags_p)
 {
-	unsigned int render_flags = HTML_EXPAND_TABS;
+	unsigned int render_flags = HOEDOWN_HTML_EXPAND_TABS;
 
 	/* escape_html */
 	if (SUNDOWN_HAS_EXTENSION("escape_html")) {
-		render_flags |= HTML_ESCAPE;
+		render_flags |= HOEDOWN_HTML_ESCAPE;
 	}
 
 	/* filter_html */
 	if (SUNDOWN_HAS_EXTENSION("filter_html")) {
-		render_flags |= HTML_SKIP_HTML;
+		render_flags |= HOEDOWN_HTML_SKIP_HTML;
 	}
 
 	/* no_image */
 	if (SUNDOWN_HAS_EXTENSION("no_images")) {
-		render_flags |= HTML_SKIP_IMAGES;
+		render_flags |= HOEDOWN_HTML_SKIP_IMAGES;
 	}
 
 	/* no_links */
 	if (SUNDOWN_HAS_EXTENSION("no_links")) {
-		render_flags |= HTML_SKIP_LINKS;
+		render_flags |= HOEDOWN_HTML_SKIP_LINKS;
 	}
 
 	/* prettify */
 //	if (SUNDOWN_HAS_EXTENSION("prettify")) {
-//		render_flags |= HTML_PRETTIFY;
+//		render_flags |= HOEDOWN_HTML_PRETTIFY;
 //	}
 
 	/* filter_style */
 	if (SUNDOWN_HAS_EXTENSION("no_styles")) {
-		render_flags |= HTML_SKIP_STYLE;
+		render_flags |= HOEDOWN_HTML_SKIP_STYLE;
 	}
 
 	/* safelink */
 	if (SUNDOWN_HAS_EXTENSION("safe_links_only")) {
-		render_flags |= HTML_SAFELINK;
+		render_flags |= HOEDOWN_HTML_SAFELINK;
 	}
 
 	if (SUNDOWN_HAS_EXTENSION("with_toc_data")) {
-		render_flags |= HTML_TOC;
+		render_flags |= HOEDOWN_HTML_TOC;
 	}
 
 	if (SUNDOWN_HAS_EXTENSION("hard_wrap")) {
-		render_flags |= HTML_HARD_WRAP;
+		render_flags |= HOEDOWN_HTML_HARD_WRAP;
 	}
 
 	if (SUNDOWN_HAS_EXTENSION("xhtml")) {
-		render_flags |= HTML_USE_XHTML;
+		render_flags |= HOEDOWN_HTML_USE_XHTML;
 	}
 
 	// TODO:
@@ -298,60 +299,60 @@ static void php_sundown__get_extensions(HashTable *table, unsigned int *enabled_
 	 * Markdown extensions -- all disabled by default 
 	 */
 	if (SUNDOWN_HAS_EXTENSION("no_intra_emphasis")) {
-		extensions |= MKDEXT_NO_INTRA_EMPHASIS;
+		extensions |= HOEDOWN_EXT_NO_INTRA_EMPHASIS;
 	}
 
 	if (SUNDOWN_HAS_EXTENSION("tables")) {
-		extensions |= MKDEXT_TABLES;
+		extensions |= HOEDOWN_EXT_TABLES;
 	}
 
 	if (SUNDOWN_HAS_EXTENSION("fenced_code_blocks")) {
-		extensions |= MKDEXT_FENCED_CODE;
+		extensions |= HOEDOWN_EXT_FENCED_CODE;
 	}
 
 //	if (SUNDOWN_HAS_EXTENSION("disable_indented_code_blocks")) {
-//		extensions |= MKDEXT_DISABLE_INDENTED_CODE;
+//		extensions |= HOEDOWN_EXT_DISABLE_INDENTED_CODE;
 //	}
 
 	if (SUNDOWN_HAS_EXTENSION("autolink")) {
-		extensions |= MKDEXT_AUTOLINK;
+		extensions |= HOEDOWN_EXT_AUTOLINK;
 	}
 
 	if (SUNDOWN_HAS_EXTENSION("strikethrough")) {
-		extensions |= MKDEXT_STRIKETHROUGH;
+		extensions |= HOEDOWN_EXT_STRIKETHROUGH;
 	}
 
 //	if (SUNDOWN_HAS_EXTENSION("underline")) {
-//		extensions |= MKDEXT_UNDERLINE;
+//		extensions |= HOEDOWN_EXT_UNDERLINE;
 //	}
 
 //	if (SUNDOWN_HAS_EXTENSION("highlight")) {
-//		extensions |= MKDEXT_HIGHLIGHT;
+//		extensions |= HOEDOWN_EXT_HIGHLIGHT;
 //	}
 
 //	if (SUNDOWN_HAS_EXTENSION("quote")) {
-//		extensions |= MKDEXT_QUOTE;
+//		extensions |= HOEDOWN_EXT_QUOTE;
 //	}
 
 	/* obsoleted.  */
 	if (SUNDOWN_HAS_EXTENSION("lax_html_blocks")) {
-		extensions |= MKDEXT_LAX_SPACING;
+		extensions |= HOEDOWN_EXT_LAX_SPACING;
 	}
 
 	if (SUNDOWN_HAS_EXTENSION("lax_spacing")) {
-		extensions |= MKDEXT_LAX_SPACING;
+		extensions |= HOEDOWN_EXT_LAX_SPACING;
 	}
 
 	if (SUNDOWN_HAS_EXTENSION("space_after_headers")) {
-		extensions |= MKDEXT_SPACE_HEADERS;
+		extensions |= HOEDOWN_EXT_SPACE_HEADERS;
 	}
 
 	if (SUNDOWN_HAS_EXTENSION("superscript")) {
-		extensions |= MKDEXT_SUPERSCRIPT;
+		extensions |= HOEDOWN_EXT_SUPERSCRIPT;
 	}
 
 //	if (SUNDOWN_HAS_EXTENSION("footnotes")) {
-//		extensions |= MKDEXT_FOOTNOTES;
+//		extensions |= HOEDOWN_EXT_FOOTNOTES;
 //	}
 
 	*enabled_extensions_p = extensions;
@@ -360,7 +361,7 @@ static void php_sundown__get_extensions(HashTable *table, unsigned int *enabled_
 static void php_sundown__get_flags(HashTable *table, unsigned int *enabled_extensions_p, unsigned int *render_flags_p)
 {
 	unsigned int extensions = 0;
-	unsigned int render_flags = HTML_EXPAND_TABS;
+	unsigned int render_flags = HOEDOWN_HTML_EXPAND_TABS;
 
 	php_sundown__get_extensions(table, &extensions);
 	php_sundown__get_render_flags(table, &render_flags);

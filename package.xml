@@ -46,8 +46,8 @@ PECL Sundown provides straight forward object oriented Markdown API and customiz
      <file role="src" name="html_smartypants.c"/>
     </dir>
     <dir name="src">
-     <file role="src" name="autolink.c"/>
-     <file role="src" name="autolink.h"/>
+     <file role="src" name="hoedown_autolink.c"/>
+     <file role="src" name="hoedown_autolink.h"/>
      <file role="src" name="buffer.c"/>
      <file role="src" name="buffer.h"/>
      <file role="src" name="html_blocks.h"/>
