@@ -85,23 +85,7 @@ static void rndr_tablecell(struct buf *ob, const struct buf *text, int align, vo
 	zval *php_align;
 
 	MAKE_STD_ZVAL(php_align);
-	switch (align) {
-		case MKD_TABLE_ALIGN_L:
-			ZVAL_STRING(php_align, "left", 1);
-			break;
-
-		case MKD_TABLE_ALIGN_R:
-			ZVAL_STRING(php_align, "right", 1);
-			break;
-
-		case MKD_TABLE_ALIGN_CENTER:
-			ZVAL_STRING(php_align, "center", 1);
-			break;
-
-		default:
-			ZVAL_NULL(php_align);
-			break;
-	}
+	ZVAL_LONG(php_align, align);
 
 	BLOCK_CALLBACK_EX(ob, "tableCell", 2, buf2str(text), php_align);
 }

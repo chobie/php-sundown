@@ -33,7 +33,7 @@ there are two render in php-sundown:
 
 ### SundownRenderBase::tableRow(string $content)
 
-### SundownRenderBase::tableCell(string $content, string $alignment)
+### SundownRenderBase::tableCell(string $content, long $alignment)
 
 ### SundownRenderBase::autolink(string $link, long $link_type)
 

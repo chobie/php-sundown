@@ -329,11 +329,12 @@ PHP_METHOD(sundown_render_base, tableRow)
 */
 PHP_METHOD(sundown_render_base, tableCell)
 {
-	char *content, *alignment;
-	int content_len, alignment_len;
+	char *content;
+	int content_len;
+	long alignment;
 	
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
-		"ss", &content, &content_len, &alignment, &alignment_len) == FAILURE) {
+		"sl", &content, &content_len, &alignment) == FAILURE) {
 		return;
 	}
 	RETVAL_STRINGL(content, content_len, 1);
@@ -702,4 +703,10 @@ void php_sundown_render_base_init(TSRMLS_D)
 	zend_declare_class_constant_long(sundown_render_base_class_entry, ZEND_STRS("LIST_ORDERED")-1, 1 TSRMLS_CC);
 	zend_declare_class_constant_long(sundown_render_base_class_entry, ZEND_STRS("MKDA_EMAIL")-1, MKDA_EMAIL TSRMLS_CC);
 	zend_declare_class_constant_long(sundown_render_base_class_entry, ZEND_STRS("MKDA_NORMAL")-1,MKDA_NORMAL TSRMLS_CC);
+
+	zend_declare_class_constant_long(sundown_render_base_class_entry, ZEND_STRS("MKD_TABLE_ALIGN_L")-1, MKD_TABLE_ALIGN_L TSRMLS_CC);
+	zend_declare_class_constant_long(sundown_render_base_class_entry, ZEND_STRS("MKD_TABLE_ALIGN_R")-1, MKD_TABLE_ALIGN_R TSRMLS_CC);
+	zend_declare_class_constant_long(sundown_render_base_class_entry, ZEND_STRS("MKD_TABLE_ALIGN_CENTER")-1, MKD_TABLE_ALIGN_CENTER TSRMLS_CC);
+	zend_declare_class_constant_long(sundown_render_base_class_entry, ZEND_STRS("MKD_TABLE_ALIGNMASK")-1, MKD_TABLE_ALIGNMASK TSRMLS_CC);
+	zend_declare_class_constant_long(sundown_render_base_class_entry, ZEND_STRS("MKD_TABLE_HEADER")-1, MKD_TABLE_HEADER TSRMLS_CC);
 }
