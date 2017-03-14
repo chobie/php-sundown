@@ -163,7 +163,7 @@ parse and render specified string.
 <?php
 $render = new \Sundown\Render\HTML();
 $md = new \Sundown\Markdown($render);
-echo $md->render("Hello World");n
+echo $md->render("Hello World");
 ````
 
 
